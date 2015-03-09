@@ -1,0 +1,25 @@
+================================
+Changes in behaviour since version 1.31:
+================================
+
+1. ResolveWidthAndHeight is now true unless explicitly set to false in a parameter (used to be false by default)
+2. Changed type of Multimedia.Size from int to long (because Tridion has also changed the type of the corresponding property)
+3. Page templates can now follow links to components and resolve binary widht/height if you set the correct parameters (similarly to component templates)
+
+
+
+================================
+Migration scenarios
+================================
+======= DD4T 1.* -> 2.0 ========
+All DD4T 2 templates are fully backwards compatible with a DD4T 1 web application. Just leave the 'Serialization format' and 'Compress output' settings empty (or set Serialization format to 'XML').
+
+This allows you to upgrade the templates first, and the web application later (or not at all).
+
+
+========= JSON and XML =========
+1. The first TBB in a template dictates the format (if TBB 1 specifies JSON and TBB specifies XML, the output is JSON).
+2. PT dictates the format for static component presentations (if the CT specifies JSON and the PT specifies XML, the output is XML)
+Note: if the CT is set to 'publish as a dynamic component', the CT dictates its own format!
+
+However, we recommend to pick 1 format and stick by it.

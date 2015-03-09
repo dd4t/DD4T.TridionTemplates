@@ -1,0 +1,626 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tridion.ContentManager.TypeRegistration</name>
+    </assembly>
+    <members>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.PublicationTypeElement">
+            <summary>
+            Represents a PublicationType Element 
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement">
+            <summary>
+            Represents a configuration element with registered type
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.IdAttributeString">
+            <summary>
+            Name of the <c>Xml</c> Attribute of Id Property.
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.NameAttributeString">
+            <summary>
+            Name of the <c>Xml</c> Attribute of Name Property.
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.TitleResourceAttributeString">
+            <summary>
+            Name of the <c>Xml</c> Attribute of Title Property.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.#ctor">
+            <summary>
+            Default Constructor for creating RegisteredTypeElement
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initializes RegisteredTypeElement
+            </summary>
+            <param name="id">a <see cref="T:System.Int32"/> represents Id of registered type</param>
+            <param name="name">Symbolic name of the type</param>
+            <param name="titleResourceId">Resource Id</param>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.Id">
+            <summary>
+            Id of Registered Type
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.Name">
+            <summary>
+            Symbolic Name of the Registered Type
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElement.TitleResourceId">
+            <summary>
+            String representation of TitleResource ID
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.PublicationTypeElement.#ctor">
+            <summary>
+            Default Constructor for creating PublicationTypeElement
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.PublicationTypeElement.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initializes PublicationTypeElement
+            </summary>
+            <param name="id">a <see cref="T:System.Int32"/> represents <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/>.Id</param>
+            <param name="name"></param>
+            <param name="titleResourceId"></param>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.PublicationTypeElementCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1">
+            <summary>
+            Base class for registered tyep collections configuration.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1.CreateNewElement">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1.Add(`0)">
+            <summary>
+            
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1.Remove(`0)">
+            <summary>
+            
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1.RemoveAt(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1.Clear">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.RegisteredTypeElementCollection`1.Item(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection">
+            <summary>
+              Represents a TypeRegistry section within Tridion.ContentManager.Config configuration file.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection.SectionName">
+            <summary>
+            Represents the Name of the Section that represents typeRegistry
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection.PublicationTypeElements">
+            <summary>
+            Repesents PublicationType Elements of the configuration 
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection.WorkflowScriptTypeElements">
+            <summary>
+            Gets or sets workflow script type elements of the configuration. 
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection.WorkflowTypeElements">
+            <summary>
+            Gets or sets workflow type elements of the configuration. 
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection.Name">
+            <summary>
+            Gets the name of the section.
+            </summary>
+            <value>
+            The name of the section.
+            </value>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement">
+            <summary>
+            Represents a WorkflowScriptTypeElement Element. 
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement.Name">
+            <summary>
+            Gets or sets a name of the workflow script type.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement.TitleResource">
+            <summary>
+            Gets or sets the string representation of TitleResource ID.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement.AssemblyFileName">
+            <summary>
+            Gets or sets assembly file name to load. Allows to load types from assemblies not deployed in the GAC.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement.AssemblyName">
+            <summary>
+            Gets or sets assembly name to load from the GAC.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement.ExecutorType">
+            <summary>
+            Gets or sets the name of the class, which contains script type executor.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement.ScriptContentHandlerType">
+            <summary>
+            Gets or sets the name of the class, which contains script type content handler.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection">
+            <summary>
+            Represents workflow script type collection. 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection.Add(Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement)">
+            <summary>
+            Adds the specified element.
+            </summary>
+            <param name="element">The element.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection.Remove(Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement)">
+            <summary>
+            Removes the specified element.
+            </summary>
+            <param name="element">The element.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection.RemoveAt(System.Int32)">
+            <summary>
+            Removes the specified element at.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection.CreateNewElement">
+            <summary>
+            When overridden in a derived class, creates a new <see cref="T:System.Configuration.ConfigurationElement"/>.
+            </summary>
+            <returns>
+            A new <see cref="T:System.Configuration.ConfigurationElement"/>.
+            </returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            Gets the element key for a specified configuration element when overridden in a derived class.
+            </summary>
+            <param name="element">The <see cref="T:System.Configuration.ConfigurationElement"/> to return the key for.</param>
+            <returns>
+            An <see cref="T:System.Object"/> that acts as the key for the specified <see cref="T:System.Configuration.ConfigurationElement"/>.
+            </returns>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElementCollection.Item(System.Int32)">
+            <summary>
+            Gets or sets the <see cref="T:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowScriptTypeElement"/> at the specified index.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowTypeElement">
+            <summary>
+            Represents a WorkflowType Element 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowTypeElement.#ctor">
+            <summary>
+            Default Constructor for creating WorkflowTypeElement
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowTypeElement.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initializes WorkflowTypeElement
+            </summary>
+            <param name="id">a <see cref="T:System.Int32"/> represents Id of registered type</param>
+            <param name="name">Symbolic name of the type</param>
+            <param name="titleResourceId">Resource Id</param>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowTypeElementCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistrationException">
+             <summary>
+            The exception is thrown when a non-fatal PublicationTypeRegistry related error occurs. 
+             </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.TypeRegistrationException">
+            <summary>
+            Exception Thrown due to error in TypeRegistry
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.TypeRegistrationException.#ctor(Tridion.Localization.LocalizableMessage,System.Exception,Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode,Tridion.ContentManager.TypeRegistration.TypeRegistrationLogCategory,System.Diagnostics.TraceEventType)">
+            <summary>
+            Use this constructor to specify all eventlog options yourself.
+            </summary>        
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.TypeRegistrationException.#ctor(Tridion.Localization.LocalizableMessage,System.Exception,Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode,Tridion.ContentManager.TypeRegistration.TypeRegistrationLogCategory)">
+            <summary>
+            Constructor to use the default severity.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistrationException.#ctor(System.Exception,System.String)">
+            <summary>
+            Constructor that can be used without needing to create a localized message each time.
+            </summary> 
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistrationException.#ctor(Tridion.Localization.LocalizableMessage,Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode)">
+            <summary>
+            Constructor that can be used when no inner exception is caught.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistrationException.#ctor(System.Exception,System.String,System.Object[])">
+            <summary>
+            Constructor that can be used without needing to create a localized message each time.
+            </summary> 
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistrationException.#ctor(Tridion.Localization.LocalizableMessage,System.Exception,Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode)">
+            <summary>
+            Constructor to use the default LogCategory and severity.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.PublicationType">
+            <summary>
+            Represents a PublicationType
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.PublicationType.UnknownPublicationType">
+            <summary>
+            Specifies Unknown PublicationType
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.PublicationType.UnspecifiedPublicationType">
+            <summary>
+            Specifies Unspecified PublicationType
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationType.#ctor(Tridion.ContentManager.TypeRegistration.Configuration.PublicationTypeElement)">
+            <summary>
+            Initializes PublicationType
+            </summary>
+            <param name="publicationTypeConfigElement">a <see cref="T:Tridion.ContentManager.TypeRegistration.Configuration.PublicationTypeElement"/> which specifies different properties of a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationType.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Initializes PublicationType
+            </summary>
+            <param name="publicationTypeId"> Id of this PublicationType</param>
+            <param name="publicationTypeName">Name of this PublicationType</param>
+            <param name="titleResourceId">Id of a Localizable Resource. Localized Representation of this Resource would be represented as the Title of this PublicationType</param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationType.GetLocalizedTitle(System.Globalization.CultureInfo)">
+            <summary>
+            Get the title (display name) of the PublicationType in a given language.
+            </summary>
+            <remarks>
+            If no title resource exists for the given language, the standard .NET language fallback mechanism applies.
+            </remarks>
+            <param name="culture">The language in which to get the title</param>
+            <returns>The title in the given language or the symbolic name if no title resource is configured.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationType.GetHashCode">
+            <summary>
+            Computes and return the hashcode of this PublicationType
+            </summary>
+            <returns>a <see cref="T:System.Int32"/> refers to the hashcode of this PublicationType</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationType.Equals(System.Object)">
+            <summary>
+            Compare this PublicationType with <paramref name="obj"/>
+            </summary>
+            <param name="obj">The object to compare this object against.</param>
+            <returns>true if this PublicationType is equals to the <paramref name="obj"/>; otherwise, false.</returns>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.PublicationType.Id">
+            <summary>
+            Id of this PublicationType
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.PublicationType.Name">
+            <summary>
+            Refers to the Name of the PublicationType
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.PublicationType.Title">
+            <summary>
+            Refers to the Localized Title of this PublicationType to show it in GUI(e.g. List)
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.PublicationType.TitleResourceId">
+            <summary>
+            Refers to the Resource Id that can be localized in end user's culture as needed.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry">
+             <summary>
+            Repository of the PublicationTypes. 
+             </summary>
+             <remarks>
+                 Loads the PublicationTypes from the Configuration and stores it in <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/>. 
+                 Provides a faster access to the <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> by leveraging lookup capability using Name and ID. 
+                 Caches the Configuration internally which can be reloaded using <see cref="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.ReloadConfiguration"/>.
+             </remarks>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.#cctor">
+            <summary>
+            Static Constructor loads the PublicationTypes as soon as this Registry gets loaded.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.GetPublicationTypes">
+            <summary>
+            Returns an IEnumerable of <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> configured in the <see cref="T:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection"/>
+            </summary>
+            <returns>IEnumerable  of <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></returns>
+            <exception cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistrationException"> throws this exception wtih TypeRegistrationErrorCode.MissingTypeRegistryConfigurationError if typeRegistry configuration missing in Tridion.ContentManager.config file. </exception>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.ContainsPublicationType(System.Int32)">
+            <summary>
+            Verify whether PublicationType with <paramref name="publicationTypeId"/> exists in <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/>
+            </summary>
+            <param name="publicationTypeId">Id of a PublicationType</param>
+            <returns>true if <paramref name="publicationTypeId"/> exists in the PublicationTypeRegistry ; otherwise false</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.ContainsPublicationType(System.String)">
+            <summary>
+            Verify whether PublicationType with <paramref name="publicationTypeName"/> exists in <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/>
+            </summary>
+            <param name="publicationTypeName">Name of the PublicationType</param>
+            <returns>true if <paramref name="publicationTypeName"/> exists in the <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/> ; otherwise false</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.TryGetPublicationType(System.Int32,Tridion.ContentManager.TypeRegistration.PublicationType@)">
+            <summary>
+            Returns the PublicationType with <paramref name="publicationTypeId"/> Id. A return value indicates whether the retrieval succeeded.
+            </summary>
+            <param name="publicationTypeId">a <see cref="T:System.Int32"/> represents the Id of a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></param>
+            <param name="publicationType">a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/>. When this method returns, contains PublicationType with <paramref name="publicationTypeId"/> Id, if the retrieval succeeded, or null is the retrieval failed</param>
+            <returns>true , if a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> with <paramref name="publicationTypeId"/> Id  is found in the <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/> ; otherwise false.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.TryGetPublicationType(System.String,Tridion.ContentManager.TypeRegistration.PublicationType@)">
+            <summary>
+            Returns the PublicationType with <paramref name="publicationTypeName"/> Name . A return value indicates whether the retrieval succeeded.
+            </summary>
+            <param name="publicationTypeName">a <see cref="T:System.String"/> represents the Name of <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></param>
+            <param name="publicationType">a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/>. When this method returns, contains PublicationType with <paramref name="publicationTypeName"/>  Name, if the retrieval succeeded, or null is the retrieval failed</param>
+            <returns>true , if a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> is found with <paramref name="publicationType"/> Id in the <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/> ; otherwise false.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.GetPublicationType(System.String)">
+            <summary>
+            Returns PublicationType with <paramref name="publicationTypeName"/> Name.
+            </summary>
+            <param name="publicationTypeName">a <see cref="T:System.String"/> representing Name of a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></param>
+            <returns><see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> with <paramref name="publicationTypeName"/> Name </returns>
+            <exception cref="T:Tridion.ContentManager.TypeRegistration.UnknownPublicationTypeNameException"> throws this exception if <paramref name="publicationTypeName"/> refers to an unknown <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> </exception>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.GetPublicationType(System.Int32)">
+            <summary>
+            Returns PublicationType that is related to <paramref name="publicationTypeId"/>
+            </summary>
+            <param name="publicationTypeId">a <see cref="T:System.Int32"/> representing Id of a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></param>
+            <returns><see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> that is related to <paramref name="publicationTypeId"/></returns>
+            <exception cref="T:Tridion.ContentManager.TypeRegistration.UnknownPublicationTypeIdException"> throws this exception if <paramref name="publicationTypeId"/> refers to an unknown <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/> </exception>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.ReloadConfiguration">
+            <summary>
+            Reloads PublicationType Configuration and updates PublicationTypeRegistry
+            </summary>
+            <remarks>
+            This method is not thread-safe.
+            </remarks>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.InitializeRegistry">
+            <summary>
+            Initialize Mappings of PublicationTypes.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.Add(Tridion.ContentManager.TypeRegistration.PublicationType)">
+            <summary>
+            Adds <paramref name="publicationType"/> to the <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/>
+            </summary>
+            <param name="publicationType">a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></param>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry.Remove(Tridion.ContentManager.TypeRegistration.PublicationType)">
+            <summary>
+            Removes<paramref name="publicationType"/> from the <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/>
+            </summary>
+            <param name="publicationType">a <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationType"/></param>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.TypeRegistrationLogCategory">
+            <summary>
+            Tridion Type Registration Category
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationLogCategory.PublicationTypeRegistry">
+            <summary>
+            PublicationTypeRegistry LogCategory
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationLogCategory.GeneralTypeRegistry">
+            <summary>
+            General TypeRegistry LogCategory
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationLogCategory.WorkflowScriptTypeRegistry">
+            <summary>
+            WorkflowScriptTypeRegistry LogCategory
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode">
+            <summary>
+            Tridion Type Registration error codes
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.GeneralTypeRegistrationError">
+            <summary>
+            General Type Registration Error
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.UnknownPublicationTypeId">
+            <summary>
+            Unknown PublicationType Id error.
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.UnknownPublicationTypeName">
+            <summary>
+            Unknown PublicationType Name error.
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.MissingTypeRegistryConfigurationError">
+            <summary>
+            Missing TypeRegistry Configuration Error 
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.UnknownWorkflowScriptTypeName">
+            <summary>
+            Unknown Workflow Script Type Name error.
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.GeneralConfigurationWorkflowScriptType">
+            <summary>
+            General configuration error for Workflow Script Type.
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.InvalidExecutorTypeWorkflowScriptType">
+            <summary>
+            Invalid ExecutorType is configured for Workflow Script Type.
+            </summary>
+        </member>
+        <member name="F:Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode.InvalidScriptContentHandlerWorkflowScriptType">
+            <summary>
+            Invalid ScriptContentHandler type is configured for Workflow Script Type.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.UnknownPublicationTypeIdException">
+            <summary>
+            The exception that is thrown when PublicationType that refers to a particular Id is not found in <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/>.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.UnknownPublicationTypeIdException.#ctor(System.Int32)">
+            <summary>
+            Initializes this exception.
+            </summary>
+            <param name="id">Id that caused this exception. That is, no PublicationType could be found in PublicationTypeRegistry with this Id</param>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.UnknownPublicationTypeNameException">
+            <summary>
+            The exception that is thrown when PublicationType that refers to a particular name is not found in <see cref="T:Tridion.ContentManager.TypeRegistration.PublicationTypeRegistry"/>.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.UnknownPublicationTypeNameException.#ctor(System.String)">
+            <summary>
+            Initializes UnknownPublicationTypeNameException with <paramref name="publicationName"/>. 
+            </summary>
+            <param name="publicationName">a <see cref="T:System.String"/> represents name of PublicationType that does not exist in PublicationTypeRegistry</param>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptType">
+            <summary>
+            Represents a workflow script type.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.WorkflowScriptType.Name">
+            <summary>
+            Gets the name of this workflow script type.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.TypeRegistration.WorkflowScriptType.Title">
+            <summary>
+            Gets the localized title of this workflow script type.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptTypeRegistrationException">
+            <summary>
+            The exception is thrown when a non-fatal <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptTypeRegistry"/> related error occurs. 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.WorkflowScriptTypeRegistrationException.#ctor(Tridion.Localization.LocalizableMessage,Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptTypeRegistrationException"/> class.
+            </summary>
+            <param name="message">The localizable error message.</param>
+            <param name="errorCode">The error code.</param>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptTypeRegistry">
+            <summary>
+            Repository of the workflow script types. 
+            </summary>
+            <remarks>Loads the workflow script types from the Configuration.</remarks>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.WorkflowScriptTypeRegistry.GetWorkflowScriptTypes(System.Globalization.CultureInfo)">
+            <summary>
+            Returns the list of <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptType"/>s configured in the <see cref="T:Tridion.ContentManager.TypeRegistration.Configuration.TypeRegistrySection"/>.
+            </summary>
+            <param name="culture">The language in which to get the localized title of a workflow script type.</param>
+            <returns>A list of <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptType"/>s.</returns>
+            <remarks>
+            <para>Exception will be thrown if there are no workflow script types configured in the configuration.</para>
+            <para>If culture is not specified (<c>null</c>) then <c>CurrentUICulture</c> will be used.</para>
+            </remarks>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.WorkflowScriptTypeRegistry.GetWorkflowScriptType(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Returns <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptType"/> with the specified name.
+            </summary>
+            <param name="name">The name of the <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptType"/>.</param>
+            <param name="culture">The language in which to get the localized title of a workflow script type.</param>
+            <returns>The <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowScriptType"/>.</returns>
+            <remarks>If culture is not specified (<c>null</c>) then <c>CurrentUICulture</c> will be used.</remarks>
+        </member>
+        <member name="T:Tridion.ContentManager.TypeRegistration.WorkflowTypeRegistrationException">
+            <summary>
+            The exception is thrown when a non-fatal <see cref="T:Tridion.ContentManager.TypeRegistration.Configuration.WorkflowTypeElement"/> related error occurs. 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.TypeRegistration.WorkflowTypeRegistrationException.#ctor(Tridion.Localization.LocalizableMessage,Tridion.ContentManager.TypeRegistration.TypeRegistrationErrorCode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.TypeRegistration.WorkflowTypeRegistrationException"/> class.
+            </summary>
+            <param name="message">The localizable error message.</param>
+            <param name="errorCode">The error code.</param>
+        </member>
+    </members>
+</doc>
