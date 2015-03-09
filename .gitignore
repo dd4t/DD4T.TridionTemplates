@@ -182,4 +182,4 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
-!dependencies/
+!dependencies/*.dll
