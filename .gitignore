@@ -184,4 +184,3 @@ FakesAssemblies/
 
 !dependencies/*.dll
 !tools/**/*.exe
-!tools/**/*.dll
