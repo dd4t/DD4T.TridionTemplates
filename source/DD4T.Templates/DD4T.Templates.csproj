@@ -117,10 +117,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)..\tools\ilmerge" /lib:"C:\Windows\Microsoft.NET\Framework\v4.0.30319" /lib:"$(SolutionDir)..\dependencies" /t:dll /targetplatform:v4,C:\Windows\Microsoft.NET\Framework\v4.0.30319 /out:"$(TargetDir)$(ProjectName).merged.dll" "$(TargetDir)DD4T.ContentModel.Contracts.dll" "$(TargetDir)DD4T.ContentModel.dll" "$(TargetDir)DD4T.Templates.Base.dll" "$(TargetDir)DD4T.ContentModel.XmlSerializers.dll" "$(TargetDir)DD4T.Serialization.dll" "$(TargetDir)Newtonsoft.Json.dll" "$(TargetPath)"
-
-if not exist "$(SolutionDir)..\build" mkdir "$(SolutionDir)..\build"
-
-copy "$(TargetDir)$(ProjectName).merged.*" "$(SolutionDir)..\build"
+if not exist "$(SolutionDir)..\tools\template-installer\data" (mkdir "$(SolutionDir)..\tools\template-installer\data")
 copy "$(TargetDir)$(ProjectName).merged.*" "$(SolutionDir)..\tools\template-installer\data"
 </PostBuildEvent>
   </PropertyGroup>
