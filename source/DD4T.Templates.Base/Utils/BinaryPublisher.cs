@@ -64,16 +64,24 @@ namespace DD4T.Templates.Base.Utils
             TridionXml xml = new TridionXml();
             xml.LoadXml("<tmproot>" + xhtml + "</tmproot>");
 
-            foreach (XmlElement img in xml.SelectNodes("//xhtml:img[@xlink:href[starts-with(string(.),'tcm:')]]", xml.NamespaceManager))
+            foreach (XmlElement elmt in xml.SelectNodes("//*[@xlink:href[starts-with(string(.),'tcm:')]]", xml.NamespaceManager))
             {
-                log.Debug("found img node " + img.OuterXml);
-                XmlAttribute link = (XmlAttribute)img.SelectSingleNode("@xlink:href", xml.NamespaceManager);
+                log.Debug("found node " + elmt.OuterXml);
+                XmlAttribute link = (XmlAttribute)elmt.SelectSingleNode("@xlink:href", xml.NamespaceManager);
                 log.Debug("about to publish binary with uri " + link.Value);
                 string path = PublishMultimediaComponent(link.Value, buildProperties);
                 log.Debug("binary will be published to path " + path);
-                img.SetAttribute("src", path);
 
-            }
+                if (elmt.LocalName.ToLower() == "img")
+                {
+                    elmt.SetAttribute("src", path);
+                }
+                else
+                {
+                    elmt.SetAttribute("href", path);
+                }
+                elmt.RemoveAttributeNode(link);
+            } 
             return xml.DocumentElement.InnerXml;
         }
 
