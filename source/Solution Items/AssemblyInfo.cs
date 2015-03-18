@@ -28,6 +28,6 @@ using System.Runtime.InteropServices;
 //      The last digit is left to 0
 //  
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+[assembly: AssemblyFileVersion("2.0.2.0")]
 [assembly: AssemblyInformationalVersion("DD4T 2.0 beta")]
 [assembly: AssemblyProduct("DD4T")]

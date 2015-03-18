@@ -349,7 +349,6 @@ namespace DD4T.Templates.Base.Builder
             //contain any subvalues (so be empty)
             if (sField != null && sField.Values != null && sField.Values.Count > 0)
             {
-                int i = 0;
                 foreach (var val in sField.Values)
                 {
                     var valCount = val.ToXml().ChildNodes.Count;

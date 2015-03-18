@@ -28,7 +28,7 @@ namespace DD4T.Templates
             }
         }
 
-        public DynamicPage() : base(TemplatingLogger.GetLogger(typeof(PublishBinariesPage))) { }
+        public DynamicPage() : base(TemplatingLogger.GetLogger(typeof(DynamicPage))) { }
         public DynamicPage(TemplatingLogger log) : base(log) { }
 
         #region DynamicDeliveryTransformer Members
