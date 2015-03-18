@@ -21,14 +21,6 @@ namespace DD4T.Templates.Base.Builder
             dk.Description = keyword.Description;
             dk.Key = keyword.Key;
             dk.TaxonomyId = keyword.OrganizationalItem.Id;
-            if (keyword.MetadataSchema != null)
-            {
-                if (buildManager != null)
-                {
-                    var tcmFields = new Tridion.ContentManager.ContentManagement.Fields.ItemFields(keyword.Metadata, keyword.MetadataSchema);
-                    dk.MetadataFields = buildManager.BuildFields(tcmFields, currentLinkLevel);
-                }
-            }
 
             if (currentLinkLevel > 0)
             {
