@@ -182,5 +182,6 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
-!dependencies/*.dll
+dependencies/*.dll
 !tools/**/*.exe
+tools/template-installer/data/DD4T.Templates.merged.dll
