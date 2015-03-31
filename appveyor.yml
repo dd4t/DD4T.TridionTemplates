@@ -24,11 +24,3 @@ build:
 artifacts:
 - path: build/package/**/*.zip
   name: Package
-deploy:
-- provider: GitHub
-  tag: v{appveyor_build_version}
-  auth_token:
-    secure: UfVipK2YzugPd54B3ls2zFwGuZVeMTH9cXwP22V9RVO/AACEjvROyFGspb1/ljwm
-  artifact: '*.zip'
-  on:
-    branch: master
