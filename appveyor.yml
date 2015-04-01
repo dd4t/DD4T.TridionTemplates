@@ -17,7 +17,7 @@ environment:
 install:
 - choco install msbuild.communitytasks -y
 - choco install ilmerge -y
-- nuget sources add -Name Incentro -Source http://developer.incentro.com/nexus/service/local/nuget/tridion.net/ -UserName %nuget_user% -Password %nuget_password%
+- nuget sources add -Name Incentro -Source http://developer.incentro.com/nexus/service/local/nuget/tridion.net/ -UserName %nuget_user% -Password %nuget_password% 
 build:
   project: build.msbuild
   verbosity: normal
