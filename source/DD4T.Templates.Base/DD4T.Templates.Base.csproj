@@ -38,8 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Legacy|AnyCPU'">
     <OutputPath>bin\Legacy\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>Legacy</DefineConstants>
     <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
