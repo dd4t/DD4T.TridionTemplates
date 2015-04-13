@@ -36,10 +36,31 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>dynamicdelivery.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Legacy|AnyCPU'">
+    <OutputPath>bin\Legacy\</OutputPath>
+    <DefineConstants>Legacy</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DD4T.ContentModel.XmlSerializers, Version=1.22.0.18186, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+    <Reference Include="DD4T.ContentModel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\build\DD4T.ContentModel.XmlSerializers.dll</HintPath>
+      <HintPath>..\packages\DD4T-Model.2.0.2-beta\lib\DD4T.ContentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="DD4T.ContentModel.Contracts, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DD4T-Model.2.0.2-beta\lib\DD4T.ContentModel.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="DD4T.ContentModel.XmlSerializers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DD4T-Model.2.0.2-beta\lib\DD4T.ContentModel.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="DD4T.Serialization, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DD4T-Model.2.0.2-beta\lib\DD4T.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DD4T-Model.2.0.2-beta\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -50,6 +71,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release'">
     <Reference Include="Tridion.Common, Version=7.1.0.52, Culture=neutral, PublicKeyToken=349a39f202fa9b53, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\dependencies\Tridion.Common.dll</HintPath>
@@ -81,8 +104,32 @@
       <HintPath>..\..\dependencies\Tridion.Logging.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Legacy'">
+    <Reference Include="Tridion.Common">
+      <HintPath>..\..\dependencies\2011sp1\Tridion.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager">
+      <HintPath>..\..\dependencies\2011sp1\Tridion.ContentManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Common">
+      <HintPath>..\..\dependencies\2011sp1\Tridion.ContentManager.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Publishing">
+      <HintPath>..\..\dependencies\2011sp1\Tridion.ContentManager.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Templating">
+      <HintPath>..\..\dependencies\2011sp1\Tridion.ContentManager.Templating.dll</HintPath>
+    </Reference>
+    <Reference Include="Tridion.Logging">
+      <HintPath>..\..\dependencies\2011sp1\Tridion.Logging.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\Tridion.ExternalContentLibrary.V2.Mock\Tridion.ExternalContentLibrary.V2.Mock.csproj">
+      <Project>{669aaaaf-7a65-4cf8-aad1-b57bbc108054}</Project>
+      <Name>Tridion.ExternalContentLibrary.V2.Mock</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Publishing Solution Items\AssemblyInfo.cs">
+    <Compile Include="..\Solution Items\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BaseComponentTemplate.cs" />
@@ -119,6 +166,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="dynamicdelivery.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ConvertFirstCharToLowerCase.xslt" />
@@ -128,20 +176,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DD4T.ContentModel.Contracts\DD4T.ContentModel.Contracts.csproj">
-      <Project>{C21F66F0-01CE-4AF3-B76C-CD262B7EA1C0}</Project>
-      <Name>DD4T.ContentModel.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DD4T.ContentModel\DD4T.ContentModel.csproj">
-      <Project>{83F5CFC2-14D5-4190-B51D-7AF7A69B67E9}</Project>
-      <Name>DD4T.ContentModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DD4T.Serialization\DD4T.Serialization.csproj">
-      <Project>{849a21d3-5863-4c43-98d3-6b8b83b9300f}</Project>
-      <Name>DD4T.Serialization</Name>
-    </ProjectReference>
+    <Content Include="Newtonsoft.Json.xml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\Minimize.xslt" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
+using System.Reflection;
 using Tridion.ContentManager.Templating;
 using TCM = Tridion.ContentManager.ContentManagement;
 using DD4T.ContentModel;
@@ -34,7 +35,18 @@ namespace DD4T.Templates.Base.Builder
           {
               Multimedia multimedia = new Multimedia();
               multimedia.MimeType = tcmComponent.BinaryContent.MultimediaType.MimeType;
-              multimedia.Size = tcmComponent.BinaryContent.Size;
+
+              // PLEASE NOTE: this weird way to set the size of the multimedia is needed because of a difference between Tridion 2011 and 2013
+              // The property in Tridion's BinaryContent class changed its name AND its type (int FileSize became long Size)
+              // This way, we can use preprocessing to choose the right property
+              // Thijs Borst and Quirijn Slings, 9 April 2015
+#if Legacy
+              PropertyInfo prop = tcmComponent.BinaryContent.GetType().GetProperty("FileSize", BindingFlags.Public | BindingFlags.Instance);
+              multimedia.Size = Convert.ToInt64(prop.GetValue(tcmComponent.BinaryContent,null));
+#else
+              PropertyInfo prop = tcmComponent.BinaryContent.GetType().GetProperty("Size", BindingFlags.Public | BindingFlags.Instance);
+              multimedia.Size = (long) prop.GetValue(tcmComponent.BinaryContent,null);
+#endif
               multimedia.FileName = tcmComponent.BinaryContent.Filename;
 
               string extension = System.IO.Path.GetExtension(multimedia.FileName);

@@ -1,3 +1,85 @@
+DD4T 2.0.2-beta
+Date: 18 March, 2015
+
+================================
+New functionality in 2.0
+================================
+1. Support for JSON
+It is now possible to configure your templates to generate JSON instead of XML. JSON is smaller and it is faster to deserialize, making your web application faster.
+To enable, set the template parameter 'SerializationFormat' to 'JSON'.
+*** Note that you should only use this setting if your web application is using DD4T 2.0 or higher. ***
+
+2. Compression
+It is now possible to compress your data. This is possible regardless of the data format you have selected (JSON or XML). Compression reduces the size of the published data in the broker database, and it is faster to transport from the database to your web application.
+This is another way of making your web application faster.
+To enable, set the template parameter 'Compression' to 'yes'.
+*** Note that you should only use this setting if your web application is using DD4T 2.0 or higher. ***
+
+3. Publishing binaries is now the default
+In previous versions, you had to add the Template Building Block 'Publish binaries for component/page' to your templates in order to publish multimedia components (binaries, like images and documents). This is no longer required. You can simply use 'Generate dynamic component/page'.
+
+4. Support for Media Manager / ECL
+If you use the integration with SDL Media Manager or any other External Content Library (ECL), links to these external assets are now correctly resolved during publishing. Note that the binary data itself is NOT included in the published data, only a link to the public endpoint of the asset.
+To enable, set the template parameter 'ECLEnabled' to 'yes'.
+
+5. Omitting 'Value Lists'
+By default, the DD4T templates generate a list of field values as strings, even if the field type is not 'string-like' (text, rich text, external link). For example: for a component link field, the list of values contains the URIs of the linked components.
+This is really duplicate information, because there is also a list of linked components (LinkedComponentValues), which contains the actual components (including the URI).
+You can now choose to omit these redundant 'Value Lists', by setting the template parameter 'OmitValueLists' to 'yes'.
+
+6. Omitting 'Categories'
+If the content contains keyword fields, standard DD4T behaviour is to render these fields twice: once in the context of the field itself, and once in a separate list of categories as a property of the page or component. 
+This list of categories contains references to the categories as well as the keywords. Although this is not completely redundant (the keyword fields don't contain the metadata of the categories, for example), it is very rarely used in practice.
+You can now choose to omit this list of categories, by setting the template parameter 'OmitCategories' to 'yes'. 
+*** Note that the keyword definition is still available as part of the field. ***
+
+7. Omitting various other elements
+You can now choose to omit various elements from the published data, which are very rarely used. For example: each object in the data has a property 'ContextPublication'. If you publish a page, there will be context publications for the page itself, the components on the page, the page and component templates, the various schemas involved AND the folders for all of the above. However, because of the way Tridion publishing works, the context publication is always the same for all these objects.
+Similarly you can omit the OwningPublication and Folder properties.
+To do so, set the template parameters 'OmitContextPublications', 'OmitOwningPublications' and/or 'OmitFolders' to 'yes'.
+*** Note that the context publication, owning publication and folder of the 'root object' (the page or component being published) can not be omitted! ***
+
+8. Changes in 'Minimize XML'
+The TBB 'Minimize XML' in previous versions of DD4T had two functions:
+- Minimize the XML by removing whitespace
+- Omitting various redundant data fields (like ContextPublication and OwningPublication)
+The last feature is now covered by setting various 'OmitXXXX' parameters on any DD4T template, so it is no longer needed in the 'Minimize XML'. In DD4T 2.0, Minimize XML only removes whitespace from XML, and should therefore only be used if the serialization format is set to XML.
+
+9. Root object for dynamic component presentations
+In previous versions, if you published a dynamic component presentation (DCP), the data would contain a Component as its root object. It is now possible to use the ComponentPresentation as root object instead. This means that the data would look like this (if you use XML):
+
+<ComponentPresentation>
+	<Component>
+		<Id>tcm:2-123</Id>
+		...
+	</Component>
+	<ComponentTemplate>
+		<Id>tcm:2-456-32</Id>
+		...
+	</ComponentTemplate>
+<ComponentPresentation>
+
+... and not like this:
+<Component>
+	<Id>tcm:2-123</Id>
+	...
+</Component>
+
+This is used by the new ComponentPresentationFactory which is part of the presentation side logic of DD4T 2.0.
+To enable this feature, use the TBB 'Generate dynamic component presentation' instead of 'Generate dynamic component'. 
+
+
+================================
+Bug fixes in 2.0
+================================
+1. Links to multimedia components in rich text
+If you include a link to a multimedia component (e.g. a PDF) in your rich text field, it will now be published correctly.
+
+2. Full support for Keywords
+In previous versions, there was some support for keyword fields but it was not complete. For example, if the keyword's metadata included a multimedia link, the binary was not published. Also, the metadata schema was lacking. This has been corrected in DD4T 2.0.
+ 
+
+
 ================================
 Changes in behaviour since version 1.31:
 ================================
@@ -15,6 +97,12 @@ Migration scenarios
 All DD4T 2 templates are fully backwards compatible with a DD4T 1 web application. Just leave the 'Serialization format' and 'Compress output' settings empty (or set Serialization format to 'XML').
 
 This allows you to upgrade the templates first, and the web application later (or not at all).
+
+Upgrading to DD4T 2.0 templates also offers the following functionality which is available even if your web application is still on version 1.x:
+
+- Leaner data by using the various OmitXXXX parameters
+- Support for SDL Media Manager and other ECL plugins
+- Bug fixes (keywords, links to multimedia components in rich text)
 
 
 ========= JSON and XML =========
