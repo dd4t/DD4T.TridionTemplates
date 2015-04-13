@@ -183,4 +183,5 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 !dependencies/*.dll
+!dependencies/2011sp1/*.dll
 !tools/**/*.exe
