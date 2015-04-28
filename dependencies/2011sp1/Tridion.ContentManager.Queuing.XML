@@ -1,0 +1,825 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tridion.ContentManager.Queuing</name>
+    </assembly>
+    <members>
+        <member name="T:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator">
+            <summary>
+            Summary description for QueueAdministrator.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator.#ctor(Tridion.ContentManager.Queuing.QueuingEngine)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator"/> class with the given <see cref="T:Tridion.ContentManager.Queuing.ComWrapper.QueuingEngine"/>.
+            </summary>
+            <param name="queuingEngine">
+            The name of the user that is going to perform the actions.
+            </param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator.GetListQueues">
+            <summary>
+            Gets a list of Queues as a XML string.
+            </summary>
+            <returns>A list of Queues as a XML string.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator.GetListQueuedMessages(Tridion.ContentManager.Interop.TDSDefines.EnumQueue)">
+            <summary>
+            Gets a list of QueueMessages as a XML string.
+            </summary>
+            <param name="queueId">
+            The identifier of the queue.
+            </param>
+            <returns>
+            A list of QueueMessages as a XML string.
+            </returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator.GetListQueueConsumers">
+            <summary>
+            Gets a list of queue consumers as a XML string.
+            </summary>
+            <returns>A list of queue consumers as a XML string.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator.PurgeQueue(Tridion.ContentManager.Interop.TDSDefines.EnumQueue)">
+            <summary>
+            Purges the message in the given Queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.ComWrapper.QueueConsumer">
+            <summary>
+            Represents a QueueConsumer.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueConsumer.Close">
+            <summary>
+            Closes the Queue Consumer
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueConsumer.RetrieveMessage(System.Int32)">
+            <summary>
+            Retrieves a message from the queue within the given time.
+            </summary>
+            <param name="timeout">The maximum time, in seconds, to wait for getting a message.</param>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage"/> if available, otherwise <c>null</c>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueConsumer.DeleteMessage(System.Int32)">
+            <summary>
+            Deletes the given message from the Queue.
+            </summary>
+            <param name="messageId">The identifier of the message to delete.</param>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage">
+            <summary>
+            Represents a queue message.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage.GetXML">
+            <summary>
+            Gets the XML representation.
+            </summary>
+            <returns>A string containing the the XML representation.</returns>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage.ID">
+            <summary>
+            Gets the identifier of the queue message.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage.ItemURI">
+            <summary>
+            Gets the identifier of the item in the queue message.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage.ActionID">
+            <summary>
+            Gets the action of the queue message.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage.Priority">
+            <summary>
+            Gets the priority of the queue message.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.ComWrapper.QueueMessage.ScheduleTime">
+            <summary>
+            Gets the schedule date time of the queue message.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.ComWrapper.QueuingEngine">
+            <summary>
+            Represents a QueuingEngine for the COM world.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueuingEngine.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.ComWrapper.QueuingEngine"/> class. 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueuingEngine.CreateQueueConsumer(Tridion.ContentManager.Interop.TDSDefines.EnumQueue,System.Int32)">
+            <summary>
+            Get a <see cref="T:Tridion.ContentManager.Queuing.ComWrapper.QueueConsumer"/> for the specified queue and configuration.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <param name="configurationId">The identifier of the configuration to use.</param>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.ComWrapper.QueueConsumer"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.ComWrapper.QueuingEngine.CreateQueueAdministrator">
+            <summary>
+            Gets an object that can be used for queue administration.
+            </summary>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.ComWrapper.QueueAdministrator"/> instance.</returns>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings">
+            <summary>
+            Represents the properties that can be set for a Queue Consumer
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> class.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings.Name">
+            <summary>
+            Get or set the name of the QueueConsumer.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings.QueueId">
+            <summary>
+            Get or set the queue identifier the QueueConsumer is using.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings.ConfigurationId">
+            <summary>
+            Get or set configuration identifier the QueueConsumer is using.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings.Port">
+            <summary>
+            Get or set the port the QueueConsumer is using for listing for notification when a new QueueMessage is available.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings.PollingInterval">
+            <summary>
+            Get or set polling interval the QueueConsumer is using for checking new QueueMessages.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings.QueuingFilterCollection">
+            <summary>
+            Get or set the filters the QueueConsumer is using to retrieve QueueMessages.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.Configuration.QueuingConfiguration">
+            <summary>
+            Represents the rendering section within a configuration file.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueuingConfiguration.QueueConsumers">
+            <summary>
+            Gets and sets the rendering mappings.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueuingConfiguration.SectionName">
+            <summary>
+            Use this section name to get the rendering configuration from the <see cref="T:System.Configuration.ConfigurationManager"/>
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumers">
+            <summary>
+            Represents a collection of <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> within a configuration file.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.CreateNewElement">
+            <summary>
+            Creates a new <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/>.
+            </summary>
+            <returns>A new <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            Gets the element key for a specified <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/>.
+            </summary>
+            <param name="element">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to get.</param>
+            <returns>An Object that acts as the key for the specified <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.Add(Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings)">
+            <summary>
+            Adds a <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to the publisher mappings collection.
+            </summary>
+            <param name="queueConsumerSettings">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to add.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.BaseAdd(System.Configuration.ConfigurationElement)">
+            <summary>
+            Adds a <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to a collection of <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumers"/>.
+            </summary>
+            <param name="resource">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to add.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.Remove(Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings)">
+            <summary>
+            Removes a <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> from the collection.
+            </summary>
+            <param name="queueConsumerSettings">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to remove.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.RemoveAt(System.Int32)">
+            <summary>
+            Removes the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> at the specified index location.
+            </summary>
+            <param name="index">The index location of the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to remove.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.Clear">
+            <summary>
+            Removes all <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> from the collection.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.CollectionType">
+            <summary>
+            Gets the type of the QueueConsumers collection.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueueConsumers.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> at the specified index location. 
+            </summary>
+            <param name="index">The index location of the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> to get.</param>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/> at the specified index.</returns>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter">
+            <summary>
+            Specifies threading configuration settings for the Publisher service.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilter.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> class.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueuingFilter.Name">
+            <summary>
+            Gets and sets the name of the consumer.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueuingFilter.Value">
+            <summary>
+            Gets and sets the name of the consumer.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection">
+            <summary>
+            Represents a collection of <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> for a <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumerSettings"/>.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.CreateNewElement">
+            <summary>
+            Creates a new <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/>.
+            </summary>
+            <returns>A new <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            Gets the element key for a specified <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/>.
+            </summary>
+            <param name="element">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to get.</param>
+            <returns>An Object that acts as the key for the specified QueuingFilter.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.Add(Tridion.ContentManager.Queuing.Configuration.QueuingFilter)">
+            <summary>
+            Adds a <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to the publisher mappings collection.
+            </summary>
+            <param name="queuingFilter">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to add.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.BaseAdd(System.Configuration.ConfigurationElement)">
+            <summary>
+            Adds a <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to a collection of <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection"/>.
+            </summary>
+            <param name="queuingFilter">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to add.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.Remove(Tridion.ContentManager.Queuing.Configuration.QueuingFilter)">
+            <summary>
+            Removes a <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> from the collection.
+            </summary>
+            <param name="queuingFilter">The <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to remove.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.RemoveAt(System.Int32)">
+            <summary>
+            Removes the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> at the specified index location.
+            </summary>
+            <param name="index">The index location of the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to remove.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.Clear">
+            <summary>
+            Removes all <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> from the collection.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.CollectionType">
+            <summary>
+            Gets the type of the QueueFilter collection.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Configuration.QueuingFilterCollection.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> at the specified index location. 
+            </summary>
+            <param name="index">The index location of the <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> to get.</param>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueuingFilter"/> at the specified index.</returns>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.Queue">
+            <summary>
+            Represents a Queue.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Queue.#ctor(Tridion.ContentManager.Data.Queuing.QueueData)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.Queue"/> class pre-loaded with a given Data Object.
+            </summary>
+            <param name="queueData">
+            The Data Object to use as (pre-loaded) current state.
+            </param>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Queue.Id">
+            <summary>
+            Gets the identifier of the Queue.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Queue.Title">
+            <summary>
+            Gets the title of the Queue.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Queue.NumberOfMessages">
+            <summary>
+            Gets the number of messages in the Queue.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.Queue.CurrentState">
+            <summary>
+            Gets the current state as a Data Object.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.QueueConsumerInfo">
+            <summary>
+            Represents a QueueConsumerInfo. 
+            Contains only information about the QueueConsumer, fetching messages is done in the QueueConsumer.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumerInfo.#ctor(Tridion.ContentManager.Data.Queuing.QueueConsumerData)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.QueueConsumerInfo"/> class based on a given Data Object. 
+            </summary>
+            <param name="queueConsumerData">
+            The Data Object to use as state.
+            </param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumerInfo.ToString">
+            <summary>
+            Gets a string representation of the object.
+            </summary>
+            <remarks>The string representation is used when tracing.</remarks>
+            <returns>The string representation which contains the identifier.</returns>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueConsumerInfo.Id">
+            <summary>
+            Gets the identifier of this <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/>
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueConsumerInfo.Host">
+            <summary>
+            Gets the host name of the computer where this <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> is running.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueConsumerInfo.Port">
+            <summary>
+            Gets the port where the notification of new queued messages are send to.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueConsumerInfo.QueueId">
+            <summary>
+            Gets the identifier of the queue the <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> is listening to.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueConsumerInfo.IsOnline">
+            <summary>
+            Gets a value indicating whether the queue consumer is online.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueConsumerInfo.Filters">
+            <summary>
+            Gets the filter of the <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> used to filter the message in the queue.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.QueueFilter">
+            <summary>
+            Represents the data of a QueueFilter.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueFilter.#ctor(Tridion.ContentManager.Data.Queuing.QueueFilterData)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.QueueFilter"/> class based on a given Data Object. 
+            </summary>
+            <param name="queueFilterData">
+            The Data Object to use as state.
+            </param>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueFilter.Name">
+            <summary>
+            Gets or sets the Name of the Filter.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueFilter.Value">
+            <summary>
+            Gets or sets the Value of the Filter.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.QueueMessage">
+            <summary>
+            Represents a QueueMessage.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueMessage.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> class. 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueMessage.#ctor(Tridion.ContentManager.Data.Queuing.QueueMessageData)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> class based on a given Data Object.
+            </summary>
+            <param name="queueMessageData">
+            The Data Object to use as state.
+            </param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueMessage.ToXml">
+            <summary>
+            Renders an XML representation.
+            </summary>
+            <returns>The XML representation.</returns>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.Id">
+            <summary>
+            Gets the identifier of the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/>.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.ItemId">
+            <summary>
+            Gets or sets the identifier of the item in the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/>.
+            </summary>
+            <remarks>If the ItemId isn't available, <see cref="P:Tridion.ContentManager.TcmUri.UriNull"/> is returned.</remarks>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.Action">
+            <summary>
+            Gets or sets the action of the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/>.
+            </summary>
+            <remarks>
+            Only set for Search Messages.
+            </remarks>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.Priority">
+            <summary>
+            Gets or sets the priority of the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/>.
+            </summary>
+            <remarks>
+            Only used for Publishing Messages.
+            </remarks>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.ScheduleDataTime">
+            <summary>
+            Gets or sets the schedule date time of the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/>.
+            </summary>
+            <seealso cref="P:Tridion.ContentManager.Queuing.QueueMessage.ScheduleDateTime"/>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.ScheduleDateTime">
+            <summary>
+            Gets or sets the schedule date time of the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/>.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.QueueId">
+            <summary>
+            Gets or sets the Id of the queue the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> is in.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.ProcessingConsumerId">
+            <summary>
+            Gets the identifier of the consumer that is processing the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/>.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.Hostname">
+            <summary>
+            Gets the name of the computer on which the <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> was created.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.CreationDate">
+            <summary>
+            Gets the Date and Time this <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> was created.
+            </summary>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.PublicationTargetId">
+            <summary>
+            Gets or sets the TCM URI of the Publication Target
+            </summary>
+            <remarks>If the Publication Target isn't available, <see cref="P:Tridion.ContentManager.TcmUri.UriNull"/> is returned.</remarks>
+        </member>
+        <member name="P:Tridion.ContentManager.Queuing.QueueMessage.CurrentState">
+            <summary>
+            Gets the current state as a Data Object.
+            </summary>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.QueueConsumer">
+            <summary>
+            Represents a QueueConsumer
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.#ctor(Tridion.ContentManager.Queuing.QueueConsumerInfo,Tridion.ContentManager.Queuing.QueuingEngine,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> class. 
+            </summary>
+            <param name="queueConsumer">
+            Basic information about the QueueConsumer.
+            </param>
+            <param name="queuingEngine">
+            The <see cref="T:Tridion.ContentManager.Queuing.QueuingEngine"/> to use for getting DataSessions.
+            </param>
+            <param name="pollingInterval">
+            The interval to use for polling for new messages.
+            </param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> class. 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.Close">
+            <summary>
+            Closes the queue consumer.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.RetrieveMessage(System.Int32)">
+            <summary>
+            Retrieves a message from the queue within the given time.
+            </summary>
+            <param name="timeout">The maximum time, in seconds, to wait for getting a message.</param>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> if available, otherwise <c>null</c>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.DeleteMessage(System.Int32)">
+            <summary>
+            Deletes the given message from the Queue.
+            </summary>
+            <param name="messageId">The identifier of the message to delete.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.Snooze(System.Int32)">
+            <summary>
+            Snooze for the given time.
+            </summary>
+            <param name="timeout">The time to snooze.</param>
+            <returns>True if there is a new queue message available.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.WaitForUdpMessage(System.Int32)">
+            <summary>
+            Waits for a signal that there is a new message available in queue ready to be retrieved.
+            </summary>
+            <param name="timeout">The time it waits for the signal.</param>
+            <returns>True if there is a new queue message available, otherwise False.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.FetchMessage">
+            <summary>
+            Fetches a message for this queue consumer.
+            </summary>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> if available, otherwise <c>null</c>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueConsumer.Dispose(System.Boolean)">
+            <summary>
+            Disposes the object instance.
+            </summary>
+            <param name="disposing">Dispose managed resources.</param>
+            <remarks>Call this method from derived classes after disposing own objects.</remarks>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.QueueSupplier">
+            <summary>
+            Represents a QueueSupplier and is responsible for putting in message into the queue and Re-index Publications.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueSupplier.Enqueue(Tridion.ContentManager.Data.IDataSession,Tridion.ContentManager.Queuing.QueueMessage)">
+            <summary>
+            Creates a new queue message and notify the queue consumers that are listening.
+            </summary>
+            <param name="dataSession">The session used to connect to a specific data store.</param>
+            <param name="queueMessage">The data for the queue message to create.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueSupplier.UpdateQueueMessage(Tridion.ContentManager.Data.IDataSession,Tridion.ContentManager.Queuing.QueueMessage)">
+            <summary>
+            Updates the queue message and notifies the queue consumers that are listening.
+            </summary>
+            <param name="dataSession">The session used to connect to a specific data store.</param>
+            <param name="queueMessage">The <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> to update.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueSupplier.ReIndexRepository(Tridion.ContentManager.Data.IDataSession,Tridion.ContentManager.TcmUri)">
+            <summary>
+            The specified Repository is re-indexed by putting messages of IdentifiableObjects in the search queue that needs to be re-indexed.
+            </summary>
+            <param name="dataSession">The session used to connect to a specific data store.</param>
+            <param name="repositoryId">The identifier of the Repository to re-index.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueSupplier.ReIndexAllRepositories(Tridion.ContentManager.Data.IDataSession)">
+            <summary>
+            All Repositories are re-indexed by putting messages of IdentifiableObjects in the search queue that needs to be re-indexed.
+            </summary>
+            <param name="dataSession">The session used to connect to a specific data store.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueueSupplier.SendQueueConsumersNotification(System.Collections.Generic.IEnumerable{Tridion.ContentManager.Data.Queuing.QueueConsumerData})">
+            <summary>
+            Sends the queue consumers a notification that there is a new queue message available.
+            </summary>
+            <param name="queueConsumers">The list of queue consumers that will receive the notification.</param>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.QueuingEngine">
+            <summary>
+            Represents a QueuingEngine.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tridion.ContentManager.Queuing.QueuingEngine"/> class. 
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.CreateQueueConsumer(System.Int32,System.Int32)">
+            <summary>
+            Get a <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> for the specified queue and configuration.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <param name="configurationId">The identifier of the configuration to use.</param>
+            <returns>A <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetQueues">
+            <summary>
+            Get a list of <see cref="T:Tridion.ContentManager.Queuing.Queue"/>.
+            </summary>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:Tridion.ContentManager.Queuing.Queue"/> objects.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueues">
+            <summary>
+            Gets a list of queues as a <see cref="T:System.Xml.XmlElement"/>.
+            </summary>
+            <returns>A list of queues as a <see cref="T:System.Xml.XmlElement"/></returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetQueueMessages(System.Int32)">
+            <summary>
+            Get a list of message in the given queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>A set of <see cref="T:Tridion.ContentManager.Queuing.QueueMessage"/> objects representing the messages in the queue.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueMessages(System.Int32)">
+            <summary>
+            Get a list of queue messages in the given queue as a <see cref="T:System.Xml.XmlElement"/>.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>A list of QueueMessages as a <see cref="T:System.Xml.XmlElement"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetQueueConsumers">
+            <summary>
+            Get a list of <see cref="T:Tridion.ContentManager.Queuing.QueueConsumerInfo"/>.
+            </summary>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:Tridion.ContentManager.Queuing.QueueConsumerInfo"/> objects.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueConsumers">
+            <summary>
+            Gets a list of queue consumers as a <see cref="T:System.Xml.XmlElement"/>.
+            </summary>
+            <returns>A list of queue consumers as a <see cref="T:System.Xml.XmlElement"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetQueueConsumers(System.Int32)">
+            <summary>
+            Get a list of <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumers"/> for the given queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> objects.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueConsumers(System.Int32)">
+            <summary>
+            Gets a list of queue consumers as a <see cref="T:System.Xml.XmlElement"/> for the given queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>A list of queue consumers as a <see cref="T:System.Xml.XmlElement"/>.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.PurgeQueue(System.Int32)">
+            <summary>
+            Purges the message in the given Queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetDataSession">
+            <summary>
+            Get the current Data Session
+            </summary>
+            <returns>The current Data Session's <see cref="T:Tridion.ContentManager.Data.IDataSession"/> interface.</returns>
+            <remarks>
+            This method is used, together with <see cref="M:Tridion.ContentManager.Queuing.QueuingEngine.ReleaseDataSession"/>, to ensure that a single Data Session (and thus database connection)
+            is used for all the work done in a transaction.
+            If no current Data Session exists, a new one is created.
+            Otherwise, the existing is returned and a reference counter is increased.
+            After each GetDataSession call, a <see cref="M:Tridion.ContentManager.Queuing.QueuingEngine.ReleaseDataSession"/> must be performed (also in case of exceptions).
+            </remarks>
+            <seealso cref="M:Tridion.ContentManager.Queuing.QueuingEngine.ReleaseDataSession"/>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.ReleaseDataSession">
+            <summary>
+            Release the Data Session obtained by <see cref="M:Tridion.ContentManager.Queuing.QueuingEngine.GetDataSession"/>.
+            </summary>
+            <remarks>
+            This method decreases the Data Session reference counter and disposes the Data Session if the counter reaches 0.
+            </remarks>
+            <seealso cref="M:Tridion.ContentManager.Queuing.QueuingEngine.GetDataSession"/>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.CreateTransactionScope">
+            <summary>
+            Creates a configured <see cref="T:System.Transactions.TransactionScope"/> instance.
+            </summary>
+            <remarks>
+            All transactional methods must use this method or its overload instead of directly creating a <see cref="T:System.Transactions.TransactionScope"/> instance.
+            </remarks>
+            <returns>A <see cref="T:System.Transactions.TransactionScope"/> instance.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueData">
+            <summary>
+            Gets a list of <see cref="T:Tridion.ContentManager.Data.Queuing.QueueData"/> objects.
+            </summary>
+            <returns>A list of <see cref="T:Tridion.ContentManager.Data.Queuing.QueueData"/> objects.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueuesStream">
+            <summary>
+            Gets a list of Queues as a <see cref="T:System.IO.Stream"/> of XML data.
+            </summary>
+            <returns>A list of Users in a <see cref="T:System.IO.Stream"/> of XML data.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueConsumerData(System.Nullable{System.Int32})">
+            <summary>
+            Gets a list of <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> objects for the given queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>A list of <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> objects.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueConsumersStream(System.Nullable{System.Int32})">
+            <summary>
+            Gets a list of queue consumers as a <see cref="T:System.IO.Stream"/> of XML data for the given queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>A list of queue consumers in a <see cref="T:System.IO.Stream"/> of XML data.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueMessageData(System.Int32)">
+            <summary>
+            Gets a list of <see cref="T:Tridion.ContentManager.Data.Queuing.QueueMessageData"/> objects for the given queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>A list of <see cref="T:Tridion.ContentManager.Data.Queuing.QueueMessageData"/> objects.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetListQueueMessagesStream(System.Int32)">
+            <summary>
+            Gets a list of QueueMessages as a <see cref="T:System.IO.Stream"/> of XML data for the given queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>A list of QueueMessages in a <see cref="T:System.IO.Stream"/> of XML data.</returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.LoadAccessToken(System.String)">
+            <summary>
+            Load the access token.
+            </summary>
+            <param name="userName">The user for which to get a the access token.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.OpenQueue(System.Int32,System.Int32)">
+            <summary>
+            Opens a queue consumer on the given queue and configuration.
+            </summary>
+            <param name="queueId">
+            The identifier of the queue to open.
+            </param>
+            <param name="configurationId">
+            The configuration to use for the queue consumer.
+            </param>
+            <returns>
+            A <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> instance.
+            </returns>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.AddMissingFilters(System.Collections.Generic.IList{Tridion.ContentManager.Data.Queuing.QueueFilterData})">
+            <summary>
+            Add the default filters to the <see cref="T:Tridion.ContentManager.Queuing.QueueConsumer"/> when they aren't defined in the configuration.
+            </summary>
+            <param name="listQueueFilterData">Add the default filters to this list.</param>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.QueuingEngine.GetQueueConsumers(System.Nullable{System.Int32})">
+            <summary>
+            Get a list of <see cref="T:Tridion.ContentManager.Queuing.Configuration.QueueConsumers"/> for the given optional queue.
+            </summary>
+            <param name="queueId">The identifier of the queue.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:Tridion.ContentManager.Queuing.QueueConsumerInfo"/> objects.</returns>
+        </member>
+        <member name="T:Tridion.ContentManager.Queuing.Utilities">
+            <summary>
+            Summary description for Utilities.
+            </summary>
+        </member>
+        <member name="M:Tridion.ContentManager.Queuing.Utilities.Trace(System.String)">
+            <summary>
+            Outputs a message in a debug build.
+            </summary>
+            <param name="message">The message to trace.</param>
+        </member>
+    </members>
+</doc>

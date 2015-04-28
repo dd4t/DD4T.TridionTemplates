@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using DD4T.Templates.Base.Builder;
 using Tridion.ExternalContentLibrary.V2;
 
+
 namespace DD4T.Templates.Base.Utils
 {
     public class BinaryPublisher
