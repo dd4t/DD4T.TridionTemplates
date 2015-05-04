@@ -69,6 +69,13 @@ namespace DD4T.Templates.Base.Utils
             {
                 log.Debug("found node " + elmt.OuterXml);
                 XmlAttribute link = (XmlAttribute)elmt.SelectSingleNode("@xlink:href", xml.NamespaceManager);
+
+                string uri = link.Value;
+                Component c = (Component) engine.GetObject(uri);
+                if (c.ComponentType != ComponentType.Multimedia)
+                {
+                    continue;
+                }
                 log.Debug("about to publish binary with uri " + link.Value);
                 string path = PublishMultimediaComponent(link.Value, buildProperties);
                 log.Debug("binary will be published to path " + path);
