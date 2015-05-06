@@ -2,11 +2,11 @@
 <Project InitialTargets="" DefaultTargets="All" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 	<!--
 		Debug == msbuild default.proj
-		Release == msbuild default.proj /p:BuildConfiguration=Release
+		Release == msbuild default.proj /p:Configuration=Release
 	-->
 	<PropertyGroup>
 		<ProjectName>DD4T.Templates</ProjectName>
-		<BuildConfiguration Condition="'$(BuildConfiguration)'==''">Debug</BuildConfiguration>
+		<Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
 		
 		<!-- Build Directories -->
 		<BuildOutputDirectory>$(MSBuildProjectDirectory)\build</BuildOutputDirectory>
@@ -20,9 +20,11 @@
 
 		<!-- NuGet location -->
 		<NuGetFolder>$(MSBuildProjectDirectory)\source\.nuget</NuGetFolder>
+		<PackagesFile>$(MSBuildProjectDirectory)\source\DD4T.Templates\packages.config</PackagesFile>
 
+		<DependencyDirectory>$(MSBuildProjectDirectory)\dependencies</DependencyDirectory>
 		<ConfigurationDirectory>$(MSBuildProjectDirectory)\configuration</ConfigurationDirectory>
-		<BuildMergeDirectory>$(BuildPackageDirectory)\data</BuildMergeDirectory>
+		<BuildMergeDirectory>$(BuildPackageDirectory)\files</BuildMergeDirectory>
     	<MergeFile>$(BuildMergeDirectory)\$(ProjectName).Merged.dll</MergeFile>
     	<keyFile>$(MSBuildProjectDirectory)\source\Solution Items\dynamicdelivery.snk</keyFile>
     	<logFile>$(BuildLogDirectory)\ilmerge.log</logFile>
@@ -30,8 +32,10 @@
 
 	<ItemGroup>
 		<CleanFolders Include="$(BuildOutputDirectory)"/>
-		<CleanFolders Include="TestResults"/>
 		<InstallerFiles Include="$(InstallerDirectory)\**\*" />
+
+		<DependencyFiles Include="$(DependencyDirectory)\**\*.dll"/>
+		<DependencyDirectories Include="@(DependencyFiles->'%(RootDir)%(Directory)'->Distinct())" />
 	</ItemGroup>
 
 	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
@@ -54,6 +58,29 @@
 		</Task>		
 	</UsingTask>
 
+	<Target Name="MimicPackages" Inputs="@(DependencyDirectories)" Outputs="%(DependencyDirectories.Directory)">
+		<PropertyGroup>
+			<DependencyFilesDirectory>%(DependencyDirectories.Identity)</DependencyFilesDirectory>
+			<FilePath>$([System.IO.Directory]::GetParent(%(DependencyDirectories.Identity)))</FilePath>
+			<DependencyName>$([System.IO.Path]::GetFileName($(FilePath)))</DependencyName>
+			<DependencyNameSafe>$([System.String]::Copy('$(DependencyName)').Replace(' ','-').ToLower())</DependencyNameSafe>
+		</PropertyGroup>
+		<ItemGroup>
+			<LibFiles Include="$(DependencyFilesDirectory)**\*.*" />
+		</ItemGroup>
+
+		<Message Text="Creating nuget package directory $(DependencyNameSafe)" />
+
+		<XmlQuery XmlFileName="$(PackagesFile)" XPath="/packages/package[@id='$(DependencyNameSafe)']/@version">
+              <Output TaskParameter="Values" PropertyName="PackageVersion" />
+    	</XmlQuery>
+
+		<Message Text="Discovered package version $(PackageVersion)" />
+
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(MSBuildProjectDirectory)\source\packages\$(DependencyNameSafe).$(PackageVersion)\lib\net40\%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(MSBuildProjectDirectory)\source\packages\$(DependencyNameSafe).$(PackageVersion)\lib\net45\%(Filename)%(Extension)')" />
+	</Target>
+
 	<Target Name="All">
 		<CallTarget Targets="Clean;Prepare;Compile;Test;Analyze" />
 		<CallTarget Targets="Doc;Package"/><!-- Condition="'$(Configuration)' == 'Release'"/>-->
@@ -62,6 +89,7 @@
 	<Target Name="Prepare" DependsOnTargets="">
 		<MakeDir Directories="$(BuildPackageDirectory)" />
 		<MakeDir Directories="$(BuildMergeDirectory)" />
+		<CallTarget Targets="MimicPackages" />
 	</Target>
 	<Target Name="Analyze">
 		<!-- Analyze runs post-build analysis like FxCop and NDepend. -->
@@ -75,7 +103,7 @@
 		<!-- Compile builds all the projects/solutions and copies the output to prepare for analysis/packaging. -->
 
 		<!-- Build the solution. -->
-		<MSBuild Projects="source\DD4T Templates.sln" Targets="Build" Properties="Configuration=$(BuildConfiguration)" >
+		<MSBuild Projects="source\DD4T Templates.sln" Targets="Build" Properties="Configuration=$(Configuration)" >
 			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
         </MSBuild>
         <ResolveAssemblyReference Assemblies="@(OutputFiles->'%(FullPath)')"
@@ -138,7 +166,7 @@
 		</ItemGroup>
 		<PropertyGroup>
 			<TestResultsFile>$(BuildLogDirectory)TestResults.Unit.xml</TestResultsFile>
-			<TestAssembly>$(MSBuildProjectDirectory)\MyProject\bin\$(BuildConfiguration)\MyProject.Tests.dll</TestAssembly>
+			<TestAssembly>$(MSBuildProjectDirectory)\MyProject\bin\$(Configuration)\MyProject.Tests.dll</TestAssembly>
 		</PropertyGroup>
 		<Exec Command="&quot;%(NUnitRunner.FullPath)&quot; &quot;$(TestAssembly)&quot; /xml:$(TestResultsFile)" /-->
 	</Target>

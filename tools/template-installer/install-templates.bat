@@ -41,7 +41,7 @@ echo Enter the URI of the folder where you want to store the DD4T template build
 set /p "DD4T_FOLDER= "
 :AfterAskFolder
 
-TcmUploadAssembly.exe dd4t-upload-config.xml "data\DD4T.Templates.merged.dll" /folder:%DD4T_FOLDER% /verbose
+TcmUploadAssembly.exe dd4t-upload-config.xml "files\DD4T.Templates.merged.dll" /folder:%DD4T_FOLDER% /verbose
 
 if %DD4T_REMOVE_CONFIG%==y (
 	echo Removing config file
