@@ -64,9 +64,11 @@
 			<FilePath>$([System.IO.Directory]::GetParent(%(DependencyDirectories.Identity)))</FilePath>
 			<DependencyName>$([System.IO.Path]::GetFileName($(FilePath)))</DependencyName>
 			<DependencyNameSafe>$([System.String]::Copy('$(DependencyName)').Replace(' ','-').ToLower())</DependencyNameSafe>
+			<NuSpecFileLocation>$(DependencyFilesDirectory)**\*.nuspec</NuSpecFileLocation>
 		</PropertyGroup>
 		<ItemGroup>
-			<LibFiles Include="$(DependencyFilesDirectory)**\*.*" />
+			<LibFiles Include="$(DependencyFilesDirectory)**\*.dll;$(DependencyFilesDirectory)**\*.xml;$(DependencyFilesDirectory)**\*.pdb" />
+			<NuSpecFile Include="$(NuSpecFileLocation)"/>
 		</ItemGroup>
 
 		<Message Text="Creating nuget package directory $(DependencyNameSafe)" />
@@ -77,8 +79,29 @@
 
 		<Message Text="Discovered package version $(PackageVersion)" />
 
-		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(MSBuildProjectDirectory)\source\packages\$(DependencyNameSafe).$(PackageVersion)\lib\net40\%(Filename)%(Extension)')" />
-		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(MSBuildProjectDirectory)\source\packages\$(DependencyNameSafe).$(PackageVersion)\lib\net45\%(Filename)%(Extension)')" />
+		<PropertyGroup>
+			<NPackageName>$(DependencyNameSafe).$(PackageVersion)</NPackageName>
+			<NPackageDirectory>$(MSBuildProjectDirectory)\source\packages\$(NPackageName)</NPackageDirectory>
+			<NPackageBuildDirectory>$(BuildOutputDirectory)\$(NPackageName)</NPackageBuildDirectory>
+		</PropertyGroup>
+
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageDirectory)\lib\net40\%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageDirectory)\lib\net45\%(Filename)%(Extension)')" />
+
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageBuildDirectory)\lib\net40\%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageBuildDirectory)\lib\net45\%(Filename)%(Extension)')" />
+
+		<Copy SourceFiles="@(NuSpecFile)" DestinationFiles="@(NuSpecFile->'$(NPackageBuildDirectory)\$(DependencyNameSafe).nuspec')" />
+
+		<XmlUpdate XmlFileName="$(NPackageBuildDirectory)\$(DependencyNameSafe).nuspec" XPath="//version" Value="$(PackageVersion)" />
+
+		<Exec Command="..\..\source\.nuget\nuget.exe pack $(DependencyNameSafe).nuspec" WorkingDirectory="$(NPackageBuildDirectory)" />
+
+		<ItemGroup>
+			<NuGetPackage Include="$(NPackageBuildDirectory)\*.nupkg"/>
+		</ItemGroup>
+
+		<Copy SourceFiles="@(NuGetPackage)" DestinationFiles="@(NuGetPackage->'$(NPackageDirectory)\$(NPackageName)%(Extension)')" />
 	</Target>
 
 	<Target Name="All">
