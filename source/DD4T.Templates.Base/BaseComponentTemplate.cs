@@ -140,7 +140,7 @@ namespace DD4T.Templates.Base
             Dynamic.Component component = Manager.BuildComponent(tcmComponent);
             EnsureExtraProperties(component,tcmComponent);
             Dynamic.ComponentTemplate componentTemplate = Manager.BuildComponentTemplate(tcmComponentTemplate);
-            Dynamic.ComponentPresentation componentPresentation = new Dynamic.ComponentPresentation() { Component = component, ComponentTemplate = componentTemplate, IsDynamic = true };
+            Dynamic.ComponentPresentation componentPresentation = new Dynamic.ComponentPresentation() { Component = component, ComponentTemplate = componentTemplate, IsDynamic = tcmComponentTemplate.IsRepositoryPublishable };
 
             return componentPresentation;
         }

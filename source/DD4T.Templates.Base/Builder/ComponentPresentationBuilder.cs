@@ -45,14 +45,13 @@ namespace DD4T.Templates.Base.Builder
 
                 string renderedContent = engine.RenderComponentPresentation(tcmComponentPresentation.Component.Id, tcmComponentPresentation.ComponentTemplate.Id);
                 renderedContent = TridionUtils.StripTcdlTags(renderedContent);
-
-                cp.IsDynamic = false;
+     
                 try
                 {
                     // we cannot be sure the component template uses the same serializer service as the page template
                     // so we will call a factory which can detect the correct service based on the content
                     ISerializerService serializerService = SerializerServiceFactory.FindSerializerServiceForContent(renderedContent);
-                    cp.Component = serializerService.Deserialize<Dynamic.Component>(renderedContent);
+                    cp = serializerService.Deserialize<Dynamic.ComponentPresentation>(renderedContent);
                 }
                 catch (Exception e)
                 {
@@ -63,7 +62,7 @@ namespace DD4T.Templates.Base.Builder
                     // because the CT was not a DD4T CT, we will generate the DD4T XML code here
                     cp.Component = manager.BuildComponent(tcmComponentPresentation.Component);
                 }
-
+                cp.IsDynamic = false;
             }
             cp.ComponentTemplate = manager.BuildComponentTemplate(tcmComponentPresentation.ComponentTemplate);
             return cp;
