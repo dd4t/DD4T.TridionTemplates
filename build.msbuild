@@ -28,6 +28,13 @@
     	<MergeFile>$(BuildMergeDirectory)\$(ProjectName).Merged.dll</MergeFile>
     	<keyFile>$(MSBuildProjectDirectory)\source\Solution Items\dynamicdelivery.snk</keyFile>
     	<logFile>$(BuildLogDirectory)\ilmerge.log</logFile>
+
+		<!-- NuGet Download location -->
+		<NuGetFolder>$(MSBuildProjectDirectory)\source\.nuget</NuGetFolder>
+		<ConfigurationDirectory>$(MSBuildProjectDirectory)\configuration</ConfigurationDirectory>
+
+		<!-- NuSpec file for NuGet Package creation -->
+		<NuSpecFile>$(ConfigurationDirectory)\$(ProjectName).nuspec</NuSpecFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -36,6 +43,8 @@
 
 		<DependencyFiles Include="$(DependencyDirectory)\**\*.dll"/>
 		<DependencyDirectories Include="@(DependencyFiles->'%(RootDir)%(Directory)'->Distinct())" />
+
+		<NuGetStructureFolders Include="$(BuildNugetDirectory);$(BuildNuGetFramework40Directory);$(BuildNuGetFramework45Directory)"/>
 	</ItemGroup>
 
 	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
