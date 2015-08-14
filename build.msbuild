@@ -158,8 +158,7 @@
 	<Target Name="Package">
 		<!-- Package builds the zip files, NuGet packages, and MSI files for the project. -->
 		<ItemGroup>
-			<TridionFiles Include="$(BuildBinDirectory)\**\Tridion.*.dll" />
-        	<BinFiles Include="$(BuildBinDirectory)\**\*.dll" Exclude="@(TridionFiles)" />
+        	<BinFiles Include="$(BuildBinDirectory)\**\*.dll" />
     	</ItemGroup>
 
     	<ILMerge InputAssemblies="@(BinFiles)" 
