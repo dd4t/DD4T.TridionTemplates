@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project InitialTargets="" DefaultTargets="All" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+	<PropertyGroup>
+		<!-- Default build configuration if none is specified. -->
+		<Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
+	</PropertyGroup>
+	<ItemGroup>
+		<CleanFolder Include="build"/>
+		<CleanFolder Include="TestResults"/>
+		<!-- Solutions that should be built. -->
+		<SolutionFile Include="$(MSBuildProjectDirectory)\**\*.sln" />
+	</ItemGroup>
+	<Target Name="All">
+		<CallTarget Targets="Clean;Compile" />
+		<Message Text="Build complete."/>
+	</Target>
+	<Target Name="Clean">
+		<Message Text="Removing build artifacts." />
+		<RemoveDir Directories="@(CleanFolder)" />
+		<MSBuild Projects="%(SolutionFile.FullPath)" Condition="Exists('%(SolutionFile.FullPath)')" Targets="Clean"/>
+	</Target>
+	<Target Name="Compile">
+		<Message Text="Building the solution(s)." />
+		<MSBuild Projects="%(SolutionFile.FullPath)" Targets="Build" Properties="Configuration=$(Configuration)"/>
+	</Target>
+</Project>

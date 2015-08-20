@@ -8,7 +8,6 @@ using System.Xml;
 using System.IO;
 using System.Reflection;
 using Tridion.ContentManager.Templating;
-using Tridion.ContentManager.Templating.Assembly;
 using DD4T.Templates.Base;
 using DD4T.Templates.Base.Utils;
 using DD4T.ContentModel;
@@ -20,8 +19,8 @@ namespace DD4T.Templates.XML
     /// Minimizes the XML data by removing all whitespace between elements.
     /// </summary>
     /// <remarks>Only use this template if the output format is XML (not for JSON)</remarks>
-    [TcmTemplateTitle("Minimize XML")]
-    public class MinimizeXML : ITemplate
+    [Tridion.ContentManager.Templating.Assembly.TcmTemplateTitle("Minimize XML")]
+    public class MinimizeXML : Tridion.ContentManager.Templating.Assembly.ITemplate
     {
         protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(MinimizeXML));
         protected Package package;
