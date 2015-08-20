@@ -1,4 +1,8 @@
 version: 2.0.3-alpha{build}
+branches:
+  only:
+  - master
+  - develop
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -20,9 +24,9 @@ build:
   project: build.msbuild
   verbosity: minimal
 artifacts:
-- path: build/package/**/*.nupkg
+- path: build/**/*.nupkg
   name: NuGet Package
-- path: build/package/**/*.zip
+- path: build/**/*.zip
   name: Zip Archive
 deploy:
 - provider: NuGet
