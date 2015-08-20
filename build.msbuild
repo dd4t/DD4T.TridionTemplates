@@ -1,204 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project InitialTargets="" DefaultTargets="All" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-	<!--
-		Debug == msbuild default.proj
-		Release == msbuild default.proj /p:Configuration=Release
-	-->
+<Project InitialTargets="" DefaultTargets="All" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
 	<PropertyGroup>
-		<ProjectName>DD4T.Templates</ProjectName>
+		<!-- Default build configuration if none is specified. -->
 		<Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
-		
-		<!-- Build Directories -->
-		<BuildOutputDirectory>$(MSBuildProjectDirectory)\build</BuildOutputDirectory>
-		<BuildBinDirectory>$(BuildOutputDirectory)\bin</BuildBinDirectory>
-		<BuildDocDirectory>$(BuildOutputDirectory)\doc</BuildDocDirectory>
-		<BuildLogDirectory>$(BuildOutputDirectory)\log</BuildLogDirectory>
-		<BuildPackageDirectory>$(BuildOutputDirectory)\package</BuildPackageDirectory>
-		<BuildWorkDirectory>$(BuildOutputDirectory)\work</BuildWorkDirectory>
-		<ToolsDirectory>$(MSBuildProjectDirectory)\tools</ToolsDirectory>
-		<InstallerDirectory>$(ToolsDirectory)\template-installer</InstallerDirectory>
-
-		<!-- NuGet location -->
-		<NuGetFolder>$(MSBuildProjectDirectory)\source\.nuget</NuGetFolder>
-		<PackagesFile>$(MSBuildProjectDirectory)\source\DD4T.Templates\packages.config</PackagesFile>
-
-		<DependencyDirectory>$(MSBuildProjectDirectory)\dependencies</DependencyDirectory>
-		<ConfigurationDirectory>$(MSBuildProjectDirectory)\configuration</ConfigurationDirectory>
-		<BuildMergeDirectory>$(BuildPackageDirectory)\files</BuildMergeDirectory>
-    	<MergeFile>$(BuildMergeDirectory)\$(ProjectName).Merged.dll</MergeFile>
-    	<keyFile>$(MSBuildProjectDirectory)\source\Solution Items\dynamicdelivery.snk</keyFile>
-    	<logFile>$(BuildLogDirectory)\ilmerge.log</logFile>
-
-		<!-- NuGet Download location -->
-		<NuGetFolder>$(MSBuildProjectDirectory)\source\.nuget</NuGetFolder>
-		<ConfigurationDirectory>$(MSBuildProjectDirectory)\configuration</ConfigurationDirectory>
-
-		<!-- NuSpec file for NuGet Package creation -->
-		<NuSpecFile>$(ConfigurationDirectory)\$(ProjectName).nuspec</NuSpecFile>
 	</PropertyGroup>
-
 	<ItemGroup>
-		<CleanFolders Include="$(BuildOutputDirectory)"/>
-		<InstallerFiles Include="$(InstallerDirectory)\**\*" />
-
-		<DependencyFiles Include="$(DependencyDirectory)\**\*.dll"/>
-		<DependencyDirectories Include="@(DependencyFiles->'%(RootDir)%(Directory)'->Distinct())" />
-
-		<NuGetStructureFolders Include="$(BuildNugetDirectory);$(BuildNuGetFramework40Directory);$(BuildNuGetFramework45Directory)"/>
+		<CleanFolder Include="build"/>
+		<CleanFolder Include="TestResults"/>
+		<!-- Solutions that should be built. -->
+		<SolutionFile Include="$(MSBuildProjectDirectory)\**\*.sln" />
 	</ItemGroup>
-
-	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
-	
-	<!-- Task for retrieving ProductVersion from an Assembly -->
-	<UsingTask TaskName="GetInformationalVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
-		<ParameterGroup>
-			<AssemblyFile ParameterType="System.String" Required="true" />
-			<Version ParameterType="System.String" Output="true" />
-		</ParameterGroup>
-		<Task>
-			<Using Namespace="System.Diagnostics" />
-			<Code Type="Fragment" Language="cs">
-				<![CDATA[
-					Log.LogMessage("Getting version details of assembly " + this.AssemblyFile, MessageImportance.High);
-					this.Version = FileVersionInfo.GetVersionInfo(this.AssemblyFile.Split(';')[0]).ProductVersion;
-					Log.LogMessage("AssemblyVersion: " + this.Version, MessageImportance.High);
-				]]>
-			</Code>
-		</Task>		
-	</UsingTask>
-
-	<Target Name="MimicPackages" Inputs="@(DependencyDirectories)" Outputs="%(DependencyDirectories.Directory)">
-		<PropertyGroup>
-			<DependencyFilesDirectory>%(DependencyDirectories.Identity)</DependencyFilesDirectory>
-			<FilePath>$([System.IO.Directory]::GetParent(%(DependencyDirectories.Identity)))</FilePath>
-			<DependencyName>$([System.IO.Path]::GetFileName($(FilePath)))</DependencyName>
-			<DependencyNameSafe>$([System.String]::Copy('$(DependencyName)').Replace(' ','-').ToLower())</DependencyNameSafe>
-			<NuSpecFileLocation>$(DependencyFilesDirectory)**\*.nuspec</NuSpecFileLocation>
-		</PropertyGroup>
-		<ItemGroup>
-			<LibFiles Include="$(DependencyFilesDirectory)**\*.dll;$(DependencyFilesDirectory)**\*.xml;$(DependencyFilesDirectory)**\*.pdb" />
-			<NuSpecFile Include="$(NuSpecFileLocation)"/>
-		</ItemGroup>
-
-		<Message Text="Creating nuget package directory $(DependencyNameSafe)" />
-
-		<XmlQuery XmlFileName="$(PackagesFile)" XPath="/packages/package[@id='$(DependencyNameSafe)']/@version">
-              <Output TaskParameter="Values" PropertyName="PackageVersion" />
-    	</XmlQuery>
-
-		<Message Text="Discovered package version $(PackageVersion)" />
-
-		<PropertyGroup>
-			<NPackageName>$(DependencyNameSafe).$(PackageVersion)</NPackageName>
-			<NPackageDirectory>$(MSBuildProjectDirectory)\source\packages\$(NPackageName)</NPackageDirectory>
-			<NPackageBuildDirectory>$(BuildOutputDirectory)\$(NPackageName)</NPackageBuildDirectory>
-		</PropertyGroup>
-
-		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageDirectory)\lib\net40\%(Filename)%(Extension)')" />
-		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageDirectory)\lib\net45\%(Filename)%(Extension)')" />
-
-		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageBuildDirectory)\lib\net40\%(Filename)%(Extension)')" />
-		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageBuildDirectory)\lib\net45\%(Filename)%(Extension)')" />
-
-		<Copy SourceFiles="@(NuSpecFile)" DestinationFiles="@(NuSpecFile->'$(NPackageBuildDirectory)\$(DependencyNameSafe).nuspec')" />
-
-		<XmlUpdate XmlFileName="$(NPackageBuildDirectory)\$(DependencyNameSafe).nuspec" XPath="//version" Value="$(PackageVersion)" />
-
-		<Exec Command="..\..\source\.nuget\nuget.exe pack $(DependencyNameSafe).nuspec" WorkingDirectory="$(NPackageBuildDirectory)" />
-
-		<ItemGroup>
-			<NuGetPackage Include="$(NPackageBuildDirectory)\*.nupkg"/>
-		</ItemGroup>
-
-		<Copy SourceFiles="@(NuGetPackage)" DestinationFiles="@(NuGetPackage->'$(NPackageDirectory)\$(NPackageName)%(Extension)')" />
-	</Target>
-
 	<Target Name="All">
-		<CallTarget Targets="Clean;Prepare;Compile;Test;Analyze" />
-		<CallTarget Targets="Doc;Package"/><!-- Condition="'$(Configuration)' == 'Release'"/>-->
+		<CallTarget Targets="Clean;Compile" />
 		<Message Text="Build complete."/>
 	</Target>
-	<Target Name="Prepare" DependsOnTargets="">
-		<MakeDir Directories="$(BuildPackageDirectory)" />
-		<MakeDir Directories="$(BuildMergeDirectory)" />
-		<CallTarget Targets="MimicPackages" />
-	</Target>
-	<Target Name="Analyze">
-		<!-- Analyze runs post-build analysis like FxCop and NDepend. -->
-	</Target>
 	<Target Name="Clean">
-		<!-- Clean removes all build artifacts to prepare for a new build. -->
-		<RemoveDir Directories="@(CleanFolders)" />
-		<MSBuild Projects="source\DD4T Templates.sln" Targets="Clean" />
+		<Message Text="Removing build artifacts." />
+		<RemoveDir Directories="@(CleanFolder)" />
+		<MSBuild Projects="%(SolutionFile.FullPath)" Condition="Exists('%(SolutionFile.FullPath)')" Targets="Clean"/>
+		<CallTarget Targets="CleanNuGet" />
+	</Target>
+	<Target Name="CleanNuGet">
+		<Message Text="Removing NuGet packages for clean package retrieval." />
+		<ItemGroup>
+			<NuGetRepositoryConfig Include="$(MSBuildProjectDirectory)/**/packages/repositories.config" />
+			<NuGetPackageFolders Include="$([System.IO.Directory]::GetDirectories(&quot;%(NuGetRepositoryConfig.RootDir)%(NuGetRepositoryConfig.Directory)&quot;))" />
+		</ItemGroup>
+		<RemoveDir Directories="%(NuGetPackageFolders.Identity)" />
 	</Target>
 	<Target Name="Compile">
-		<!-- Compile builds all the projects/solutions and copies the output to prepare for analysis/packaging. -->
-
-		<!-- Build the solution. -->
-		<MSBuild Projects="source\DD4T Templates.sln" Targets="Build" Properties="Configuration=$(Configuration)" >
-			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
-        </MSBuild>
-        <ResolveAssemblyReference Assemblies="@(OutputFiles->'%(FullPath)')"
-                                  TargetFrameworkDirectories="$(TargetFrameworkDirectory)"
-                                  InstalledAssemblyTables="@(InstalledAssemblyTables)"
-                                  SearchPaths="{RawFileName};{TargetFrameworkDirectory};{GAC}"
-                                  FindDependencies="true"
-                                  FindSatellites="true"
-                                  FindSerializationAssemblies="true"
-                                  FindRelatedFiles="true"
-                                  Condition="Exists('%(OutputFiles.Identity)')">
-            <Output TaskParameter="CopyLocalFiles" ItemName="Files" />
-        </ResolveAssemblyReference>
-        <Copy SourceFiles="@(Files)" 
-            DestinationFiles="@(Files->'$(BuildBinDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" />
-	</Target>
-	<Target Name="Doc">
-		<!-- Doc compiles any XML API docs into a distributable help package. -->
-	</Target>
-	<Target Name="Package">
-		<!-- Package builds the zip files, NuGet packages, and MSI files for the project. -->
-		<ItemGroup>
-        	<BinFiles Include="$(BuildBinDirectory)\**\*.dll" />
-    	</ItemGroup>
-
-    	<ILMerge InputAssemblies="@(BinFiles)" 
-            OutputFile="$(MergeFile)" 
-            LogFile="$(logFile)"
-            DebugInfo="true" 
-            XmlDocumentation="true" 
-            KeyFile="$(keyFile)" 
-            TargetPlatformVersion="v4"
-            TargetPlatformDirectory="C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
-            DelaySign="true" />
-		
-    	<!-- Get the productversion from the assemblies -->
-    	<GetInformationalVersion AssemblyFile="@(BinFiles)">
-    		<Output TaskParameter="Version" PropertyName="VersionInfo"/>
-    	</GetInformationalVersion>
-
-    	<Copy SourceFiles="@(InstallerFiles)" DestinationFiles="@(InstallerFiles->'$(BuildPackageDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" />
-
-    	<ItemGroup>
-    		<PackageFiles Include="$(BuildPackageDirectory)\**\*"/>
-    	</ItemGroup>
-
-    	<!-- Create ZipPackage -->
-		<Zip Files="@(PackageFiles)" ZipFileName="$(BuildOutputDirectory)\$(ProjectName).$(VersionInfo)-$(Configuration).zip" WorkingDirectory="$(BuildPackageDirectory)" />
-
-    	<!-- Remove temporary files -->
-    	<RemoveDir Directories="$(BuildWorkDirectory)" />
-    	<RemoveDir Directories="$(BuildPackageDirectory)" />
-    	<RemoveDir Directories="$(BuildBinDirectory)" />
-	</Target>
-	<Target Name="Test">
-		<!-- Test runs the unit testing/coverage for the project. -->
-		<!--ItemGroup>
-			<NUnitRunner Include="$(MSBuildProjectDirectory)\packages\NUnit.Runners.*\tools\nunit-console.exe" />
-		</ItemGroup>
-		<PropertyGroup>
-			<TestResultsFile>$(BuildLogDirectory)TestResults.Unit.xml</TestResultsFile>
-			<TestAssembly>$(MSBuildProjectDirectory)\MyProject\bin\$(Configuration)\MyProject.Tests.dll</TestAssembly>
-		</PropertyGroup>
-		<Exec Command="&quot;%(NUnitRunner.FullPath)&quot; &quot;$(TestAssembly)&quot; /xml:$(TestResultsFile)" /-->
+		<Message Text="Building the solution(s)." />
+		<MSBuild Projects="%(SolutionFile.FullPath)" Targets="Build" Properties="Configuration=$(Configuration)"/>
 	</Target>
 </Project>
