@@ -18,15 +18,6 @@
 		<Message Text="Removing build artifacts." />
 		<RemoveDir Directories="@(CleanFolder)" />
 		<MSBuild Projects="%(SolutionFile.FullPath)" Condition="Exists('%(SolutionFile.FullPath)')" Targets="Clean"/>
-		<CallTarget Targets="CleanNuGet" />
-	</Target>
-	<Target Name="CleanNuGet">
-		<Message Text="Removing NuGet packages for clean package retrieval." />
-		<ItemGroup>
-			<NuGetRepositoryConfig Include="$(MSBuildProjectDirectory)/**/packages/repositories.config" />
-			<NuGetPackageFolders Include="$([System.IO.Directory]::GetDirectories(&quot;%(NuGetRepositoryConfig.RootDir)%(NuGetRepositoryConfig.Directory)&quot;))" />
-		</ItemGroup>
-		<RemoveDir Directories="%(NuGetPackageFolders.Identity)" />
 	</Target>
 	<Target Name="Compile">
 		<Message Text="Building the solution(s)." />
