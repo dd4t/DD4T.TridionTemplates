@@ -27,6 +27,8 @@
 		<ToolsDirectory>$(BaseDirectory)\tools</ToolsDirectory>
 		<InstallerDirectory>$(ToolsDirectory)\template-installer</InstallerDirectory>
 
+		<DependencyDirectory>$(BaseDirectory)\dependencies</DependencyDirectory>
+
 		<NuGetFolder>$(SourceDirectory)\.nuget</NuGetFolder>
 
 		<ConfigurationDirectory>$(BaseDirectory)\configuration</ConfigurationDirectory>
@@ -46,6 +48,8 @@
 		<CleanFolders Include="$(BuildOutputDirectory)"/>
 		<CleanFolders Include="TestResults"/>
 		<NuGetStructureFolders Include="$(BuildNugetDirectory);$(BuildNuGetFramework40Directory);$(BuildNuGetFramework45Directory)"/>
+		<DependencyFiles Include="$(DependencyDirectory)\**\*.dll"/>
+		<DependencyDirectories Include="@(DependencyFiles->'%(RootDir)%(Directory)'->Distinct())" />
 	</ItemGroup>
 
 	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
@@ -86,6 +90,59 @@
 			</Code>
 		</Task>		
 	</UsingTask>
+
+	<Target Name="MimicPackages" Inputs="@(DependencyDirectories)" Outputs="%(DependencyDirectories.Directory)" BeforeTargets="PrepareForBuild">
+		<PropertyGroup>
+			<DependencyFilesDirectory>%(DependencyDirectories.Identity)</DependencyFilesDirectory>
+			<FilePath>$([System.IO.Directory]::GetParent(%(DependencyDirectories.Identity)))</FilePath>
+			<DependencyName>$([System.IO.Path]::GetFileName($(FilePath)))</DependencyName>
+			<DependencyNameSafe>$([System.String]::Copy('$(DependencyName)').Replace(' ','-').ToLower())</DependencyNameSafe>
+			<NuSpecFileLocation>$(DependencyFilesDirectory)**\*.nuspec</NuSpecFileLocation>
+		</PropertyGroup>
+		<ItemGroup>
+			<LibFiles Include="$(DependencyFilesDirectory)**\*.dll;$(DependencyFilesDirectory)**\*.xml;$(DependencyFilesDirectory)**\*.pdb" />
+			<MimicNuSpecFile Include="$(NuSpecFileLocation)"/>
+		</ItemGroup>
+		<PropertyGroup>
+			<NuSpecFileLocation>%(MimicNuSpecFile.Identity)</NuSpecFileLocation>
+		</PropertyGroup>
+
+		<Message Text="Creating nuget package directory $(DependencyNameSafe)" />
+		<Message Text="$(NuSpecFileLocation)" />
+
+		<XmlPeek
+			Namespaces="&lt;Namespace Prefix='nuget' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"
+			Query="//version/text()"
+			XmlInputPath="$(NuSpecFileLocation)">
+			<Output TaskParameter="Result" ItemName="PackageVersion" />
+		</XmlPeek>
+
+		<Message Text="Discovered package version @(PackageVersion)" />
+
+		<PropertyGroup>
+			<NPackageName>$(DependencyNameSafe).@(PackageVersion)</NPackageName>
+			<NPackageDirectory>$(SourceDirectory)\packages\$(NPackageName)</NPackageDirectory>
+			<NPackageBuildDirectory>$(BuildOutputDirectory)\$(NPackageName)</NPackageBuildDirectory>
+		</PropertyGroup>
+
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageDirectory)\lib\net40\%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageDirectory)\lib\net45\%(Filename)%(Extension)')" />
+
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageBuildDirectory)\lib\net40\%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(LibFiles)" DestinationFiles="@(LibFiles->'$(NPackageBuildDirectory)\lib\net45\%(Filename)%(Extension)')" />
+
+		<Copy SourceFiles="@(MimicNuSpecFile)" DestinationFiles="@(MimicNuSpecFile->'$(NPackageBuildDirectory)\$(DependencyNameSafe).nuspec')" />
+
+		<Exec Command="$(NuGetFolder)\nuget.exe pack $(DependencyNameSafe).nuspec" WorkingDirectory="$(NPackageBuildDirectory)" />
+
+		<ItemGroup>
+			<MimicPackage Include="$(NPackageBuildDirectory)\*.nupkg"/>
+		</ItemGroup>
+
+		<Copy SourceFiles="@(MimicPackage)" DestinationFiles="@(MimicPackage->'$(NPackageDirectory)\$(NPackageName)%(Extension)')" />
+
+		<RemoveDir Directories="$(NPackageBuildDirectory)" />
+	</Target>
 
 	<Target Name="CopyReferences" DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
 		<Message Text="File Names:" Importance="high" />

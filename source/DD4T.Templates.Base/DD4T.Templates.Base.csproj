@@ -250,6 +250,9 @@
   </Target>
   -->
   <Import Project="..\..\DD4T.TridionTemplates.Targets" />
+  <Target Name="BeforeBuild">
+    <CallTarget Targets="MimicPackages" />
+  </Target>
   <Target Name="AfterBuild">
     <CallTarget Targets="PackageNuGet" />
     <Message Text="Installing package to local NuGet repo" Importance="high" Condition="'$(NUGET_LOCALREPO)' != ''" />

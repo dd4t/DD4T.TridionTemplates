@@ -235,6 +235,7 @@
   -->
   <Import Project="..\..\DD4T.TridionTemplates.Targets" />
   <Target Name="BeforeBuild">
+    <CallTarget Targets="MimicPackages" />
   </Target>
   <Target Name="AfterBuild">
     <CallTarget Targets="Package" />
