@@ -8,7 +8,7 @@ assembly_info:
 environment:
   nuget_user: dd4t
   nuget_password:
-    secure: fcubeaS+/aDXFPSjbqgrQg==
+    secure: oCp+uZEVnIgQBxhDObhLlg==
   matrix:
   - Configuration: Release
   - Configuration: Legacy
@@ -20,5 +20,21 @@ build:
   project: build.msbuild
   verbosity: minimal
 artifacts:
-- path: /build/*\.zip
-  name: Zip Package
+- path: build/package/**/*.nupkg
+  name: NuGet Package
+- path: build/package/**/*.zip
+  name: Zip Archive
+deploy:
+- provider: NuGet
+  api_key:
+    secure: QmYvNY2pkxjIhWiI/UwFB/rjAkoNhZpElLZhmXiNVKvasN3qRyvvag0/2ZQD5eFb
+  artifact: /.*\.nupkg/
+- provider: GitHub
+  auth_token:
+    secure: J3fYimU+fyAaZQ3JI4DTeRAp6dmat8KIA7O6h899eBP++3FRtO/RCeHti1HGJRzs
+  artifact: /.*\.zip/
+  draft: false
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
