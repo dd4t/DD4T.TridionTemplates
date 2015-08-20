@@ -4,6 +4,9 @@
 		<Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
 		<BuildOutputDirectory>$(MSBuildProjectDirectory)\build</BuildOutputDirectory>
 
+		<PackageSuffix></PackageSuffix>
+        <PackageSuffix Condition="'$(Configuration)'=='Legacy'">-Legacy</PackageSuffix>
+
 		<!-- Source Directories -->
 		<BaseDirectory Condition="'$(BaseDirectory)' == ''">$(MSBuildProjectDirectory)</BaseDirectory>
 		<BaseDirectory Condition="!Exists('$(BaseDirectory)\source')">..\..</BaseDirectory>
@@ -127,7 +130,7 @@
     	</ItemGroup>
 
     	<!-- Create ZipPackage -->
-		<Zip Files="@(PackageFiles)" ZipFileName="$(BuildOutputDirectory)\$(MSBuildProjectName).$(VersionInfo)-$(Configuration).zip" WorkingDirectory="$(BuildPackageDirectory)" />
+        <Zip Files="@(PackageFiles)" ZipFileName="$(BuildOutputDirectory)\$(MSBuildProjectName).$(VersionInfo)$(PackageSuffix).zip" WorkingDirectory="$(BuildPackageDirectory)" />
 
     	<!-- Remove temporary files -->
     	<RemoveDir Directories="$(BuildNuGetDirectory)" />
