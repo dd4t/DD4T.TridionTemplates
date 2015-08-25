@@ -10,7 +10,7 @@ namespace DD4T.Templates.XML
     /// Use this template to convert the XML to a format which can be consumed by the DD4T Java factories. This is needed ONLY if you
     /// are publishing to a Java delivery system. 
     /// </summary>
-    [TcmTemplateTitle("Convert XML to Java")]
+    ///[TcmTemplateTitle("Convert XML to Java")] // QS: disabling all XML functionality
     public class ConvertXmlToJava : ITemplate
     {
         protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(ConvertXmlToJava));

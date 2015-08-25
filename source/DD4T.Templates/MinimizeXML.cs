@@ -19,7 +19,7 @@ namespace DD4T.Templates.XML
     /// Minimizes the XML data by removing all whitespace between elements.
     /// </summary>
     /// <remarks>Only use this template if the output format is XML (not for JSON)</remarks>
-    [Tridion.ContentManager.Templating.Assembly.TcmTemplateTitle("Minimize XML")]
+    /// [Tridion.ContentManager.Templating.Assembly.TcmTemplateTitle("Minimize XML")] // QS: disabling all XML functionality
     public class MinimizeXML : Tridion.ContentManager.Templating.Assembly.ITemplate
     {
         protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(MinimizeXML));
