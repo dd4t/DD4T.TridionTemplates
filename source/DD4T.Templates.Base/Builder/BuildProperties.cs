@@ -11,7 +11,7 @@ namespace DD4T.Templates.Base.Builder
     public class BuildProperties
     {
 
-        public static SerializationFormat DefaultSerializationFormat = SerializationFormat.XML;
+        public static SerializationFormat DefaultSerializationFormat = SerializationFormat.JSON;
         public static bool DefaultCompressionEnabled = false;
         public static MergeAction DefaultMergeAction = MergeAction.Skip;
         public static int DefaultLinkLevels = 1;
