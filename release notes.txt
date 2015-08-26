@@ -4,9 +4,9 @@ Date: 18 March, 2015
 ================================
 New functionality in 2.0
 ================================
-1. Support for JSON
-It is now possible to configure your templates to generate JSON instead of XML. JSON is smaller and it is faster to deserialize, making your web application faster.
-To enable, set the template parameter 'SerializationFormat' to 'JSON'.
+1. Switch from XML to JSON
+The DD4T templates now generate JSON instead of XML. JSON is smaller and it is faster to deserialize, making your web application faster.
+Note that the web application is still able to consume XML (DD4T 1 style). This 
 *** Note that you should only use this setting if your web application is using DD4T 2.0 or higher. ***
 
 2. Compression
@@ -79,6 +79,13 @@ If you include a link to a multimedia component (e.g. a PDF) in your rich text f
 In previous versions, there was some support for keyword fields but it was not complete. For example, if the keyword's metadata included a multimedia link, the binary was not published. Also, the metadata schema was lacking. This has been corrected in DD4T 2.0.
  
 
+================================
+Changes in compatibility in 2.0:
+================================
+1. Dropped support for ASP.NET MVC 3
+2. Dropped support for SDL Tridion 2009 and SDL Tridion 2011 GA (2011SP1, 2013GA and 2013SP1 are still supported)
+
+ 
 
 ================================
 Changes in behaviour since version 1.31:

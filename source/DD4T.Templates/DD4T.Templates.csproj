@@ -184,14 +184,11 @@
     </Compile>
     <Compile Include="AddTargetGroups.cs" />
     <Compile Include="CompressOutput.cs" />
-    <Compile Include="ConvertToLowerCase.cs" />
-    <Compile Include="ConvertXmlToJava.cs" />
     <Compile Include="DynamicComponentPresentation.cs" />
     <Compile Include="DynamicComponent.cs" />
     <Compile Include="DynamicPage.cs" />
     <Compile Include="InheritMetadataComponent.cs" />
     <Compile Include="InheritMetadataPage.cs" />
-    <Compile Include="MinimizeXML.cs" />
     <Compile Include="PreviewPage.cs" />
     <Compile Include="Properties\SpecificAssemblyInfo.cs" />
     <Compile Include="PublishBinariesComponent.cs" />
@@ -242,5 +239,4 @@
     <!--Message Text="Installing package to local NuGet repo" Importance="high" Condition="'$(NUGET_LOCALREPO)' != ''" />
     <CallTarget Targets="Install" Condition="'$(NUGET_LOCALREPO)' != ''" /-->
   </Target>
-
 </Project>
