@@ -2,7 +2,8 @@
   <xsd:annotation>
     <xsd:appinfo>
       <tcm:Labels xmlns:tcm="http://www.tridion.com/ContentManager/5.0">
-        <tcm:Label ElementName="SerializationFormat" Metadata="false">Serialization format</tcm:Label>
+        <!-- QS: disabling all XML functionality -->
+        <!--<tcm:Label ElementName="SerializationFormat" Metadata="false">Serialization format</tcm:Label>-->
         <tcm:Label ElementName="CompressionEnabled" Metadata="false">Compress output</tcm:Label>
         <tcm:Label ElementName="MergeAction" Metadata="false">Action to take if field with the same name is inherited</tcm:Label>
         <tcm:Label ElementName="FollowLinksPerField" Metadata="false">Use field setting to determine whether or not to follow links</tcm:Label>
@@ -23,7 +24,8 @@
   <xsd:element name="Parameters">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="SerializationFormat" minOccurs="0" maxOccurs="1">
+        <!-- QS: disabling all XML functionality -->
+        <!--<xsd:element name="SerializationFormat" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:appinfo>
               <tcm:Size xmlns:tcm="http://www.tridion.com/ContentManager/5.0">1</tcm:Size>
@@ -36,7 +38,7 @@
               <xsd:enumeration value="XML"></xsd:enumeration>
             </xsd:restriction>
           </xsd:simpleType>
-        </xsd:element>
+        </xsd:element>-->
         <xsd:element name="CompressionEnabled" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:appinfo>

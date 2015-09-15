@@ -26,6 +26,7 @@ namespace DD4T.Templates
         #region DynamicDeliveryTransformer Members
         protected override void TransformComponent(Dynamic.Component component)
         {
+            Log.Debug(string.Format("Started TransformComponent for component {0}", component.Id));
             // persist the ComponentPresentationRenderStyle in the package so that the next TBB in the chain is able to read it
             if (Package != null)
             {

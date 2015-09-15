@@ -9,7 +9,7 @@ namespace DD4T.Templates.XML
     [TcmTemplateTitle("Compress Output")]
     public class CompressOutput : ITemplate
     {
-        protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(ConvertXmlToJava));
+        protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(CompressOutput));
         protected Package package;
         protected Engine engine;
 
