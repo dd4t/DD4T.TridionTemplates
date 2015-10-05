@@ -85,7 +85,7 @@ namespace DD4T.Templates.Base.Builder
                   multimedia.Height = 0;
               }
               c.Multimedia = multimedia;
-              c.Multimedia.Url = manager.PublishMultimediaComponent(c);
+              manager.PublishMultimediaComponent(c);
           }
           else
           {

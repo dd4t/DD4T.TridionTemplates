@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Linq;
@@ -12,6 +13,7 @@ using DD4T.Templates.Base.Xml;
 using System.Text.RegularExpressions;
 using DD4T.Templates.Base.Builder;
 using Tridion.ExternalContentLibrary.V2;
+using Dynamic = DD4T.ContentModel;
 
 
 namespace DD4T.Templates.Base.Utils
@@ -23,6 +25,8 @@ namespace DD4T.Templates.Base.Utils
         protected Package package;
         protected Engine engine;
         Template currentTemplate;
+
+        private const string EclMimeType = "application/externalcontentlibrary";
 
         public BinaryPublisher(Package package, Engine engine)
             : this(package, engine, null)
@@ -58,51 +62,22 @@ namespace DD4T.Templates.Base.Utils
 
         public virtual string PublishBinariesInRichTextField(string xhtml, BuildProperties buildProperties)
         {
-
-            // rich text field is well-formed, except that it does not always have a root element
+            // rich text field is well-formed XML (XHTML), except that it does not always have a root element
             // to be sure it can be parsed, we will add a root and remove it afterwards
-
             TridionXml xml = new TridionXml();
             xml.LoadXml("<tmproot>" + xhtml + "</tmproot>");
 
-            foreach (XmlElement elmt in xml.SelectNodes("//*[@xlink:href[starts-with(string(.),'tcm:')]]", xml.NamespaceManager))
+            foreach (XmlElement xlinkElement in xml.SelectNodes("//*[@xlink:href[starts-with(string(.),'tcm:')]]", xml.NamespaceManager))
             {
-                log.Debug("found node " + elmt.OuterXml);
-                XmlAttribute link = (XmlAttribute)elmt.SelectSingleNode("@xlink:href", xml.NamespaceManager);
-
-                string uri = link.Value;
-                Component c = (Component) engine.GetObject(uri);
-                if (c.ComponentType != ComponentType.Multimedia)
-                {
-                    continue;
-                }
-                log.Debug("about to publish binary with uri " + link.Value);
-                string path = PublishMultimediaComponent(link.Value, buildProperties);
-                log.Debug("binary will be published to path " + path);
-
-                if (elmt.LocalName.ToLower() == "img")
-                {
-                    elmt.SetAttribute("src", path);
-                }
-                else
-                {
-                    elmt.SetAttribute("href", path);
-                }
-                elmt.RemoveAttributeNode(link);
+                log.Debug("Found XLink in Rich Text: " + xlinkElement.OuterXml);
+                ProcessRichTextXlink(xlinkElement, buildProperties);
             } 
+
             return xml.DocumentElement.InnerXml;
         }
 
         public virtual string PublishMultimediaComponent(string uri, BuildProperties buildProperties)
         {
-            if (buildProperties.ECLEnabled)
-            {
-                string url = GetECLUrl(uri);
-                if (! string.IsNullOrEmpty(url))
-                {
-                    return url;
-                }
-            }
             string itemName = "PublishMultimedia_" + uri;
             TcmUri tcmuri = new TcmUri(uri);
             Item mmItem = package.GetByName(itemName);
@@ -124,65 +99,142 @@ namespace DD4T.Templates.Base.Utils
             return GetReferencePath(mmItem, uri);
         }
 
-        protected virtual string GetECLUrl(string uri)
+
+        /// <summary>
+        /// Publishes the Binary Data of a Multimedia Component and sets it Multimedia URL (and ExtensionData for ECL).
+        /// </summary>
+        /// <param name="mmComponent">The (DD4T) Multimedia Component to Publish.</param>
+        /// <param name="buildProperties">The DD4T Build Properties</param>
+        public void PublishMultimediaComponent(Dynamic.Component mmComponent, BuildProperties buildProperties)
         {
-            Component c = (Component)engine.GetObject(uri);
-            if (c == null)
+            Dynamic.Multimedia multimedia = mmComponent.Multimedia;
+            if (multimedia == null)
             {
-                throw new Exception(string.Format("Error loading item with uri {0}", uri));
+                log.Warning("PublishMultimediaComponent called with a non-Multimedia Component: " + mmComponent.Id);
+                return;
             }
 
-            log.Debug(System.Threading.Thread.CurrentThread.ManagedThreadId + ": Instantiating a new ECL Session");
-            using (IEclSession localSession = SessionFactory.CreateEclSession(engine.GetSession()))
+            if (multimedia.MimeType == EclMimeType && buildProperties.ECLEnabled && mmComponent.EclId == null)
             {
-                IEclUri eclUri = localSession.TryGetEclUriFromTcmUri(uri);
-                if (eclUri != null) // this is an ECL item
+                ProcessEclStubComponent(mmComponent);
+            }
+            else if (mmComponent.EclId != null)
+            {
+                log.Debug(string.Format("ECL Stub Component '{0}' has already been processed (ECL ID: '{1}') ", mmComponent.Id, mmComponent.EclId));
+            }
+            else
+            {
+                multimedia.Url = PublishMultimediaComponent(mmComponent.Id, buildProperties);
+            }
+        }
+
+        private void ProcessEclStubComponent(Dynamic.Component eclStubComponent)
+        {
+            IContentLibraryMultimediaItem eclItem = GetEclItem(eclStubComponent.Id);
+
+            eclStubComponent.EclId = eclItem.Id.ToString();
+            eclStubComponent.Multimedia.Url = eclItem.GetDirectLinkToPublished(null);
+
+            // Set additional ECL Item properties as ExtensionData on the ECL Stub Component.
+            const string eclSectionName = "ECL";
+            eclStubComponent.AddExtensionProperty(eclSectionName, "DisplayTypeId", eclItem.DisplayTypeId);
+            eclStubComponent.AddExtensionProperty(eclSectionName, "MimeType", eclItem.MimeType);
+            eclStubComponent.AddExtensionProperty(eclSectionName, "FileName", eclItem.Filename);
+            eclStubComponent.AddExtensionProperty(eclSectionName, "TemplateFragment", eclItem.GetTemplateFragment(null));
+
+            // TODO: ECL external metadata
+        }
+
+        private void ProcessRichTextXlink(XmlElement xlinkElement, BuildProperties buildProperties)
+        {
+            const string xlinkNamespaceUri = "http://www.w3.org/1999/xlink";
+
+            string xlinkHref = xlinkElement.GetAttribute("href", xlinkNamespaceUri);
+            if (string.IsNullOrEmpty(xlinkHref))
+            {
+                log.Warning("No xlink:href found: " + xlinkElement.OuterXml);
+                return;
+            }
+
+            Component component = engine.GetObject(xlinkHref) as Component;
+            if (component == null || component.BinaryContent == null)
+            {
+                // XLink doesn't refer to MM Component; do nothing.
+                return;
+            }
+            log.Debug("Processing XLink to Multimedia Component: " + component.Id);
+
+            BinaryContent binaryContent = component.BinaryContent;
+            MultimediaType multimediaType = binaryContent.MultimediaType;
+
+            string url;
+            if (multimediaType.MimeType == EclMimeType && buildProperties.ECLEnabled)
+            {
+                IContentLibraryMultimediaItem eclItem = GetEclItem(component.Id);
+                url = eclItem.GetDirectLinkToPublished(null);
+
+                // Set additional ECL Item properties as data attributes on the XLink element
+                xlinkElement.SetAttribute("data-eclId", eclItem.Id.ToString());
+                xlinkElement.SetAttribute("data-eclDisplayTypeId", eclItem.DisplayTypeId);
+                if (!string.IsNullOrEmpty(eclItem.MimeType))
                 {
-                    log.Debug(System.Threading.Thread.CurrentThread.ManagedThreadId + ": Fetching IContentLibraryContext");
-                    using (IContentLibraryContext context = localSession.GetContentLibrary(eclUri))
+                    xlinkElement.SetAttribute("data-eclMimeType", eclItem.MimeType);
+                }
+                if (!string.IsNullOrEmpty(eclItem.Filename))
+                {
+                    xlinkElement.SetAttribute("data-eclFileName", eclItem.Filename);
+                }
+                string eclTemplateFragment = eclItem.GetTemplateFragment(null);
+                if (!string.IsNullOrEmpty(eclTemplateFragment))
+                {
+                    // Note that the entire Template Fragment gets stuffed in an XHTML attribute.
+                    // This may seem scary, but there is no limitation to the size of an XML attribute and the XLink element typically already has content.
+                    xlinkElement.SetAttribute("data-eclTemplateFragment", eclTemplateFragment);
+                }
+
+                // TODO: ECL external metadata (?)
+            }
+            else
+            {
+                url = PublishMultimediaComponent(component.Id, buildProperties);
+            }
+
+            // Put the resolved URL (path) in an appropriate XHTML attribute
+            string attrName = (xlinkElement.LocalName == "img") ? "src" : "href"; // Note that XHTML is case-sensitive, so case-sensitive comparison is OK.
+            xlinkElement.SetAttribute(attrName, url);
+
+            // NOTE: intentionally not removing xlink:href attribute to keep the MM Component ID available for post-processing purposes (e.g. DXA).
+
+            log.Debug(string.Format("XLink to Multimedia Component '{0}' resolved to: {1}", component.Id, xlinkElement.OuterXml));
+        }
+
+        private IContentLibraryMultimediaItem GetEclItem(string eclStubComponentId)
+        {
+            log.Debug("Retrieving ECL item for ECL Stub Component: " + eclStubComponentId);
+            using (IEclSession eclSession = SessionFactory.CreateEclSession(engine.GetSession()))
+            {
+                IEclUri eclUri = eclSession.TryGetEclUriFromTcmUri(eclStubComponentId);
+                if (eclUri == null)
+                {
+                    throw new Exception("Unable to get ECL URI for ECL Stub Component: " + eclStubComponentId);
+                }
+
+                using (IContentLibraryContext eclContext = eclSession.GetContentLibrary(eclUri))
+                {
+                    // This is done this way to not have an exception thrown through GetItem, as stated in the ECL API doc.
+                    // The reason to do this, is because if there is an exception, the ServiceChannel is going into the aborted state.
+                    // GetItems allows up to 20 (depending on config) connections. 
+                    IList<IContentLibraryItem> eclItems = eclContext.GetItems(new[] { eclUri });
+                    IContentLibraryMultimediaItem eclItem = (eclItems == null) ? null : eclItems.OfType<IContentLibraryMultimediaItem>().FirstOrDefault();
+                    if (eclItem == null)
                     {
-                        try
-                        {
-                            IContentLibraryMultimediaItem item = null;
-
-                            // This is done this way to not have an exception thrown through GetItem, as stated
-                            // in the API doc.
-                            // The reason to do this, is because if there is an exception, 
-                            // the ServiceChannel is going into the aborted state...
-                            log.Debug(System.Threading.Thread.CurrentThread.ManagedThreadId + ": Get Items");
-
-                            // GetItems allows up to 20 (depending on config) connections. 
-                            // After that any new connection is aborted / not created.
-
-                            var items = context.GetItems(new IEclUri[] { eclUri });
-
-                            if (items != null && items.Count == 1)
-                            {
-                                item = (IContentLibraryMultimediaItem)items.First();
-                                log.Debug(System.Threading.Thread.CurrentThread.ManagedThreadId + ": Item Fetched");
-                            }
-
-                            if (item == null)
-                            {
-                                log.Warning(System.Threading.Thread.CurrentThread.ManagedThreadId + ": Item with ECL URI: " + eclUri + " not found. This MM item is used in: " + c.Id);
-                                throw new Exception(string.Format("ECL item not found (ecl uri = {0}, tcm uri = {1}", eclUri, c.Id));
-                            }
-                            string distributionUrl = item.GetDirectLinkToPublished(null);
-                            string result = distributionUrl.ToLower();
-                            if (!string.IsNullOrEmpty(result))
-                            {
-                                log.Debug(System.Threading.Thread.CurrentThread.ManagedThreadId + ": Returning: " + result);
-                                return result;
-                            }
-                        }
-                        finally
-                        {
-                            log.Debug(System.Threading.Thread.CurrentThread.ManagedThreadId + ": Going out of the context using block statement.");
-                        }
+                        throw new Exception(string.Format("ECL item '{0}' not found (TCM URI: '{1}')", eclUri, eclStubComponentId));
                     }
+
+                    log.Debug(string.Format("Retrieved ECL item for ECL Stub Component '{0}': {1}", eclStubComponentId, eclUri));
+                    return eclItem;
                 }
             }
-            return string.Empty;
         }
 
         /// <summary>
