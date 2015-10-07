@@ -130,19 +130,32 @@ namespace DD4T.Templates.Base.Utils
 
         private void ProcessEclStubComponent(Dynamic.Component eclStubComponent)
         {
-            IContentLibraryMultimediaItem eclItem = GetEclItem(eclStubComponent.Id);
+            IEclSession eclSession;
+            IContentLibraryContext eclContext;
+            IContentLibraryMultimediaItem eclItem = GetEclItem(eclStubComponent.Id, out eclSession, out eclContext);
 
-            eclStubComponent.EclId = eclItem.Id.ToString();
-            eclStubComponent.Multimedia.Url = eclItem.GetDirectLinkToPublished(null);
+            // This may look a bit unusual, but we have to ensure that ECL Item members are accessed *before* the ECL Session/Context are disposed.
+            using (eclSession)
+            {
+                using (eclContext)
+                {
+                    eclStubComponent.EclId = eclItem.Id.ToString();
+                    eclStubComponent.Multimedia.Url = eclItem.GetDirectLinkToPublished(null);
 
-            // Set additional ECL Item properties as ExtensionData on the ECL Stub Component.
-            const string eclSectionName = "ECL";
-            eclStubComponent.AddExtensionProperty(eclSectionName, "DisplayTypeId", eclItem.DisplayTypeId);
-            eclStubComponent.AddExtensionProperty(eclSectionName, "MimeType", eclItem.MimeType);
-            eclStubComponent.AddExtensionProperty(eclSectionName, "FileName", eclItem.Filename);
-            eclStubComponent.AddExtensionProperty(eclSectionName, "TemplateFragment", eclItem.GetTemplateFragment(null));
+                    // Set additional ECL Item properties as ExtensionData on the ECL Stub Component.
+                    const string eclSectionName = "ECL";
+                    eclStubComponent.AddExtensionProperty(eclSectionName, "DisplayTypeId", eclItem.DisplayTypeId);
+                    eclStubComponent.AddExtensionProperty(eclSectionName, "MimeType", eclItem.MimeType);
+                    eclStubComponent.AddExtensionProperty(eclSectionName, "FileName", eclItem.Filename);
+                    eclStubComponent.AddExtensionProperty(eclSectionName, "TemplateFragment", eclItem.GetTemplateFragment(null));
 
-            // TODO: ECL external metadata
+                    Dynamic.IFieldSet eclExternalMetadataFieldSet = EclFieldsBuilder.BuildExternalMetadataFieldSet(eclItem);
+                    if (eclExternalMetadataFieldSet != null)
+                    {
+                        eclStubComponent.ExtensionData["ECL-ExternalMetadata"] = eclExternalMetadataFieldSet;
+                    }
+                }
+            }
         }
 
         private void ProcessRichTextXlink(XmlElement xlinkElement, BuildProperties buildProperties)
@@ -170,29 +183,39 @@ namespace DD4T.Templates.Base.Utils
             string url;
             if (multimediaType.MimeType == EclMimeType && buildProperties.ECLEnabled)
             {
-                IContentLibraryMultimediaItem eclItem = GetEclItem(component.Id);
-                url = eclItem.GetDirectLinkToPublished(null);
+                IEclSession eclSession;
+                IContentLibraryContext eclContext;
+                IContentLibraryMultimediaItem eclItem = GetEclItem(component.Id, out eclSession, out eclContext);
 
-                // Set additional ECL Item properties as data attributes on the XLink element
-                xlinkElement.SetAttribute("data-eclId", eclItem.Id.ToString());
-                xlinkElement.SetAttribute("data-eclDisplayTypeId", eclItem.DisplayTypeId);
-                if (!string.IsNullOrEmpty(eclItem.MimeType))
+                // This may look a bit unusual, but we have to ensure that ECL Item members are accessed *before* the ECL Session/Context are disposed.
+                using (eclSession)
                 {
-                    xlinkElement.SetAttribute("data-eclMimeType", eclItem.MimeType);
-                }
-                if (!string.IsNullOrEmpty(eclItem.Filename))
-                {
-                    xlinkElement.SetAttribute("data-eclFileName", eclItem.Filename);
-                }
-                string eclTemplateFragment = eclItem.GetTemplateFragment(null);
-                if (!string.IsNullOrEmpty(eclTemplateFragment))
-                {
-                    // Note that the entire Template Fragment gets stuffed in an XHTML attribute.
-                    // This may seem scary, but there is no limitation to the size of an XML attribute and the XLink element typically already has content.
-                    xlinkElement.SetAttribute("data-eclTemplateFragment", eclTemplateFragment);
-                }
+                    using (eclContext)
+                    {
+                        url = eclItem.GetDirectLinkToPublished(null);
 
-                // TODO: ECL external metadata (?)
+                        // Set additional ECL Item properties as data attributes on the XLink element
+                        xlinkElement.SetAttribute("data-eclId", eclItem.Id.ToString());
+                        xlinkElement.SetAttribute("data-eclDisplayTypeId", eclItem.DisplayTypeId);
+                        if (!string.IsNullOrEmpty(eclItem.MimeType))
+                        {
+                            xlinkElement.SetAttribute("data-eclMimeType", eclItem.MimeType);
+                        }
+                        if (!string.IsNullOrEmpty(eclItem.Filename))
+                        {
+                            xlinkElement.SetAttribute("data-eclFileName", eclItem.Filename);
+                        }
+                        string eclTemplateFragment = eclItem.GetTemplateFragment(null);
+                        if (!string.IsNullOrEmpty(eclTemplateFragment))
+                        {
+                            // Note that the entire Template Fragment gets stuffed in an XHTML attribute.
+                            // This may seem scary, but there is no limitation to the size of an XML attribute and the XLink element typically already has content.
+                            xlinkElement.SetAttribute("data-eclTemplateFragment", eclTemplateFragment);
+                        }
+
+                        // TODO: ECL external metadata (?)
+                    }
+                }
             }
             else
             {
@@ -208,34 +231,33 @@ namespace DD4T.Templates.Base.Utils
             log.Debug(string.Format("XLink to Multimedia Component '{0}' resolved to: {1}", component.Id, xlinkElement.OuterXml));
         }
 
-        private IContentLibraryMultimediaItem GetEclItem(string eclStubComponentId)
+        private IContentLibraryMultimediaItem GetEclItem(string eclStubComponentId, out IEclSession eclSession, out IContentLibraryContext eclContext)
         {
             log.Debug("Retrieving ECL item for ECL Stub Component: " + eclStubComponentId);
-            using (IEclSession eclSession = SessionFactory.CreateEclSession(engine.GetSession()))
+            eclSession = SessionFactory.CreateEclSession(engine.GetSession());
+            IEclUri eclUri = eclSession.TryGetEclUriFromTcmUri(eclStubComponentId);
+            if (eclUri == null)
             {
-                IEclUri eclUri = eclSession.TryGetEclUriFromTcmUri(eclStubComponentId);
-                if (eclUri == null)
-                {
-                    throw new Exception("Unable to get ECL URI for ECL Stub Component: " + eclStubComponentId);
-                }
-
-                using (IContentLibraryContext eclContext = eclSession.GetContentLibrary(eclUri))
-                {
-                    // This is done this way to not have an exception thrown through GetItem, as stated in the ECL API doc.
-                    // The reason to do this, is because if there is an exception, the ServiceChannel is going into the aborted state.
-                    // GetItems allows up to 20 (depending on config) connections. 
-                    IList<IContentLibraryItem> eclItems = eclContext.GetItems(new[] { eclUri });
-                    IContentLibraryMultimediaItem eclItem = (eclItems == null) ? null : eclItems.OfType<IContentLibraryMultimediaItem>().FirstOrDefault();
-                    if (eclItem == null)
-                    {
-                        throw new Exception(string.Format("ECL item '{0}' not found (TCM URI: '{1}')", eclUri, eclStubComponentId));
-                    }
-
-                    log.Debug(string.Format("Retrieved ECL item for ECL Stub Component '{0}': {1}", eclStubComponentId, eclUri));
-                    return eclItem;
-                }
+                eclSession.Dispose();
+                throw new Exception("Unable to get ECL URI for ECL Stub Component: " + eclStubComponentId);
             }
+
+            eclContext = eclSession.GetContentLibrary(eclUri);
+            // This is done this way to not have an exception thrown through GetItem, as stated in the ECL API doc.
+            // The reason to do this, is because if there is an exception, the ServiceChannel is going into the aborted state.
+            // GetItems allows up to 20 (depending on config) connections. 
+            IList<IContentLibraryItem> eclItems = eclContext.GetItems(new[] { eclUri });
+            IContentLibraryMultimediaItem eclItem = (eclItems == null) ? null : eclItems.OfType<IContentLibraryMultimediaItem>().FirstOrDefault();
+            if (eclItem == null)
+            {
+                eclContext.Dispose();
+                throw new Exception(string.Format("ECL item '{0}' not found (TCM URI: '{1}')", eclUri, eclStubComponentId));
+            }
+
+            log.Debug(string.Format("Retrieved ECL item for ECL Stub Component '{0}': {1}", eclStubComponentId, eclUri));
+            return eclItem;
         }
+
 
         /// <summary>
         /// Return the reference path for the binary which has just been published. This path is stored in the XML which is published to the broker, and may be used in 
