@@ -156,12 +156,18 @@ namespace DD4T.Templates.Base.Utils
                 {
                     if (eclFieldDefinition is INumberFieldDefinition)
                     {
-                        field.NumericValues.Add(Convert.ToDouble(fieldElement.InnerText));
+                        if (fieldElement.HasChildNodes)
+                        {
+                            field.NumericValues.Add(XmlConvert.ToDouble(fieldElement.InnerText));
+                        }
                         field.FieldType = FieldType.Number;
                     }
                     else if (eclFieldDefinition is IDateFieldDefinition)
                     {
-                        field.DateTimeValues.Add(Convert.ToDateTime(fieldElement.InnerText));
+                        if (fieldElement.HasChildNodes)
+                        {
+                            field.DateTimeValues.Add(XmlConvert.ToDateTime(fieldElement.InnerText, XmlDateTimeSerializationMode.Unspecified));
+                        }
                         field.FieldType = FieldType.Date;
                     }
                     else if (eclFieldDefinition is IFieldGroupDefinition)
