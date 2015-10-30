@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using DD4T.ContentModel;
-using DD4T.Templates.Base.Utils;
 using Tridion.ContentManager.AudienceManagement;
 using Condition = DD4T.ContentModel.Condition;
 using ConditionOperator = DD4T.ContentModel.ConditionOperator;
 using CustomerCharacteristicCondition = Tridion.ContentManager.AudienceManagement.CustomerCharacteristicCondition;
 using Dynamic = DD4T.ContentModel;
 using NumericalConditionOperator = DD4T.ContentModel.NumericalConditionOperator;
+using AudienceManagement = Tridion.ContentManager.AudienceManagement;
 using Tcm = Tridion.ContentManager.AudienceManagement;
 using Tridion.ContentManager.Templating;
 
@@ -19,24 +19,24 @@ namespace DD4T.Templates.Base.Builder
     ///</summary>
     public class TargetGroupBuilder
     {
-
         private static TemplatingLogger log = TemplatingLogger.GetLogger(typeof(TargetGroupBuilder));
 
         /// <summary>
         /// Build a DD4T Target group from a AM Target Group
         /// </summary>
-        public static Dynamic.TargetGroup BuildTargetGroup(Tridion.ContentManager.AudienceManagement.TargetGroup targetGroup, BuildManager buildManager)
+        public static Dynamic.TargetGroup BuildTargetGroup(AudienceManagement.TargetGroup targetGroup, BuildManager buildManager)
         {
             var tg = new Dynamic.TargetGroup
             {
-                Conditions = MapConditions(targetGroup.Conditions, buildManager),
-                Description = targetGroup.Description,
+                Title = targetGroup.Title,
                 Id = targetGroup.Id,
+                Description = targetGroup.Description,
                 OwningPublication = PublicationBuilder.BuildPublication(targetGroup.OwningRepository),
                 Publication = PublicationBuilder.BuildPublication(targetGroup.ContextRepository),
                 PublicationId = targetGroup.ContextRepository.Id,
-                Title = targetGroup.Title
+                Conditions = MapConditions(targetGroup.Conditions, buildManager),
             };
+
             return tg;
         }
 
@@ -45,15 +45,16 @@ namespace DD4T.Templates.Base.Builder
         /// </summary>
         public static List<Dynamic.Condition> MapTargetGroupConditions(IList<Tcm.TargetGroupCondition> componentPresentationConditions, BuildManager buildManager)
         {
-            var mappedConditions = new List<Dynamic.Condition>();
+            List<Dynamic.Condition> mappedConditions = new List<Dynamic.Condition>();
             foreach (var componentPresentationCondition in componentPresentationConditions)
             {
                 mappedConditions.AddRange(MapConditions(componentPresentationCondition.TargetGroup.Conditions, buildManager));
             }
+
             return mappedConditions;
         }
 
-        private static List<Condition> MapConditions(IList<Tridion.ContentManager.AudienceManagement.Condition> conditions, BuildManager buildManager)
+        private static List<Condition> MapConditions(IList<AudienceManagement.Condition> conditions, BuildManager buildManager)
         {
             var mappedConditions = new List<Dynamic.Condition>();
             foreach (var condition in conditions)
@@ -68,7 +69,7 @@ namespace DD4T.Templates.Base.Builder
                 }
                 else if (condition is Tcm.CustomerCharacteristicCondition)
                 {
-                    mappedConditions.Add(MapCustomerCharacteristicCondition((Tcm.CustomerCharacteristicCondition)condition));
+                    mappedConditions.Add(MapCustomerCharacteristicCondition((CustomerCharacteristicCondition)condition));
                 }
                 else
                 {
