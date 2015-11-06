@@ -197,6 +197,7 @@
     <Compile Include="Builder\ComponentBuilder.cs" />
     <Compile Include="Builder\ComponentPresentationBuilder.cs" />
     <Compile Include="Builder\ComponentTemplateBuilder.cs" />
+    <Compile Include="Utils\EclProcessor.cs" />
     <Compile Include="Builder\FieldBuilder.cs" />
     <Compile Include="Builder\FieldsBuilder.cs" />
     <Compile Include="Builder\KeywordBuilder.cs" />
