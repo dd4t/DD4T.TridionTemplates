@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using DD4T.ContentModel;
@@ -116,10 +117,13 @@ namespace DD4T.Templates.Base.Utils
         private string PublishBinaryContent(IContentLibraryMultimediaItem eclItem, string eclStubComponentId)
         {
             IContentResult eclContent = eclItem.GetContent(null);
+            string uniqueFilename = string.Format("{0}_{1}{2}", 
+                Path.GetFileNameWithoutExtension(eclItem.Filename), eclStubComponentId.Substring(4), Path.GetExtension(eclItem.Filename));
+
             Tridion.ContentManager.ContentManagement.Component eclStubComponent = (Tridion.ContentManager.ContentManagement.Component) _engine.GetObject(eclStubComponentId);
             Tridion.ContentManager.Publishing.Rendering.Binary binary = (_binariesStructureGroup == null) ?
-                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, eclItem.Filename, string.Empty, eclStubComponent, eclContent.ContentType) :
-                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, eclItem.Filename, _binariesStructureGroup, string.Empty, eclStubComponent, eclContent.ContentType);
+                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, uniqueFilename, string.Empty, eclStubComponent, eclContent.ContentType) :
+                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, uniqueFilename, _binariesStructureGroup, string.Empty, eclStubComponent, eclContent.ContentType);
 
             _log.Debug(string.Format("Added binary content of ECL Item '{0}' (Stub Component: '{1}', MimeType: '{2}') as '{3}' in '{4}'.", 
                 eclItem.Id, eclStubComponentId, eclContent.ContentType, binary.Url, (_binariesStructureGroup == null) ? "(default)" : _binariesStructureGroup.PublishPath));
