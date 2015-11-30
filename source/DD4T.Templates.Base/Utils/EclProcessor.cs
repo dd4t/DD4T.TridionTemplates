@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using DD4T.ContentModel;
-using Tridion.ContentManager;
 using Tridion.ContentManager.Templating;
 using Tridion.ExternalContentLibrary.V2;
 
@@ -12,11 +11,13 @@ namespace DD4T.Templates.Base.Utils
     internal class EclProcessor : IDisposable
     {
         private readonly TemplatingLogger _log = TemplatingLogger.GetLogger(typeof(EclProcessor));
+        private readonly Engine _engine;
         private IEclSession _eclSession;
 
-        internal EclProcessor(Session session)
+        internal EclProcessor(Engine engine)
         {
-            _eclSession = SessionFactory.CreateEclSession(session);
+            _engine = engine;
+            _eclSession = SessionFactory.CreateEclSession(engine.GetSession());
         }
 
         internal void ProcessEclStubComponent(Component eclStubComponent)
@@ -28,7 +29,9 @@ namespace DD4T.Templates.Base.Utils
             using (eclContext)
             {
                 eclStubComponent.EclId = eclItem.Id.ToString();
-                eclStubComponent.Multimedia.Url = eclItem.GetDirectLinkToPublished(null);
+
+                string directLinkToPublished = eclItem.GetDirectLinkToPublished(null);
+                eclStubComponent.Multimedia.Url = string.IsNullOrEmpty(directLinkToPublished) ? PublishBinaryContent(eclItem, eclStubComponent.Id) : directLinkToPublished;
 
                 // Set additional ECL Item properties as ExtensionData on the ECL Stub Component.
                 const string eclSectionName = "ECL";
@@ -76,7 +79,8 @@ namespace DD4T.Templates.Base.Utils
 
                 // TODO: ECL external metadata (?)
 
-                return eclItem.GetDirectLinkToPublished(null);
+                string directLinkToPublished = eclItem.GetDirectLinkToPublished(null);
+                return string.IsNullOrEmpty(directLinkToPublished) ? PublishBinaryContent(eclItem, eclStubComponentId) : directLinkToPublished;
             }
         }
 
@@ -103,6 +107,20 @@ namespace DD4T.Templates.Base.Utils
 
             _log.Debug(string.Format("Retrieved ECL item for ECL Stub Component '{0}': {1}", eclStubComponentId, eclUri));
             return eclItem;
+        }
+
+
+        private string PublishBinaryContent(IContentLibraryMultimediaItem eclItem, string eclStubComponentId)
+        {
+            IContentResult eclContent = eclItem.GetContent(null);
+            Tridion.ContentManager.ContentManagement.Component eclStubComponent = (Tridion.ContentManager.ContentManagement.Component) _engine.GetObject(eclStubComponentId);
+            Tridion.ContentManager.Publishing.Rendering.Binary binary =
+                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, eclItem.Filename, string.Empty, eclStubComponent, eclContent.ContentType);
+
+            _log.Debug(string.Format("Added binary content of ECL Item '{0}' (Stub Component: '{1}', MimeType: '{2}') as '{3}'.", 
+                eclItem.Id, eclStubComponentId, eclContent.ContentType, binary.Url));
+
+            return binary.Url;
         }
 
 
