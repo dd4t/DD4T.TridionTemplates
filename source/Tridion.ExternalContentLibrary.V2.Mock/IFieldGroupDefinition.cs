@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Tridion.ExternalContentLibrary.V2
 {
-    public interface IContentLibraryContext : IDisposable
+    public interface IFieldGroupDefinition
     {
-        IList<IContentLibraryItem> GetItems(IEclUri[] eclUris);
+        IList<IFieldDefinition> Fields { get; }
     }
 }

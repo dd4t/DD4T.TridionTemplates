@@ -126,9 +126,9 @@ namespace DD4T.Templates.Base.Builder
             FieldsBuilder.AddXpathToFields(fieldSet, baseXpath);
         }
 
-        public virtual string PublishMultimediaComponent(Component component)
+        public virtual void PublishMultimediaComponent(Component component)
         {
-            return BinaryPublisher.PublishMultimediaComponent(component.Id, BuildProperties);
+            BinaryPublisher.PublishMultimediaComponent(component, BuildProperties);
         }
 
         public virtual string PublishBinariesInRichTextField(string v)

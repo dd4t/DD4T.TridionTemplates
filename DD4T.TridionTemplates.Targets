@@ -145,13 +145,6 @@
 	</Target>
 
 	<Target Name="CopyReferences" DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
-		<Message Text="File Names:" Importance="high" />
-		<Message Text="@(Reference->'%(FileName)')" />
-		<Message Text="Assembly References:" Importance="high" />
-		<Message Text="@(_ResolveAssemblyReferenceResolvedFiles)" />
-		<Message Text="Search Paths:" Importance="high" />  
-		<Message Text="$(AssemblySearchPaths)" />
-
 		<Copy SourceFiles="@(_ResolveAssemblyReferenceResolvedFiles)" 
             DestinationFiles="@(_ResolveAssemblyReferenceResolvedFiles->'$(BuildDependencyDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
@@ -199,6 +192,7 @@
 	<Target Name="PackageNuGet" Condition="'$(Configuration)'!='Legacy'">
 		<ItemGroup>
 			<PackageFilesCleanup Include="$(BuildPackageDirectory)\**\*.*"/>
+        	<MainDLL Include="$(BuildBinDirectory)\**\$(MSBuildProjectName)*.dll" />
 		</ItemGroup>
 		<Delete Files="@(PackageFilesCleanup)" />
 		
@@ -209,7 +203,7 @@
         </ItemGroup>
     	
     	<!-- Get the productversion from the assemblies -->
-    	<GetInformationalVersion AssemblyFile="@(MainPackageFiles)">
+    	<GetInformationalVersion AssemblyFile="@(MainDLL)">
     		<Output TaskParameter="Version" PropertyName="VersionInfo"/>
     	</GetInformationalVersion>
 
@@ -217,6 +211,7 @@
     	<GetNewDevVersion OldVersion="$(VersionInfo)" Condition="'$(Configuration)' == 'Debug'">
     		<Output TaskParameter="NewVersion" PropertyName="VersionInfo"/>
     	</GetNewDevVersion>
+
 		<Message Text="Got a new version: $(VersionInfo)"  Importance="High"/>
         <ItemGroup>
         	<NuGetFiles Include="$(NuSpecFile)"/>

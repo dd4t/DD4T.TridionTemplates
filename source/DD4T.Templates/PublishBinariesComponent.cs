@@ -73,7 +73,7 @@ namespace DD4T.Templates
         {
             if (component.ComponentType.Equals(Dynamic.ComponentType.Multimedia))
             {
-                component.Multimedia.Url = BinaryPublisher.PublishMultimediaComponent(component.Id, Manager.BuildProperties);
+                BinaryPublisher.PublishMultimediaComponent(component, Manager.BuildProperties);
             }
             PublishAllBinaries(component.Fields);
             PublishAllBinaries(component.MetadataFields);

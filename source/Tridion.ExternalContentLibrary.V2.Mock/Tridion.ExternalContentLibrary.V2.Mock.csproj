@@ -53,9 +53,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IContentLibraryContext.cs" />
+    <Compile Include="IContentLibraryItem.cs" />
+    <Compile Include="IContentLibraryListItem.cs" />
     <Compile Include="IContentLibraryMultimediaItem.cs" />
+    <Compile Include="IDateFieldDefinition.cs" />
     <Compile Include="IEclSession.cs" />
     <Compile Include="IEclUri.cs" />
+    <Compile Include="IFieldDefinition.cs" />
+    <Compile Include="IFieldGroupDefinition.cs" />
+    <Compile Include="IMultiLineTextFieldDefinition.cs" />
+    <Compile Include="INumberFieldDefinition.cs" />
+    <Compile Include="ISchemaDefinition.cs" />
+    <Compile Include="ITemplateAttribute.cs" />
+    <Compile Include="IXhtmlFieldDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionFactory.cs" />
   </ItemGroup>

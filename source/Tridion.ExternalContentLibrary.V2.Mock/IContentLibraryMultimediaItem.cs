@@ -5,8 +5,14 @@ using System.Text;
 
 namespace Tridion.ExternalContentLibrary.V2
 {
-    public interface IContentLibraryMultimediaItem
+    public interface IContentLibraryMultimediaItem : IContentLibraryItem, IContentLibraryListItem
     {
-        string GetDirectLinkToPublished(object o);
+        string Filename { get; }
+        int? Height { get; }
+        string MimeType { get; }
+        int? Width { get; }
+
+        string GetDirectLinkToPublished(object o); 
+        string GetTemplateFragment(IList<ITemplateAttribute> attributes);
     }
 }
