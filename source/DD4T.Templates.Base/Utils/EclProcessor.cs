@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using DD4T.ContentModel;
+using Tridion.ContentManager.CommunicationManagement;
 using Tridion.ContentManager.Templating;
 using Tridion.ExternalContentLibrary.V2;
 
@@ -12,11 +13,13 @@ namespace DD4T.Templates.Base.Utils
     {
         private readonly TemplatingLogger _log = TemplatingLogger.GetLogger(typeof(EclProcessor));
         private readonly Engine _engine;
+        private readonly StructureGroup _binariesStructureGroup;
         private IEclSession _eclSession;
 
-        internal EclProcessor(Engine engine)
+        internal EclProcessor(Engine engine, Tridion.ContentManager.TcmUri binariesStructureGroupId)
         {
             _engine = engine;
+            _binariesStructureGroup = (binariesStructureGroupId == null) ? null : (StructureGroup) engine.GetObject(binariesStructureGroupId);
             _eclSession = SessionFactory.CreateEclSession(engine.GetSession());
         }
 
@@ -114,11 +117,12 @@ namespace DD4T.Templates.Base.Utils
         {
             IContentResult eclContent = eclItem.GetContent(null);
             Tridion.ContentManager.ContentManagement.Component eclStubComponent = (Tridion.ContentManager.ContentManagement.Component) _engine.GetObject(eclStubComponentId);
-            Tridion.ContentManager.Publishing.Rendering.Binary binary =
-                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, eclItem.Filename, string.Empty, eclStubComponent, eclContent.ContentType);
+            Tridion.ContentManager.Publishing.Rendering.Binary binary = (_binariesStructureGroup == null) ?
+                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, eclItem.Filename, string.Empty, eclStubComponent, eclContent.ContentType) :
+                _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, eclItem.Filename, _binariesStructureGroup, string.Empty, eclStubComponent, eclContent.ContentType);
 
-            _log.Debug(string.Format("Added binary content of ECL Item '{0}' (Stub Component: '{1}', MimeType: '{2}') as '{3}'.", 
-                eclItem.Id, eclStubComponentId, eclContent.ContentType, binary.Url));
+            _log.Debug(string.Format("Added binary content of ECL Item '{0}' (Stub Component: '{1}', MimeType: '{2}') as '{3}' in '{4}'.", 
+                eclItem.Id, eclStubComponentId, eclContent.ContentType, binary.Url, (_binariesStructureGroup == null) ? "(default)" : _binariesStructureGroup.PublishPath));
 
             return binary.Url;
         }
