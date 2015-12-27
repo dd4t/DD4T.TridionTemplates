@@ -56,6 +56,7 @@
     <Compile Include="IContentLibraryItem.cs" />
     <Compile Include="IContentLibraryListItem.cs" />
     <Compile Include="IContentLibraryMultimediaItem.cs" />
+    <Compile Include="IContentResult.cs" />
     <Compile Include="IDateFieldDefinition.cs" />
     <Compile Include="IEclSession.cs" />
     <Compile Include="IEclUri.cs" />
