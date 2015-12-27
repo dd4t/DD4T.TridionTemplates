@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Tridion.ExternalContentLibrary.V2
 {
-    public interface IContentLibraryContext : IDisposable
+    public interface IContentResult
     {
-        IList<IContentLibraryItem> GetItems(IEclUri[] eclUris);
+        string ContentType { get; set; }
+        System.IO.Stream Stream { get; set; }
     }
 }
