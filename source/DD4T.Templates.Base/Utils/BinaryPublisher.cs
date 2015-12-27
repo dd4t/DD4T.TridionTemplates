@@ -112,7 +112,7 @@ namespace DD4T.Templates.Base.Utils
 
             if (multimedia.MimeType == EclMimeType && buildProperties.ECLEnabled && mmComponent.EclId == null)
             {
-                using (EclProcessor eclProcessor = new EclProcessor(engine.GetSession()))
+                using (EclProcessor eclProcessor = new EclProcessor(engine, targetStructureGroupUri))
                 {
                     eclProcessor.ProcessEclStubComponent(mmComponent);
                 }
@@ -152,7 +152,7 @@ namespace DD4T.Templates.Base.Utils
             string url;
             if (multimediaType.MimeType == EclMimeType && buildProperties.ECLEnabled)
             {
-                using (EclProcessor eclProcessor = new EclProcessor(engine.GetSession()))
+                using (EclProcessor eclProcessor = new EclProcessor(engine, targetStructureGroupUri))
                 {
                     url = eclProcessor.ProcessEclXlink(xlinkElement);
                 }
