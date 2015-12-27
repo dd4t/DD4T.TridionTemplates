@@ -14,5 +14,6 @@ namespace Tridion.ExternalContentLibrary.V2
 
         string GetDirectLinkToPublished(object o); 
         string GetTemplateFragment(IList<ITemplateAttribute> attributes);
+        IContentResult GetContent(object o);
     }
 }
