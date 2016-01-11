@@ -110,9 +110,21 @@ namespace DD4T.Templates.Base.Builder
                     // add keyword values
                     f.Keywords = new List<Keyword>();
                     // we will wrap each linked component in a ContentModel component
+
+                    int nextLinkLevel = currentLinkLevel - 1;
+                    if (MustFollowField(sField, manager))
+                    {
+                        log.Debug(string.Format("found Keyword link field named {0} with global followLinksPerField property set to false OR followLink set to true for this field", sField.Name));
+                    }
+                    else
+                    {
+                        log.Debug(string.Format("found keyword link field named {0} with followLink set to false for this field", sField.Name));
+                        nextLinkLevel = 0;
+                    }
+
                     foreach (TCM.Keyword kw in sField.Values)
                     {
-                        f.Keywords.Add(manager.BuildKeyword(kw));
+                        f.Keywords.Add(manager.BuildKeyword(kw, nextLinkLevel));
                     }
                     if (!manager.BuildProperties.OmitValueLists)
                     {
@@ -362,6 +374,17 @@ namespace DD4T.Templates.Base.Builder
         }
 
         private static bool MustFollowField(TCM.Fields.ComponentLinkField field, BuildManager manager)
+        {
+            // TODO: check for setting 'followLinksPerField'
+            if (!manager.BuildProperties.FollowLinksPerField)
+                return true;
+            XmlNamespaceManager nsMan = new XmlNamespaceManager(new NameTable());
+            nsMan.AddNamespace("dd4t", "http://www.sdltridion.com/2011/DD4TField");
+            XmlElement followLink = (XmlElement)field.Definition.ExtensionXml.SelectSingleNode("//dd4t:configuration/dd4t:followlink", nsMan);
+            return (followLink != null && followLink.InnerText == "true");
+        }
+
+        private static bool MustFollowField(TCM.Fields.KeywordField field, BuildManager manager)
         {
             // TODO: check for setting 'followLinksPerField'
             if (!manager.BuildProperties.FollowLinksPerField)
