@@ -59,7 +59,6 @@ namespace DD4T.Templates.Base.Builder
 
                     // inital renderedContent could contain si4t search data. we need to preserve the search data. 
                     // lets retrieve the si4t search data if that's the case and added to the renderedContent property
-
                     cp.RenderedContent = Si4tUtils.RetrieveSearchData(renderedContent);
                 }
                 catch (Exception e)
