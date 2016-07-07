@@ -307,6 +307,7 @@ namespace DD4T.Templates.Base.Builder
                                 Dynamic.FieldSet fieldsinner = new FieldSet();
                                 Dynamic.Field fin = new Dynamic.Field();
                                 fe.EmbeddedSchema = manager.BuildSchema(((EmbeddedSchemaFieldDefinition)innerField.Definition).EmbeddedSchema);
+                                fe.EmbeddedValues = new List<FieldSet>();
                                 EmbeddedSchemaFieldDefinition inlinksFieldDefinition = innerField.Definition as EmbeddedSchemaFieldDefinition;
                                 ItemFields newinItemField = new ItemFields(inlinksFieldDefinition.EmbeddedSchema);
                                 for (int n = 0; n < newinItemField.Count; n++)

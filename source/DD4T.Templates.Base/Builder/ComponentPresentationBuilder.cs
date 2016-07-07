@@ -45,13 +45,21 @@ namespace DD4T.Templates.Base.Builder
 
                 string renderedContent = engine.RenderComponentPresentation(tcmComponentPresentation.Component.Id, tcmComponentPresentation.ComponentTemplate.Id);
                 renderedContent = TridionUtils.StripTcdlTags(renderedContent);
+
+                // rendered content could contain si4t search data. if that's the case, the value of renderedCotnent is not valid DD4T data.
+                // lets remove the si4t search data if that's the case. 
+                string dd4tData = Si4tUtils.RemoveSearchData(renderedContent);
      
                 try
                 {
                     // we cannot be sure the component template uses the same serializer service as the page template
                     // so we will call a factory which can detect the correct service based on the content
-                    ISerializerService serializerService = SerializerServiceFactory.FindSerializerServiceForContent(renderedContent);
-                    cp = serializerService.Deserialize<Dynamic.ComponentPresentation>(renderedContent);
+                    ISerializerService serializerService = SerializerServiceFactory.FindSerializerServiceForContent(dd4tData);
+                    cp = serializerService.Deserialize<Dynamic.ComponentPresentation>(dd4tData);
+
+                    // inital renderedContent could contain si4t search data. we need to preserve the search data. 
+                    // lets retrieve the si4t search data if that's the case and added to the renderedContent property
+                    cp.RenderedContent = Si4tUtils.RetrieveSearchData(renderedContent);
                 }
                 catch (Exception e)
                 {
