@@ -217,6 +217,7 @@
     <Compile Include="Utils\GeneralUtils.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\BinaryPublisher.cs" />
+    <Compile Include="Utils\Si4tUtils.cs" />
     <Compile Include="Utils\TridionConfigurationManager.cs" />
     <Compile Include="Utils\TridionUtils.cs" />
     <Compile Include="Utils\XmlMinimizer.cs" />
