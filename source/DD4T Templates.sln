@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DD4T.Templates.Base", "DD4T.Templates.Base\DD4T.Templates.Base.csproj", "{B52EEF88-CDA2-41A8-84F9-7C5CDA4245BF}"
 EndProject
@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2EAB78
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tridion.ExternalContentLibrary.V2.Mock", "Tridion.ExternalContentLibrary.V2.Mock\Tridion.ExternalContentLibrary.V2.Mock.csproj", "{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,19 +62,6 @@ Global
 		{83682E54-4314-4922-9D1A-62A69EFED674}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{83682E54-4314-4922-9D1A-62A69EFED674}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{83682E54-4314-4922-9D1A-62A69EFED674}.Release|x86.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Any CPU.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Any CPU.Build.0 = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Mixed Platforms.ActiveCfg = Legacy|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Mixed Platforms.Build.0 = Legacy|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|x86.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|Any CPU.Build.0 = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

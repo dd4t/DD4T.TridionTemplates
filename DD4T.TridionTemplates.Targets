@@ -107,8 +107,9 @@
 			<NuSpecFileLocation>%(MimicNuSpecFile.Identity)</NuSpecFileLocation>
 		</PropertyGroup>
 
+    <Message Text="NuSpec: $(DependencyFilesDirectory)" />
 		<Message Text="Creating nuget package directory $(DependencyNameSafe)" />
-		<Message Text="$(NuSpecFileLocation)" />
+		<Message Text="NuSpec: $(NuSpecFileLocation)" />
 
 		<XmlPeek
 			Namespaces="&lt;Namespace Prefix='nuget' Uri='http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd' /&gt;"

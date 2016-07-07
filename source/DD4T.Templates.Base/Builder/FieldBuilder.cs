@@ -375,24 +375,12 @@ namespace DD4T.Templates.Base.Builder
 
         private static bool MustFollowField(TCM.Fields.ComponentLinkField field, BuildManager manager)
         {
-            // TODO: check for setting 'followLinksPerField'
-            if (!manager.BuildProperties.FollowLinksPerField)
                 return true;
-            XmlNamespaceManager nsMan = new XmlNamespaceManager(new NameTable());
-            nsMan.AddNamespace("dd4t", "http://www.sdltridion.com/2011/DD4TField");
-            XmlElement followLink = (XmlElement)field.Definition.ExtensionXml.SelectSingleNode("//dd4t:configuration/dd4t:followlink", nsMan);
-            return (followLink != null && followLink.InnerText == "true");
         }
 
         private static bool MustFollowField(TCM.Fields.KeywordField field, BuildManager manager)
         {
-            // TODO: check for setting 'followLinksPerField'
-            if (!manager.BuildProperties.FollowLinksPerField)
-                return true;
-            XmlNamespaceManager nsMan = new XmlNamespaceManager(new NameTable());
-            nsMan.AddNamespace("dd4t", "http://www.sdltridion.com/2011/DD4TField");
-            XmlElement followLink = (XmlElement)field.Definition.ExtensionXml.SelectSingleNode("//dd4t:configuration/dd4t:followlink", nsMan);
-            return (followLink != null && followLink.InnerText == "true");
+                return true;          
         }
     }
 }
