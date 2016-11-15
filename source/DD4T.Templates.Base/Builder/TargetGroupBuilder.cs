@@ -9,6 +9,7 @@ using Dynamic = DD4T.ContentModel;
 using NumericalConditionOperator = DD4T.ContentModel.NumericalConditionOperator;
 using Tcm = Tridion.ContentManager.AudienceManagement;
 using Tridion.ContentManager.Templating;
+using System;
 
 namespace DD4T.Templates.Base.Builder
 {
@@ -41,8 +42,25 @@ namespace DD4T.Templates.Base.Builder
         }
 
         /// <summary>
+        /// Map the top level target group conditions on a component presentation to DD4T TargetGroupConditions. 
+        /// </summary>
+        /// <param name="componentPresentationConditions">The Target Group conditions on the component presentation</param>
+        /// <param name="buildManager">The build manager</param>
+        /// <returns></returns>
+        public static List<Dynamic.TargetGroupCondition> MapTargetGroups(IList<Tcm.TargetGroupCondition> componentPresentationConditions, BuildManager buildManager)
+        {
+            var mappedConditions = new List<Dynamic.TargetGroupCondition>();
+            foreach (var condition in componentPresentationConditions)
+            {
+                mappedConditions.Add(MapTargetGroupCondition(condition, buildManager));
+            }
+            return mappedConditions;
+        }
+
+        /// <summary>
         /// Map the conditions from a Component Presentaton to DD4T conditions
         /// </summary>
+        [Obsolete("This function is deprecated as it misleadingly omits the top level of Target Group condition, (ie the TargetGroup(s) selected for inclusion and exclusion on the component presentation). You should refactor your code to use MapTargetGroups, which preserves the top level of Target Group definition.")]
         public static List<Dynamic.Condition> MapTargetGroupConditions(IList<Tcm.TargetGroupCondition> componentPresentationConditions, BuildManager buildManager)
         {
             var mappedConditions = new List<Dynamic.Condition>();

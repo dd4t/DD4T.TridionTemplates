@@ -19,13 +19,12 @@ namespace DD4T.Templates
         protected override void TransformPage(Page page)
         {
             Tridion.ContentManager.CommunicationManagement.Page tcmPage = GetTcmPage();
-
             int count = 0;
             foreach (var componentPresentation in tcmPage.ComponentPresentations)
             {
                 if(componentPresentation.Conditions != null && componentPresentation.Conditions.Count > 0)
                 {
-                    page.ComponentPresentations[count].Conditions = TargetGroupBuilder.MapTargetGroupConditions(componentPresentation.Conditions, new BuildManager(this.Package, this.Engine)); 
+                    page.ComponentPresentations[count].TargetGroupConditions = TargetGroupBuilder.MapTargetGroups(componentPresentation.Conditions, new BuildManager(this.Package, this.Engine)); 
                 }
                 count += 1;
             }
