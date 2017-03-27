@@ -85,7 +85,6 @@ namespace DD4T.Templates.Base.Utils
                 }
 
                 BuildExternalMetadataXmlAttributes(eclItem, xlinkElement);
-                // TODO: ECL external metadata (?)
 
                 string directLinkToPublished = eclItem.GetDirectLinkToPublished(null);
                 return string.IsNullOrEmpty(directLinkToPublished) ? PublishBinaryContent(eclItem, eclStubComponentId) : directLinkToPublished;
