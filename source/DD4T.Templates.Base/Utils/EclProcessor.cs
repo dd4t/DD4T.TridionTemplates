@@ -84,7 +84,7 @@ namespace DD4T.Templates.Base.Utils
                     xlinkElement.SetAttribute("data-eclTemplateFragment", eclTemplateFragment);
                 }
 
-                // TODO: ECL external metadata (?)
+                BuildExternalMetadataXmlAttributes(eclItem, xlinkElement);
 
                 string directLinkToPublished = eclItem.GetDirectLinkToPublished(null);
                 return string.IsNullOrEmpty(directLinkToPublished) ? PublishBinaryContent(eclItem, eclStubComponentId) : directLinkToPublished;
@@ -131,6 +131,38 @@ namespace DD4T.Templates.Base.Utils
                 eclItem.Id, eclStubComponentId, eclContent.ContentType, binary.Url, (_binariesStructureGroup == null) ? "(default)" : _binariesStructureGroup.PublishPath));
 
             return binary.Url;
+        }
+
+        private void BuildExternalMetadataXmlAttributes(IContentLibraryItem eclItem, XmlElement xlinkElement)
+        {
+            string externalMetadataXml = eclItem.MetadataXml;
+            if (string.IsNullOrEmpty(externalMetadataXml))
+            {
+                // No external metadata available; nothing to do.
+                return;
+            }
+
+            ISchemaDefinition externalMetadataSchema = eclItem.MetadataXmlSchema;
+            if (externalMetadataSchema == null)
+            {
+                _log.Warning(string.Format("ECL Item '{0}' has external metadata, but no schema defining it.", eclItem.Id));
+                return;
+            }
+
+            try
+            {
+                XmlDocument externalMetadataDoc = new XmlDocument();
+                externalMetadataDoc.LoadXml(externalMetadataXml);
+                CreateExternalMetadataXmlAttribute(externalMetadataSchema.Fields, externalMetadataDoc.DocumentElement, xlinkElement); ;
+
+                //_log.Debug(string.Format("ECL Item '{0}' has external metadata: {1}", eclItem.Id, string.Join(", ", result.Keys)));
+            }
+            catch (Exception ex)
+            {
+                _log.Error("An error occurred while parsing the external metadata for ECL Item " + eclItem.Id);
+                _log.Error(ex.Message);
+                return;
+            }
         }
 
         private IFieldSet BuildExternalMetadataFieldSet(IContentLibraryItem eclItem)
@@ -229,6 +261,27 @@ namespace DD4T.Templates.Base.Utils
             }
 
             return fieldSet;
+        }
+
+        private static void CreateExternalMetadataXmlAttribute(IEnumerable<IFieldDefinition> eclFieldDefinitions, XmlElement parentElement, XmlElement xlinkElement)
+        {
+            foreach (IFieldDefinition eclFieldDefinition in eclFieldDefinitions)
+            {
+                XmlNodeList fieldElements = parentElement.SelectNodes(string.Format("*[local-name()='{0}']", eclFieldDefinition.XmlElementName));
+                if (fieldElements.Count == 0)
+                {
+                    // Don't generate a DD4T Field for ECL field without values.
+                    continue;
+                }
+
+                foreach (XmlElement fieldElement in fieldElements)
+                {
+                    if (fieldElement.HasChildNodes)
+                    {
+                        xlinkElement.SetAttribute(string.Format("data-{0}", eclFieldDefinition.XmlElementName), fieldElement.InnerText);
+                    }
+                }
+            }
         }
 
         public void Dispose()
