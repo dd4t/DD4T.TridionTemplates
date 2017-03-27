@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DD4T.ContentModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using DD4T.ContentModel;
 using Tridion.ContentManager.CommunicationManagement;
 using Tridion.ContentManager.Templating;
 using Tridion.ExternalContentLibrary.V2;
@@ -17,10 +17,13 @@ namespace DD4T.Templates.Base.Utils
         private readonly StructureGroup _binariesStructureGroup;
         private IEclSession _eclSession;
 
+        //Empty list to prevent nullreference exection within the 'GetTemplateFragment(IList<ITemplateAttribute> attributes)' implementation inside the ECLConnector.
+        private IList<ITemplateAttribute> _emptyTemplateAttributes = new List<ITemplateAttribute>();
+
         internal EclProcessor(Engine engine, Tridion.ContentManager.TcmUri binariesStructureGroupId)
         {
             _engine = engine;
-            _binariesStructureGroup = (binariesStructureGroupId == null) ? null : (StructureGroup) engine.GetObject(binariesStructureGroupId);
+            _binariesStructureGroup = (binariesStructureGroupId == null) ? null : (StructureGroup)engine.GetObject(binariesStructureGroupId);
             _eclSession = SessionFactory.CreateEclSession(engine.GetSession());
         }
 
@@ -42,7 +45,7 @@ namespace DD4T.Templates.Base.Utils
                 eclStubComponent.AddExtensionProperty(eclSectionName, "DisplayTypeId", eclItem.DisplayTypeId);
                 eclStubComponent.AddExtensionProperty(eclSectionName, "MimeType", eclItem.MimeType);
                 eclStubComponent.AddExtensionProperty(eclSectionName, "FileName", eclItem.Filename);
-                eclStubComponent.AddExtensionProperty(eclSectionName, "TemplateFragment", eclItem.GetTemplateFragment(null));
+                eclStubComponent.AddExtensionProperty(eclSectionName, "TemplateFragment", eclItem.GetTemplateFragment(_emptyTemplateAttributes));
 
                 IFieldSet eclExternalMetadataFieldSet = BuildExternalMetadataFieldSet(eclItem);
                 if (eclExternalMetadataFieldSet != null)
@@ -73,7 +76,7 @@ namespace DD4T.Templates.Base.Utils
                 {
                     xlinkElement.SetAttribute("data-eclFileName", eclItem.Filename);
                 }
-                string eclTemplateFragment = eclItem.GetTemplateFragment(null);
+                string eclTemplateFragment = eclItem.GetTemplateFragment(_emptyTemplateAttributes);
                 if (!string.IsNullOrEmpty(eclTemplateFragment))
                 {
                     // Note that the entire Template Fragment gets stuffed in an XHTML attribute.
@@ -81,7 +84,7 @@ namespace DD4T.Templates.Base.Utils
                     xlinkElement.SetAttribute("data-eclTemplateFragment", eclTemplateFragment);
                 }
 
-                // TODO: ECL external metadata (?)
+                BuildExternalMetadataXmlAttributes(eclItem, xlinkElement);
 
                 string directLinkToPublished = eclItem.GetDirectLinkToPublished(null);
                 return string.IsNullOrEmpty(directLinkToPublished) ? PublishBinaryContent(eclItem, eclStubComponentId) : directLinkToPublished;
@@ -100,7 +103,7 @@ namespace DD4T.Templates.Base.Utils
             eclContext = _eclSession.GetContentLibrary(eclUri);
             // This is done this way to not have an exception thrown through GetItem, as stated in the ECL API doc.
             // The reason to do this, is because if there is an exception, the ServiceChannel is going into the aborted state.
-            // GetItems allows up to 20 (depending on config) connections. 
+            // GetItems allows up to 20 (depending on config) connections.
             IList<IContentLibraryItem> eclItems = eclContext.GetItems(new[] { eclUri });
             IContentLibraryMultimediaItem eclItem = (eclItems == null) ? null : eclItems.OfType<IContentLibraryMultimediaItem>().FirstOrDefault();
             if (eclItem == null)
@@ -113,24 +116,54 @@ namespace DD4T.Templates.Base.Utils
             return eclItem;
         }
 
-
         private string PublishBinaryContent(IContentLibraryMultimediaItem eclItem, string eclStubComponentId)
         {
             IContentResult eclContent = eclItem.GetContent(null);
-            string uniqueFilename = string.Format("{0}_{1}{2}", 
+            string uniqueFilename = string.Format("{0}_{1}{2}",
                 Path.GetFileNameWithoutExtension(eclItem.Filename), eclStubComponentId.Substring(4), Path.GetExtension(eclItem.Filename));
 
-            Tridion.ContentManager.ContentManagement.Component eclStubComponent = (Tridion.ContentManager.ContentManagement.Component) _engine.GetObject(eclStubComponentId);
+            Tridion.ContentManager.ContentManagement.Component eclStubComponent = (Tridion.ContentManager.ContentManagement.Component)_engine.GetObject(eclStubComponentId);
             Tridion.ContentManager.Publishing.Rendering.Binary binary = (_binariesStructureGroup == null) ?
                 _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, uniqueFilename, string.Empty, eclStubComponent, eclContent.ContentType) :
                 _engine.PublishingContext.RenderedItem.AddBinary(eclContent.Stream, uniqueFilename, _binariesStructureGroup, string.Empty, eclStubComponent, eclContent.ContentType);
 
-            _log.Debug(string.Format("Added binary content of ECL Item '{0}' (Stub Component: '{1}', MimeType: '{2}') as '{3}' in '{4}'.", 
+            _log.Debug(string.Format("Added binary content of ECL Item '{0}' (Stub Component: '{1}', MimeType: '{2}') as '{3}' in '{4}'.",
                 eclItem.Id, eclStubComponentId, eclContent.ContentType, binary.Url, (_binariesStructureGroup == null) ? "(default)" : _binariesStructureGroup.PublishPath));
 
             return binary.Url;
         }
 
+        private void BuildExternalMetadataXmlAttributes(IContentLibraryItem eclItem, XmlElement xlinkElement)
+        {
+            string externalMetadataXml = eclItem.MetadataXml;
+            if (string.IsNullOrEmpty(externalMetadataXml))
+            {
+                // No external metadata available; nothing to do.
+                return;
+            }
+
+            ISchemaDefinition externalMetadataSchema = eclItem.MetadataXmlSchema;
+            if (externalMetadataSchema == null)
+            {
+                _log.Warning(string.Format("ECL Item '{0}' has external metadata, but no schema defining it.", eclItem.Id));
+                return;
+            }
+
+            try
+            {
+                XmlDocument externalMetadataDoc = new XmlDocument();
+                externalMetadataDoc.LoadXml(externalMetadataXml);
+                CreateExternalMetadataXmlAttribute(externalMetadataSchema.Fields, externalMetadataDoc.DocumentElement, xlinkElement); ;
+
+                //_log.Debug(string.Format("ECL Item '{0}' has external metadata: {1}", eclItem.Id, string.Join(", ", result.Keys)));
+            }
+            catch (Exception ex)
+            {
+                _log.Error("An error occurred while parsing the external metadata for ECL Item " + eclItem.Id);
+                _log.Error(ex.Message);
+                return;
+            }
+        }
 
         private IFieldSet BuildExternalMetadataFieldSet(IContentLibraryItem eclItem)
         {
@@ -202,7 +235,7 @@ namespace DD4T.Templates.Base.Utils
                         {
                             field.EmbeddedValues = new List<FieldSet>();
                         }
-                        IEnumerable<IFieldDefinition> embeddedFieldDefinitions = ((IFieldGroupDefinition) eclFieldDefinition).Fields;
+                        IEnumerable<IFieldDefinition> embeddedFieldDefinitions = ((IFieldGroupDefinition)eclFieldDefinition).Fields;
                         field.EmbeddedValues.Add(CreateExternalMetadataFieldSet(embeddedFieldDefinitions, fieldElement));
                         field.FieldType = FieldType.Embedded;
                     }
@@ -228,6 +261,27 @@ namespace DD4T.Templates.Base.Utils
             }
 
             return fieldSet;
+        }
+
+        private static void CreateExternalMetadataXmlAttribute(IEnumerable<IFieldDefinition> eclFieldDefinitions, XmlElement parentElement, XmlElement xlinkElement)
+        {
+            foreach (IFieldDefinition eclFieldDefinition in eclFieldDefinitions)
+            {
+                XmlNodeList fieldElements = parentElement.SelectNodes(string.Format("*[local-name()='{0}']", eclFieldDefinition.XmlElementName));
+                if (fieldElements.Count == 0)
+                {
+                    // Don't generate a DD4T Field for ECL field without values.
+                    continue;
+                }
+
+                foreach (XmlElement fieldElement in fieldElements)
+                {
+                    if (fieldElement.HasChildNodes)
+                    {
+                        xlinkElement.SetAttribute(string.Format("data-{0}", eclFieldDefinition.XmlElementName), fieldElement.InnerText);
+                    }
+                }
+            }
         }
 
         public void Dispose()
