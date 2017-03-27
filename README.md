@@ -4,3 +4,7 @@
 
 # DD4T.TridionTemplates
 DD4T Tridion Templates
+
+
+# Setting Up Your Development Environment
+https://github.com/dd4t/DD4T.Core/wiki/9.3-Setting-up-your-development-environment
