@@ -70,19 +70,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DD4T.ContentModel">
-      <HintPath>..\packages\DD4T.Model.2.2.0\lib\net40\DD4T.ContentModel.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.1\lib\net40\DD4T.ContentModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DD4T.ContentModel.Contracts">
-      <HintPath>..\packages\DD4T.Model.2.2.0\lib\net40\DD4T.ContentModel.Contracts.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.1\lib\net40\DD4T.ContentModel.Contracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DD4T.ContentModel.XmlSerializers">
-      <HintPath>..\packages\DD4T.Model.2.2.0\lib\net40\DD4T.ContentModel.XmlSerializers.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.1\lib\net40\DD4T.ContentModel.XmlSerializers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DD4T.Serialization">
-      <HintPath>..\packages\DD4T.Model.2.2.0\lib\net40\DD4T.Serialization.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.1\lib\net40\DD4T.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
