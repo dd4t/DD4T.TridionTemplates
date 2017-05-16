@@ -17,7 +17,8 @@ namespace DD4T.Templates.Base.Utils
     public class BinaryPublisher
     {
         protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(BinaryPublisher));
-        TcmUri targetStructureGroupUri = null;
+        protected TcmUri targetStructureGroupUri = null;
+        protected bool omitTcmUri = false;
         protected Package package;
         protected Engine engine;
         Template currentTemplate;
@@ -29,6 +30,12 @@ namespace DD4T.Templates.Base.Utils
         {
         }
 
+        /// <summary>
+        /// Contains logic to publish binary content
+        /// </summary>
+        /// <param name="package">The Tridion publishing package</param>
+        /// <param name="engine">The Tridion publishing engine</param>
+        /// <param name="targetStructureGroup"></param>
         public BinaryPublisher(Package package, Engine engine, string targetStructureGroup)
         {
 
@@ -221,11 +228,9 @@ namespace DD4T.Templates.Base.Utils
                         // All items can be converted to a stream?
                         log.Error(String.Format("Cannot get item '{0}' as stream", itemUri.ToString()));
                     }
-                    //byte[] data = new byte[itemStream.Length];
-                    //itemStream.Read(data, 0, data.Length);
-                    //itemStream.Close();
+                    
                     log.Debug(string.Format("publishing mm component {0} to structure group {1} with variant id {2} and filename {3}", mmComp.Id, targetStructureGroupUri.ToString(), currentTemplate.Id, fileName));
-                    Binary b = engine.PublishingContext.RenderedItem.AddBinary(item.GetAsStream(), fileName, targetSG, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                    Binary b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
                     publishedPath = b.Url;
                     //publishedPath = engine.AddBinary(itemUri, appliedTemplateUri, targetStructureGroupUri, data, fileName);
                     log.Debug(string.Format("binary is published to url {0}", publishedPath));
