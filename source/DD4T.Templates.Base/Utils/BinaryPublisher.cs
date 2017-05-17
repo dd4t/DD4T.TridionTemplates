@@ -18,7 +18,7 @@ namespace DD4T.Templates.Base.Utils
     {
         protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(BinaryPublisher));
         protected TcmUri targetStructureGroupUri = null;
-        protected bool omitTcmUri = false;
+        protected bool stripTcmUrisFromBinaryUrls = false;
         protected Package package;
         protected Engine engine;
         Template currentTemplate;
@@ -30,12 +30,6 @@ namespace DD4T.Templates.Base.Utils
         {
         }
 
-        /// <summary>
-        /// Contains logic to publish binary content
-        /// </summary>
-        /// <param name="package">The Tridion publishing package</param>
-        /// <param name="engine">The Tridion publishing engine</param>
-        /// <param name="targetStructureGroup"></param>
         public BinaryPublisher(Package package, Engine engine, string targetStructureGroup)
         {
 
@@ -58,7 +52,15 @@ namespace DD4T.Templates.Base.Utils
                 Publication publication = TridionUtils.GetPublicationFromContext(package, engine);
                 TcmUri localTargetStructureGroupTcmUri = TridionUtils.GetLocalUri(new TcmUri(publication.Id), new TcmUri(targetStructureGroupParam));
                 targetStructureGroupUri = new TcmUri(localTargetStructureGroupTcmUri);
+                log.Debug($"targetStructureGroupUri = {targetStructureGroupUri.ToString()}");
             }
+
+            String stripTcmUrisFromBinaryUrlsParam = package.GetValue("stripTcmUrisFromBinaryUrls");
+            if (stripTcmUrisFromBinaryUrlsParam != null)
+            {
+                stripTcmUrisFromBinaryUrls = stripTcmUrisFromBinaryUrlsParam.ToLower() == "yes" || stripTcmUrisFromBinaryUrlsParam.ToLower() == "true";
+            }
+            log.Debug($"stripTcmUrisFromBinaryUrls = {stripTcmUrisFromBinaryUrls}");
         }
 
         #region Protected Members
@@ -116,7 +118,6 @@ namespace DD4T.Templates.Base.Utils
                 log.Warning("PublishMultimediaComponent called with a non-Multimedia Component: " + mmComponent.Id);
                 return;
             }
-
             if (multimedia.MimeType == EclMimeType && buildProperties.ECLEnabled && mmComponent.EclId == null)
             {
                 using (EclProcessor eclProcessor = new EclProcessor(engine, targetStructureGroupUri))
@@ -194,6 +195,8 @@ namespace DD4T.Templates.Base.Utils
 
         protected virtual void PublishItem(Item item, TcmUri itemUri)
         {
+            log.Debug($"PublishItem called on {itemUri}, targetSGUri = {targetStructureGroupUri}");
+
             Stream itemStream = null;
             // See if some template set itself as the applied template on this item
             TcmUri appliedTemplateUri = null;
@@ -205,7 +208,7 @@ namespace DD4T.Templates.Base.Utils
             try
             {
                 string publishedPath;
-                if (targetStructureGroupUri == null)
+                if (targetStructureGroupUri == null && stripTcmUrisFromBinaryUrls == false)
                 {
                     log.Debug("no structure group defined, publishing binary with default settings");
                     Component mmComp = (Component)engine.GetObject(item.Properties[Item.ItemPropertyTcmUri]);
@@ -219,18 +222,30 @@ namespace DD4T.Templates.Base.Utils
                 else
                 {
                     Component mmComp = (Component)engine.GetObject(item.Properties[Item.ItemPropertyTcmUri]);
-
                     string fileName = ConstructFileName(mmComp, currentTemplate.Id);
-                    StructureGroup targetSG = (StructureGroup)engine.GetObject(targetStructureGroupUri);
+                    StructureGroup targetSG = null;
+                    if (targetStructureGroupUri!= null)
+                    {
+                        targetSG = (StructureGroup)engine.GetObject(targetStructureGroupUri);
+                    }
+
                     itemStream = item.GetAsStream();
                     if (itemStream == null)
                     {
                         // All items can be converted to a stream?
                         log.Error(String.Format("Cannot get item '{0}' as stream", itemUri.ToString()));
                     }
-                    
-                    log.Debug(string.Format("publishing mm component {0} to structure group {1} with variant id {2} and filename {3}", mmComp.Id, targetStructureGroupUri.ToString(), currentTemplate.Id, fileName));
-                    Binary b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                    Binary b;
+                    if (targetSG == null)
+                    {
+                        log.Debug(string.Format("publishing mm component {0} with variant id {1} and filename {2}", mmComp.Id, currentTemplate.Id, fileName));
+                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                    }
+                    else
+                    {
+                        log.Debug(string.Format("publishing mm component {0} to structure group {1} with variant id {2} and filename {3}", mmComp.Id, targetStructureGroupUri.ToString(), currentTemplate.Id, fileName));
+                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                    }
                     publishedPath = b.Url;
                     //publishedPath = engine.AddBinary(itemUri, appliedTemplateUri, targetStructureGroupUri, data, fileName);
                     log.Debug(string.Format("binary is published to url {0}", publishedPath));
@@ -244,13 +259,17 @@ namespace DD4T.Templates.Base.Utils
             }
         }
 
-        private static string ConstructFileName(Component mmComp, string variantId)
+        private string ConstructFileName(Component mmComp, string variantId)
         {
             Regex re = new Regex(@"^(.*)\.([^\.]+)$");
             string fileName = mmComp.BinaryContent.Filename;
             if (!String.IsNullOrEmpty(fileName))
             {
                 fileName = Path.GetFileName(fileName);
+            }
+            if (stripTcmUrisFromBinaryUrls)
+            {
+                return fileName;
             }
             return re.Replace(fileName, string.Format("$1_{0}_{1}.$2", mmComp.Id.ToString().Replace(":", ""), variantId.Replace(":", "")));
         }
