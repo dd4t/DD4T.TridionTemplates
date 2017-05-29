@@ -195,7 +195,10 @@ namespace DD4T.Templates.Base.Utils
 
         protected virtual void PublishItem(Item item, TcmUri itemUri)
         {
-            log.Debug($"PublishItem called on {itemUri}, targetSGUri = {targetStructureGroupUri}");
+            string useTargetStructureGroupUri = GetTargetStructureGroupUri(item, itemUri);
+            bool useStripTcmUrisFromBinaryUrls = GetStripTcmUrisFromBinaryUrls(item, itemUri);
+
+            log.Debug($"PublishItem called on {itemUri}, targetSGUri = {useTargetStructureGroupUri}, stripTcmUrisFromBinaryUrls = {useStripTcmUrisFromBinaryUrls}");
 
             Stream itemStream = null;
             // See if some template set itself as the applied template on this item
@@ -208,7 +211,7 @@ namespace DD4T.Templates.Base.Utils
             try
             {
                 string publishedPath;
-                if (targetStructureGroupUri == null && stripTcmUrisFromBinaryUrls == false)
+                if (targetStructureGroupUri == null && useStripTcmUrisFromBinaryUrls == false)
                 {
                     log.Debug("no structure group defined, publishing binary with default settings");
                     Component mmComp = (Component)engine.GetObject(item.Properties[Item.ItemPropertyTcmUri]);
@@ -222,7 +225,7 @@ namespace DD4T.Templates.Base.Utils
                 else
                 {
                     Component mmComp = (Component)engine.GetObject(item.Properties[Item.ItemPropertyTcmUri]);
-                    string fileName = ConstructFileName(mmComp, currentTemplate.Id);
+                    string fileName = ConstructFileName(mmComp, currentTemplate.Id, useStripTcmUrisFromBinaryUrls);
                     StructureGroup targetSG = null;
                     if (targetStructureGroupUri!= null)
                     {
@@ -259,8 +262,19 @@ namespace DD4T.Templates.Base.Utils
             }
         }
 
-        private string ConstructFileName(Component mmComp, string variantId)
+        public virtual bool GetStripTcmUrisFromBinaryUrls(Item item, TcmUri itemUri)
         {
+            return stripTcmUrisFromBinaryUrls;
+        }
+
+        public virtual string GetTargetStructureGroupUri(Item item, TcmUri itemUri)
+        {
+            return targetStructureGroupUri;
+        }
+
+        private string ConstructFileName(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls)
+        {
+            log.Debug("called ConstructFileName with " + stripTcmUrisFromBinaryUrls);
             Regex re = new Regex(@"^(.*)\.([^\.]+)$");
             string fileName = mmComp.BinaryContent.Filename;
             if (!String.IsNullOrEmpty(fileName))
@@ -269,6 +283,7 @@ namespace DD4T.Templates.Base.Utils
             }
             if (stripTcmUrisFromBinaryUrls)
             {
+                log.Debug("about to return " + fileName);
                 return fileName;
             }
             return re.Replace(fileName, string.Format("$1_{0}_{1}.$2", mmComp.Id.ToString().Replace(":", ""), variantId.Replace(":", "")));
@@ -276,6 +291,5 @@ namespace DD4T.Templates.Base.Utils
         #endregion
 
     }
-
 
 }

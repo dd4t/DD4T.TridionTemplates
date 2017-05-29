@@ -18,15 +18,45 @@ namespace DD4T.Templates.Base.Builder
     /// </summary>
     public class BuildManager
     {
-        // I think this should go! (qs)
-        //public BuildManager()
-        //{
-        //    BuildProperties = new BuildProperties(null);
-        //}
+        private static TemplatingLogger log = TemplatingLogger.GetLogger(typeof(BuildManager));
+
+
+        /// <summary>
+        /// Create a BuildManager (can only be instantiated from an SDL Web template)
+        /// </summary>
+        /// <param name="package">SDL Web publishing package</param>
+        /// <param name="engine">SDL Web publishing engine</param>
         public BuildManager (Package package, Engine engine)
         {
             BuildProperties = new BuildProperties(package);
-            BinaryPublisher = new BinaryPublisher(package, engine);
+            if (! string.IsNullOrWhiteSpace(BuildProperties.BinaryPublisherClass))
+            {
+                log.Debug($"Found class to override the binary publisher: {BuildProperties.BinaryPublisherClass}");
+
+                if (BuildProperties.BinaryPublisherClass.Contains("|"))
+                {
+                    var t = BuildProperties.BinaryPublisherClass.Split('|').Select(a => a.Trim()).ToArray<string>();
+                    log.Debug("Assembly:" + t[0]);
+                    log.Debug("Class:" + t[1]);
+                    BinaryPublisher = (BinaryPublisher)Activator.CreateInstance(t[0], t[1]).Unwrap(); 
+                }
+                var type = Type.GetType(BuildProperties.BinaryPublisherClass);
+                if (type == null)
+                {
+                    log.Warning($"Could not find class {BuildProperties.BinaryPublisherClass}");
+                    BinaryPublisher = null;
+                }
+                else
+                {
+                    log.Debug($"Found type {type.FullName}");
+                    BinaryPublisher = (BinaryPublisher)Activator.CreateInstance(type, package, engine);
+                    log.Debug($"Instantiated class {BinaryPublisher.GetType().FullName}");
+                }
+            }
+            if (BinaryPublisher == null)
+            {
+                BinaryPublisher = new BinaryPublisher(package, engine);
+            }
         }
         protected BinaryPublisher BinaryPublisher
         {
@@ -54,7 +84,7 @@ namespace DD4T.Templates.Base.Builder
         public virtual Dynamic.Component BuildComponent(TCM.Component tcmComponent)
         {
             return ComponentBuilder.BuildComponent(tcmComponent, this);
-		}
+        }
 
         public virtual Dynamic.Component BuildComponent(TCM.Component tcmComponent, int currentLinkLevel)
         {
@@ -100,7 +130,7 @@ namespace DD4T.Templates.Base.Builder
         public virtual Dynamic.OrganizationalItem BuildOrganizationalItem(TComm.StructureGroup tcmStructureGroup)
         {
             return OrganizationalItemBuilder.BuildOrganizationalItem(tcmStructureGroup);
-		}
+        }
 
         public virtual Dynamic.OrganizationalItem BuildOrganizationalItem(TCM.Folder tcmFolder)
         {
