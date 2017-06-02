@@ -29,34 +29,7 @@ namespace DD4T.Templates.Base.Builder
         public BuildManager (Package package, Engine engine)
         {
             BuildProperties = new BuildProperties(package);
-            if (! string.IsNullOrWhiteSpace(BuildProperties.BinaryPublisherClass))
-            {
-                log.Debug($"Found class to override the binary publisher: {BuildProperties.BinaryPublisherClass}");
-
-                if (BuildProperties.BinaryPublisherClass.Contains("|"))
-                {
-                    var t = BuildProperties.BinaryPublisherClass.Split('|').Select(a => a.Trim()).ToArray<string>();
-                    log.Debug("Assembly:" + t[0]);
-                    log.Debug("Class:" + t[1]);
-                    BinaryPublisher = (BinaryPublisher)Activator.CreateInstance(t[0], t[1]).Unwrap(); 
-                }
-                var type = Type.GetType(BuildProperties.BinaryPublisherClass);
-                if (type == null)
-                {
-                    log.Warning($"Could not find class {BuildProperties.BinaryPublisherClass}");
-                    BinaryPublisher = null;
-                }
-                else
-                {
-                    log.Debug($"Found type {type.FullName}");
-                    BinaryPublisher = (BinaryPublisher)Activator.CreateInstance(type, package, engine);
-                    log.Debug($"Instantiated class {BinaryPublisher.GetType().FullName}");
-                }
-            }
-            if (BinaryPublisher == null)
-            {
-                BinaryPublisher = new BinaryPublisher(package, engine);
-            }
+            BinaryPublisher = new BinaryPublisher(package, engine);
         }
         protected BinaryPublisher BinaryPublisher
         {
