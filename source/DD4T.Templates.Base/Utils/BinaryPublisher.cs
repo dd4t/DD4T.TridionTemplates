@@ -51,81 +51,37 @@ namespace DD4T.Templates.Base.Utils
 
             currentTemplate = engine.PublishingContext.ResolvedItem.Template;
             BuildProperties buildProperties = new BuildProperties(package);
-            if (!string.IsNullOrWhiteSpace(buildProperties.BinaryPathProviderTBB))
+
+            if (!string.IsNullOrWhiteSpace(buildProperties.BinaryPathProvider))
             {
-                TemplateBuildingBlock tbb = engine.GetObject(buildProperties.BinaryPathProviderTBB) as TemplateBuildingBlock;
-                log.Debug($"Found tbb with URI {tbb.Id} and name {tbb.Title}, last modified on {tbb.RevisionDate}");
-                byte[] byteArray = tbb.BinaryContent.GetByteArray();
-                try
+                log.Debug($"Found class to override the binary path provider: {buildProperties.BinaryPathProvider}");
+
+                foreach (var t in this.GetType().Assembly.GetTypes())
                 {
-                    Assembly customAssembly = Assembly.Load(byteArray);
-                    log.Debug($"custom assembly loaded: {customAssembly != null}");
-                    if (customAssembly != null)
-                    {
-                        log.Debug($"Found custom assembly {customAssembly.FullName}");
-                        var iftype = typeof(IBinaryPathProvider);
-
-                        Type[] constructorArgumentTypes = new Type[2];
-                        constructorArgumentTypes[0] = typeof(Engine);
-                        constructorArgumentTypes[1] = typeof(Package);
-                        log.Debug("3");
-                        object[] constructorArguments = new object[2];
-                        constructorArguments[0] = engine;
-                        constructorArguments[1] = package;
-                        log.Debug("4");
-
-                        foreach (var t in customAssembly.GetTypes())
-                        {
-                            log.Debug($"Found type {t.FullName}");
-                            var cstr = t.GetConstructor(constructorArgumentTypes);
-                            if (cstr != null)
-                            {
-                                log.Debug($"Trying to instantiate an instance of {t.FullName}");
-                                try
-                                {
-                                    binaryPathProvider = (IBinaryPathProvider)cstr.Invoke(constructorArguments);
-                                }
-                                catch (Exception e)
-                                {
-                                    log.Debug($"error instantiating binaryPathProvider: {e.Message}");
-                                }
-                                if (binaryPathProvider != null)
-                                {
-                                    log.Debug($"Created an instance of {t.FullName}");
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (binaryPathProvider == null)
-                        {
-                            log.Warning($"Custom assembly does not contain a type which implements {iftype.FullName}");
-                        }
-                    //var implementingType = customAssembly.GetTypes()
-                    //        .Where(p => p.IsAssignableFrom(iftype))
-                    //        .FirstOrDefault();
-                    //    if (implementingType != null)
-                    //    {
-                    //        binaryPathProvider = (IBinaryPathProvider)implementingType.GetConstructor(constructorArgumentTypes).Invoke(constructorArguments);
-                    //        log.Debug("5");
-                    //    }
-                    //    else
-                    //    {
-                    //        log.Warning($"Custom assembly does not contain a type which implements {iftype.FullName}");
-                    //    }
-
-                    }
+                    log.Debug("loaded type: " + t.FullName);
                 }
-                catch (Exception e)
+
+                if (buildProperties.BinaryPathProvider.Contains("|"))
                 {
-                    log.Debug($"Caught exception of type {e.GetType()}");
-                    if (e is ReflectionTypeLoadException)
+                    var t = buildProperties.BinaryPathProvider.Split('|').Select(a => a.Trim()).ToArray<string>();
+                    log.Debug("Assembly:" + t[0]);
+                    log.Debug("Class:" + t[1]);
+                    object[] parameters = new object[2] { engine, package };
+                    binaryPathProvider = (IBinaryPathProvider)Activator.CreateInstance(t[0], t[1], parameters).Unwrap();
+                }
+                else
+                {
+                    var type = Type.GetType(buildProperties.BinaryPathProvider);
+                    if (type == null)
                     {
-                        var loaderExceptions = ((ReflectionTypeLoadException)e).LoaderExceptions;
-                        foreach (var loaderException in loaderExceptions)
-                        {
-                            log.Warning($"Caught loader exception {loaderException.Message}");
-                        }
+                        log.Warning($"Could not find class {buildProperties.BinaryPathProvider}");
+                        binaryPathProvider = null;
+                    }
+                    else
+                    {
+                        log.Debug($"Found type {type.FullName}");
+                        binaryPathProvider = (IBinaryPathProvider)Activator.CreateInstance(type, engine, package);
+                        log.Debug($"Instantiated class {binaryPathProvider.GetType().FullName}");
                     }
                 }
             }
@@ -134,6 +90,85 @@ namespace DD4T.Templates.Base.Utils
                 binaryPathProvider = new DefaultBinaryPathProvider(engine, package);
             }
 
+
+            //if (!string.IsNullOrWhiteSpace(buildProperties.BinaryPathProvider))
+            //{
+            //    TemplateBuildingBlock tbb = engine.GetObject(buildProperties.BinaryPathProvider) as TemplateBuildingBlock;
+            //    log.Debug($"Found tbb with URI {tbb.Id} and name {tbb.Title}, last modified on {tbb.RevisionDate}");
+            //    byte[] byteArray = tbb.BinaryContent.GetByteArray();
+            //    try
+            //    {
+            //        Assembly customAssembly = Assembly.Load(byteArray);
+            //        log.Debug($"custom assembly loaded: {customAssembly != null}");
+            //        if (customAssembly != null)
+            //        {
+            //            log.Debug($"Found custom assembly {customAssembly.FullName}");
+            //            var iftype = typeof(IBinaryPathProvider);
+
+            //            Type[] constructorArgumentTypes = new Type[2];
+            //            constructorArgumentTypes[0] = typeof(Engine);
+            //            constructorArgumentTypes[1] = typeof(Package);
+            //            log.Debug("3");
+            //            object[] constructorArguments = new object[2];
+            //            constructorArguments[0] = engine;
+            //            constructorArguments[1] = package;
+            //            log.Debug("4");
+
+            //            foreach (var t in customAssembly.GetTypes())
+            //            {
+            //                log.Debug($"Found type {t.FullName}");
+            //                var cstr = t.GetConstructor(constructorArgumentTypes);
+            //                if (cstr != null)
+            //                {
+            //                    log.Debug($"Trying to instantiate an instance of {t.FullName}");
+            //                    try
+            //                    {
+            //                        binaryPathProvider = (IBinaryPathProvider)cstr.Invoke(constructorArguments);
+            //                    }
+            //                    catch (Exception e)
+            //                    {
+            //                        log.Debug($"error instantiating binaryPathProvider: {e.Message}");
+            //                    }
+            //                    if (binaryPathProvider != null)
+            //                    {
+            //                        log.Debug($"Created an instance of {t.FullName}");
+            //                        break;
+            //                    }
+            //                }
+            //            }
+
+            //            if (binaryPathProvider == null)
+            //            {
+            //                log.Warning($"Custom assembly does not contain a type which implements {iftype.FullName}");
+            //            }
+            //        //var implementingType = customAssembly.GetTypes()
+            //        //        .Where(p => p.IsAssignableFrom(iftype))
+            //        //        .FirstOrDefault();
+            //        //    if (implementingType != null)
+            //        //    {
+            //        //        binaryPathProvider = (IBinaryPathProvider)implementingType.GetConstructor(constructorArgumentTypes).Invoke(constructorArguments);
+            //        //        log.Debug("5");
+            //        //    }
+            //        //    else
+            //        //    {
+            //        //        log.Warning($"Custom assembly does not contain a type which implements {iftype.FullName}");
+            //        //    }
+
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        log.Debug($"Caught exception of type {e.GetType()}");
+            //        if (e is ReflectionTypeLoadException)
+            //        {
+            //            var loaderExceptions = ((ReflectionTypeLoadException)e).LoaderExceptions;
+            //            foreach (var loaderException in loaderExceptions)
+            //            {
+            //                log.Warning($"Caught loader exception {loaderException.Message}");
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -312,7 +347,7 @@ namespace DD4T.Templates.Base.Utils
                 }
                 else
                 {
-                    string fileName = binaryPathProvider.ConstructPath(mmComp, currentTemplate.Id, stripTcmUris, targetSGuri);
+                    string fileName = binaryPathProvider.ConstructFileName(mmComp, currentTemplate.Id, stripTcmUris, targetSGuri);
                     StructureGroup targetSG = null;
                     if (targetSGuri!= null)
                     {

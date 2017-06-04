@@ -39,7 +39,7 @@ namespace DD4T.Templates.Base.Builder
         public bool OmitCategories { get; set; }
         public bool OmitValueLists { get; set; }
         public bool ECLEnabled { get; set; }
-        public string BinaryPathProviderTBB { get; set; }
+        public string BinaryPathProvider { get; set; }
 
 
         public BuildProperties(Package package)
@@ -154,9 +154,9 @@ namespace DD4T.Templates.Base.Builder
             {
                 ECLEnabled = DefaultECLEnabled;
             }
-            if (HasPackageValue(package, "BinaryPathProviderTBB"))
+            if (HasPackageValue(package, "BinaryPathProvider"))
             {
-                BinaryPathProviderTBB = package.GetValue("BinaryPathProviderTBB");
+                BinaryPathProvider = package.GetValue("BinaryPathProvider");
             }
         }
 

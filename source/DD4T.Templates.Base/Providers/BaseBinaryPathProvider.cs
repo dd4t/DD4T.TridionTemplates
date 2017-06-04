@@ -51,7 +51,7 @@ namespace DD4T.Templates.Base.Providers
             log.Debug($"stripTcmUrisFromBinaryUrls = {stripTcmUrisFromBinaryUrls}");
 
         }
-        public virtual string ConstructPath(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls, string targetStructureGroupUri)
+        public virtual string ConstructFileName(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls, string targetStructureGroupUri)
         {
             log.Debug($"called ConstructPath with {stripTcmUrisFromBinaryUrls} and {targetStructureGroupUri}");
             Regex re = new Regex(@"^(.*)\.([^\.]+)$");
@@ -60,7 +60,7 @@ namespace DD4T.Templates.Base.Providers
             {
                 fileName = Path.GetFileName(fileName);
             }
-            if (GetStripTcmUrisFromBinaryUrls(mmComp))
+            if (stripTcmUrisFromBinaryUrls)
             {
                 log.Debug("about to return " + fileName);
                 return fileName;

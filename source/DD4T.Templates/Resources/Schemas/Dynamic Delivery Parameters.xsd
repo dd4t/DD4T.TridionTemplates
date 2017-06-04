@@ -18,7 +18,7 @@
         <tcm:Label ElementName="OmitFolders" Metadata="false">Omit folders in output</tcm:Label>
         <tcm:Label ElementName="OmitCategories" Metadata="false">Omit separate list of categories</tcm:Label>
         <tcm:Label ElementName="OmitValueLists" Metadata="false">Do not generate string values for non-string data types</tcm:Label>
-        <tcm:Label ElementName="BinaryPathProviderTBB" Metadata="false">TBB containing a BinaryPathProvider class (to override default logic)</tcm:Label>
+        <tcm:Label ElementName="BinaryPathProvider" Metadata="false">Custom IBinaryPathProvider class (to override default logic, please provide fully qualified name)</tcm:Label>
       </tcm:Labels>
     </xsd:appinfo>
   </xsd:annotation>
@@ -215,7 +215,7 @@
             </xsd:restriction>
           </xsd:simpleType>
         </xsd:element>
-        <xsd:element name="BinaryPathProviderTBB" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
+        <xsd:element name="BinaryPathProvider" minOccurs="0" maxOccurs="1" type="xsd:normalizedString">
           <xsd:annotation>
             <xsd:appinfo>
               <tcm:ExtensionXml xmlns:tcm="http://www.tridion.com/ContentManager/5.0"></tcm:ExtensionXml>

@@ -15,6 +15,6 @@ namespace DD4T.Templates.Base.Contracts
         bool GetStripTcmUrisFromBinaryUrls(Component component);
         TcmUri GetTargetStructureGroupUri(Component component);
         TcmUri GetTargetStructureGroupUri(Dynamic.Component component);
-        string ConstructPath(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls, string targetStructureGroupUri);
+        string ConstructFileName(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls, string targetStructureGroupUri);
     }
 }
