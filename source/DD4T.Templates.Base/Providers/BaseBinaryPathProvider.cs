@@ -15,18 +15,26 @@ using DD4T.Templates.Base.Utils;
 
 namespace DD4T.Templates.Base.Providers
 {
+    /// <summary>
+    /// Contains the default implementation of the IBinaryPathProvider. You can extend this class to replace some or all of the functionality with your own.
+    /// </summary>
     public abstract class BaseBinaryPathProvider : IBinaryPathProvider
     {
         protected TemplatingLogger log = TemplatingLogger.GetLogger(typeof(BaseBinaryPathProvider));
-        private Engine engine;
-        private Package package;
+        protected Engine Engine { get; private set; }
+        protected Package Package { get; private set; }
         private TcmUri targetStructureGroupUri;
         private bool stripTcmUrisFromBinaryUrls;
 
+        /// <summary>
+        /// Constructor to create a BaseBinaryPathProvider 
+        /// </summary>
+        /// <param name="engine">The SDL Web publish engine</param>
+        /// <param name="package">The SDL Web publish package</param>
         public BaseBinaryPathProvider(Engine engine, Package package)
         {
-            this.engine = engine;
-            this.package = package;
+            Engine = engine;
+            Package = package;
 
             String targetStructureGroupParam = package.GetValue("sg_PublishBinariesTargetStructureGroup");
             if (targetStructureGroupParam != null)
@@ -51,9 +59,29 @@ namespace DD4T.Templates.Base.Providers
             log.Debug($"stripTcmUrisFromBinaryUrls = {stripTcmUrisFromBinaryUrls}");
 
         }
-        public virtual string ConstructFileName(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls, string targetStructureGroupUri)
+
+        /// <summary>
+        /// Default implementation of GetFilename for the DD4T framework.
+        /// Looks for a parameter in the template package, if that is not present it returns the magic value to indicate that the default SDL Web publishing logic must be used.
+        /// </summary>
+        /// <param name="mmComp"></param>
+        /// <param name="variantId"></param>
+        /// <returns></returns>
+        public virtual string GetFilename(Component mmComp, string variantId)
         {
-            log.Debug($"called ConstructPath with {stripTcmUrisFromBinaryUrls} and {targetStructureGroupUri}");
+            log.Debug($"Called GetFilename for {mmComp.Title}");
+            bool stripTcmUrisFromBinaryUrls = GetStripTcmUrisFromBinaryUrls(mmComp);
+            TcmUri targetStructureGroupUri = GetTargetStructureGroupUri(mmComp.Id.ToString());
+            log.Debug($"GetFilename found settings: stripTcmUrisFromBinaryUrls {stripTcmUrisFromBinaryUrls} and targetStructureGroupUri {targetStructureGroupUri}");
+
+            // if no target SG is configured, and there is no requirement to strip the TCM uris from the path,
+            // we will instruct the BinaryPublisher to use the default SDL Web logic
+            if (targetStructureGroupUri == null && !stripTcmUrisFromBinaryUrls)
+            {
+                log.Debug("no special settings, returning magic value to use default binary path");
+                return DefaultBinaryPathProvider.USE_DEFAULT_BINARY_PATH;
+            }
+
             Regex re = new Regex(@"^(.*)\.([^\.]+)$");
             string fileName = mmComp.BinaryContent.Filename;
             if (!String.IsNullOrEmpty(fileName))
@@ -69,20 +97,28 @@ namespace DD4T.Templates.Base.Providers
 
         }
 
+        /// <summary>
+        /// Default implementation of GetStripTcmUrisFromBinaryUrls for the DD4T framework.
+        /// Looks for a parameter in the template package, if that is not present it returns false (TCM Uri is NOT stripped).
+        /// </summary>
+        /// <param name="component"></param>
+        /// <returns></returns>
         public virtual bool GetStripTcmUrisFromBinaryUrls(Component component)
         {
             return stripTcmUrisFromBinaryUrls;
         }
 
-
-        public virtual TcmUri GetTargetStructureGroupUri(Dynamic.Component component)
+        /// <summary>
+        /// Default implementation of GetTargetStructureGroupUri for the DD4T framework.
+        /// Looks for a parameter in the template package, if that is not present it returns null (do NOT use a special target structure group).
+        /// </summary>
+        /// <param name="component"></param>
+        /// <returns></returns>
+        public virtual TcmUri GetTargetStructureGroupUri(string componentUri)
         {
+            log.Debug($"Called GetTargetStructureGroupUri with {componentUri}");
             return targetStructureGroupUri;
         }
 
-        public virtual TcmUri GetTargetStructureGroupUri(Component component)
-        {
-            return targetStructureGroupUri;
-        }
     }
 }

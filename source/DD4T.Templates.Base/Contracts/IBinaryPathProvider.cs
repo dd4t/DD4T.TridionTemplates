@@ -10,11 +10,29 @@ using Tridion.ContentManager.Templating;
 
 namespace DD4T.Templates.Base.Contracts
 {
+    /// <summary>
+    /// Defines logic for retrieving a path to which a binary file must be published
+    /// </summary>
     public interface IBinaryPathProvider
     {
-        bool GetStripTcmUrisFromBinaryUrls(Component component);
-        TcmUri GetTargetStructureGroupUri(Component component);
-        TcmUri GetTargetStructureGroupUri(Dynamic.Component component);
-        string ConstructFileName(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls, string targetStructureGroupUri);
+
+        /// <summary>
+        /// Returns the target structure group URI where the binary should be published to
+        /// </summary>
+        /// <param name="componentUri">String representing the URI of the multimedia component being published</param>
+        /// <returns></returns>
+        TcmUri GetTargetStructureGroupUri(string componentUri);
+        //string ConstructFileName(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls, string targetStructureGroupUri);
+
+
+        /// <summary>
+        /// Returns a filename for an item.
+        /// </summary>
+        /// <remarks>Based on the properties of the item. The filename property must be set, but
+        /// there can be other aspects set on the item that are taken into account in the filename</remarks>
+        /// <param name="item"></param>
+        /// <returns></returns>
+
+        string GetFilename(Component mmComp, string variantId);
     }
 }

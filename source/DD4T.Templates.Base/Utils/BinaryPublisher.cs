@@ -56,11 +56,6 @@ namespace DD4T.Templates.Base.Utils
             {
                 log.Debug($"Found class to override the binary path provider: {buildProperties.BinaryPathProvider}");
 
-                foreach (var t in this.GetType().Assembly.GetTypes())
-                {
-                    log.Debug("loaded type: " + t.FullName);
-                }
-
                 if (buildProperties.BinaryPathProvider.Contains("|"))
                 {
                     var t = buildProperties.BinaryPathProvider.Split('|').Select(a => a.Trim()).ToArray<string>();
@@ -91,84 +86,7 @@ namespace DD4T.Templates.Base.Utils
             }
 
 
-            //if (!string.IsNullOrWhiteSpace(buildProperties.BinaryPathProvider))
-            //{
-            //    TemplateBuildingBlock tbb = engine.GetObject(buildProperties.BinaryPathProvider) as TemplateBuildingBlock;
-            //    log.Debug($"Found tbb with URI {tbb.Id} and name {tbb.Title}, last modified on {tbb.RevisionDate}");
-            //    byte[] byteArray = tbb.BinaryContent.GetByteArray();
-            //    try
-            //    {
-            //        Assembly customAssembly = Assembly.Load(byteArray);
-            //        log.Debug($"custom assembly loaded: {customAssembly != null}");
-            //        if (customAssembly != null)
-            //        {
-            //            log.Debug($"Found custom assembly {customAssembly.FullName}");
-            //            var iftype = typeof(IBinaryPathProvider);
 
-            //            Type[] constructorArgumentTypes = new Type[2];
-            //            constructorArgumentTypes[0] = typeof(Engine);
-            //            constructorArgumentTypes[1] = typeof(Package);
-            //            log.Debug("3");
-            //            object[] constructorArguments = new object[2];
-            //            constructorArguments[0] = engine;
-            //            constructorArguments[1] = package;
-            //            log.Debug("4");
-
-            //            foreach (var t in customAssembly.GetTypes())
-            //            {
-            //                log.Debug($"Found type {t.FullName}");
-            //                var cstr = t.GetConstructor(constructorArgumentTypes);
-            //                if (cstr != null)
-            //                {
-            //                    log.Debug($"Trying to instantiate an instance of {t.FullName}");
-            //                    try
-            //                    {
-            //                        binaryPathProvider = (IBinaryPathProvider)cstr.Invoke(constructorArguments);
-            //                    }
-            //                    catch (Exception e)
-            //                    {
-            //                        log.Debug($"error instantiating binaryPathProvider: {e.Message}");
-            //                    }
-            //                    if (binaryPathProvider != null)
-            //                    {
-            //                        log.Debug($"Created an instance of {t.FullName}");
-            //                        break;
-            //                    }
-            //                }
-            //            }
-
-            //            if (binaryPathProvider == null)
-            //            {
-            //                log.Warning($"Custom assembly does not contain a type which implements {iftype.FullName}");
-            //            }
-            //        //var implementingType = customAssembly.GetTypes()
-            //        //        .Where(p => p.IsAssignableFrom(iftype))
-            //        //        .FirstOrDefault();
-            //        //    if (implementingType != null)
-            //        //    {
-            //        //        binaryPathProvider = (IBinaryPathProvider)implementingType.GetConstructor(constructorArgumentTypes).Invoke(constructorArguments);
-            //        //        log.Debug("5");
-            //        //    }
-            //        //    else
-            //        //    {
-            //        //        log.Warning($"Custom assembly does not contain a type which implements {iftype.FullName}");
-            //        //    }
-
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        log.Debug($"Caught exception of type {e.GetType()}");
-            //        if (e is ReflectionTypeLoadException)
-            //        {
-            //            var loaderExceptions = ((ReflectionTypeLoadException)e).LoaderExceptions;
-            //            foreach (var loaderException in loaderExceptions)
-            //            {
-            //                log.Warning($"Caught loader exception {loaderException.Message}");
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -244,7 +162,7 @@ namespace DD4T.Templates.Base.Utils
             }
             if (multimedia.MimeType == EclMimeType && buildProperties.ECLEnabled && mmComponent.EclId == null)
             {
-                using (EclProcessor eclProcessor = new EclProcessor(engine, binaryPathProvider.GetTargetStructureGroupUri(mmComponent)))
+                using (EclProcessor eclProcessor = new EclProcessor(engine, binaryPathProvider.GetTargetStructureGroupUri(mmComponent.Id)))
                 {
                     eclProcessor.ProcessEclStubComponent(mmComponent);
                 }
@@ -284,7 +202,7 @@ namespace DD4T.Templates.Base.Utils
             string url;
             if (multimediaType.MimeType == EclMimeType && buildProperties.ECLEnabled)
             {
-                using (EclProcessor eclProcessor = new EclProcessor(engine, binaryPathProvider.GetTargetStructureGroupUri(component)))
+                using (EclProcessor eclProcessor = new EclProcessor(engine, binaryPathProvider.GetTargetStructureGroupUri(component.Id)))
                 {
                     url = eclProcessor.ProcessEclXlink(xlinkElement);
                 }
@@ -330,12 +248,12 @@ namespace DD4T.Templates.Base.Utils
                 appliedTemplateUri = new TcmUri(item.Properties[Item.ItemPropertyTemplateUri]);
             }
             Component mmComp = (Component)engine.GetObject(item.Properties[Item.ItemPropertyTcmUri]);
-            string targetSGuri = binaryPathProvider.GetTargetStructureGroupUri(mmComp);
-            bool stripTcmUris = binaryPathProvider.GetStripTcmUrisFromBinaryUrls(mmComp);
+            string fileName = binaryPathProvider.GetFilename(mmComp, currentTemplate.Id);
+            
             try
             {
                 string publishedPath;
-                if (targetSGuri == null && stripTcmUris == false)
+                if (fileName == DefaultBinaryPathProvider.USE_DEFAULT_BINARY_PATH)
                 {
                     log.Debug("no structure group defined, publishing binary with default settings");
                     // Note: it is dangerous to specify the CT URI as variant ID without a structure group, because it will fail if you publish the same MMC from two or more CTs!
@@ -347,7 +265,7 @@ namespace DD4T.Templates.Base.Utils
                 }
                 else
                 {
-                    string fileName = binaryPathProvider.ConstructFileName(mmComp, currentTemplate.Id, stripTcmUris, targetSGuri);
+                    string targetSGuri = binaryPathProvider.GetTargetStructureGroupUri(mmComp.Id.ToString());
                     StructureGroup targetSG = null;
                     if (targetSGuri!= null)
                     {
@@ -372,7 +290,6 @@ namespace DD4T.Templates.Base.Utils
                         b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
                     }
                     publishedPath = b.Url;
-                    //publishedPath = engine.AddBinary(itemUri, appliedTemplateUri, targetStructureGroupUri, data, fileName);
                     log.Debug(string.Format("binary is published to url {0}", publishedPath));
                 }
                 log.Debug("binary published, published path = " + publishedPath);
@@ -384,24 +301,6 @@ namespace DD4T.Templates.Base.Utils
             }
         }
 
-       
-
-        private string ConstructFileName(Component mmComp, string variantId, bool stripTcmUrisFromBinaryUrls)
-        {
-            log.Debug("called ConstructFileName with " + stripTcmUrisFromBinaryUrls);
-            Regex re = new Regex(@"^(.*)\.([^\.]+)$");
-            string fileName = mmComp.BinaryContent.Filename;
-            if (!String.IsNullOrEmpty(fileName))
-            {
-                fileName = Path.GetFileName(fileName);
-            }
-            if (stripTcmUrisFromBinaryUrls)
-            {
-                log.Debug("about to return " + fileName);
-                return fileName;
-            }
-            return re.Replace(fileName, string.Format("$1_{0}_{1}.$2", mmComp.Id.ToString().Replace(":", ""), variantId.Replace(":", "")));
-        }
         #endregion
 
     }
