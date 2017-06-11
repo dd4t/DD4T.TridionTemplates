@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DD4T.Templates.Base", "DD4T.Templates.Base\DD4T.Templates.Base.csproj", "{B52EEF88-CDA2-41A8-84F9-7C5CDA4245BF}"
 EndProject
