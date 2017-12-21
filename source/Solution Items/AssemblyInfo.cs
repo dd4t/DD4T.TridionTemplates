@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 //      Revision (anything under 100 is beta or pre-release)
 //      The last digit is left to 0
 //  
-[assembly: AssemblyVersion("2.2.0.0")]
-[assembly: AssemblyFileVersion("2.2.0.0")]
-[assembly: AssemblyInformationalVersion("2.2.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.2.0")]
+[assembly: AssemblyInformationalVersion("2.0.3-alpha1")]
 [assembly: AssemblyProduct("DD4T")]
