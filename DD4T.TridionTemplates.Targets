@@ -153,7 +153,7 @@
 
 	<Target Name="Package">
 	  		<Message Text="Building configuration: $(Configuration)" Importance="High"/>
-	  		<Message Text="BuildBinDirectory: $(BuildBinDirectory)" Importance="High"/>
+	  		<Message Text="BuildBinDirectory: $(BuildBinDirectory) " Importance="High"/>
 
 		<MakeDir Directories="$(MergeDirectory)" />
 		<CallTarget Targets="CopyReferences" />
