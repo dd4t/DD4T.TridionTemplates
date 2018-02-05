@@ -195,7 +195,7 @@
     	<RemoveDir Directories="$(BuildPackageDirectory)" />
     	<RemoveDir Directories="$(BuildDependencyDirectory)" />
 	</Target>
-	<Target Name="PackageNuGet" Condition="'$(Configuration)'!='Legacy'">
+	<Target Name="PackageNuGet" Condition="'$(Configuration)'=='Release'">
 		<ItemGroup>
 			<PackageFilesCleanup Include="$(BuildPackageDirectory)\**\*.*"/>
         	<MainDLL Include="$(BuildBinDirectory)\**\$(MSBuildProjectName)*.dll" />

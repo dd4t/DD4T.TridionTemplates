@@ -18,7 +18,7 @@ environment:
   matrix:
   - Configuration: Release
   - Configuration: Legacy
-  - Configuration: Debug
+  - Configuration: Tridion2013sp1
   - Configuration: SDL Web 8.1
 install:
 - nuget sources add -Name Trivident -Source http://private-nuget.azurewebsites.net/nuget -UserName %nuget_user% -Password %nuget_password%

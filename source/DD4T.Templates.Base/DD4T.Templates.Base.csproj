@@ -16,43 +16,22 @@
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\bin\DD4T.Templates.Base.XML</DocumentationFile>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>dynamicdelivery.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Legacy|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>Legacy</DefineConstants>
-    <Optimize>true</Optimize>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SDL Web 8.1|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' != 'Debug|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\build\bin</OutputPath>
@@ -76,7 +55,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+  <ItemGroup Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release'">
     <Reference Include="Tridion.Common">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.Common.dll</HintPath>
       <Private>False</Private>
@@ -177,7 +156,7 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Release'">
+  <ItemGroup Condition="'$(Configuration)'=='Tridion2013sp1'">
     <Reference Include="Tridion.Common">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.Common.dll</HintPath>
