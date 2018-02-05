@@ -15,7 +15,9 @@
 
 		<!-- Build Directories -->
 		<BuildOutputDirectory>$(BaseDirectory)\build</BuildOutputDirectory>
-		<BuildBinDirectory>$(BuildOutputDirectory)\bin</BuildBinDirectory>
+		<!--BuildBinDirectory>$(BuildOutputDirectory)\bin</BuildBinDirectory-->
+		<BuildBinDirectory>$(OutputPath)</BuildBinDirectory>
+		
 		<BuildLogDirectory>$(BuildOutputDirectory)\log</BuildLogDirectory>
 		<BuildPackageDirectory>$(BuildOutputDirectory)\package</BuildPackageDirectory>
 		<BuildDependencyDirectory>$(BuildOutputDirectory)\dependencies</BuildDependencyDirectory>
@@ -150,6 +152,9 @@
 	</Target>
 
 	<Target Name="Package">
+	  		<Message Text="Building configuration: $(Configuration)" Importance="High"/>
+	  		<Message Text="BuildBinDirectory: $(BuildBinDirectory)" Importance="High"/>
+
 		<MakeDir Directories="$(MergeDirectory)" />
 		<CallTarget Targets="CopyReferences" />
 		<ItemGroup>
@@ -196,6 +201,8 @@
     	<RemoveDir Directories="$(BuildDependencyDirectory)" />
 	</Target>
 	<Target Name="PackageNuGet" Condition="'$(Configuration)'=='Release'">
+		<Message Text="Creating NuGet package"  Importance="High"/>
+
 		<ItemGroup>
 			<PackageFilesCleanup Include="$(BuildPackageDirectory)\**\*.*"/>
         	<MainDLL Include="$(BuildBinDirectory)\**\$(MSBuildProjectName)*.dll" />
