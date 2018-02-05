@@ -79,36 +79,47 @@
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <Reference Include="Tridion.Common">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Common">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Publishing">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Publishing.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Queuing">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Queuing.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.TemplateTypes">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Templating">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Templating.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.TypeRegistration">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ExternalContentLibrary">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ExternalContentLibrary.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ExternalContentLibrary.V2">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ExternalContentLibrary.V2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.Logging">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.Logging.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='SDL Web 8.1'">
