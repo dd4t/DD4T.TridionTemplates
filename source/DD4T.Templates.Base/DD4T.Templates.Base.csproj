@@ -224,47 +224,47 @@
   <ItemGroup Condition="'$(Configuration)'=='Legacy'">
     <Reference Include="Tridion.Common">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.Common.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.ContentManager.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Common">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.ContentManager.Common.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Publishing">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.ContentManager.Publishing.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Publishing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Queuing">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.ContentManager.Queuing.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Queuing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.TemplateTypes">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.Templating">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.ContentManager.Templating.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Templating.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.ContentManager.TypeRegistration">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tridion.Logging">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\sdl-tridion-templating-2011-sp1.1.0.3\lib\Tridion.Logging.dll</HintPath>
+      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.Logging.dll</HintPath>
       <Private>False</Private>
     </Reference>
 	<ProjectReference Include="..\Tridion.ExternalContentLibrary.V2.Mock\Tridion.ExternalContentLibrary.V2.Mock.csproj">
