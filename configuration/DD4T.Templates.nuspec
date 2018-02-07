@@ -9,9 +9,9 @@
     <description>DD4T Tridion Base Template</description>
     <releaseNotes>
     </releaseNotes>
-    <tags>SDLTridion Tridion DD4T Templating</tags>
+    <tags>SDL Tridion DD4T Templating</tags>
     <dependencies>
-      <dependency id="DD4T.Model" version="2.2.1" />
+      <dependency id="DD4T.Model" version="2.2.2" />
     </dependencies>
   </metadata>
 </package>

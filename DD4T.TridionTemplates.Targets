@@ -15,7 +15,9 @@
 
 		<!-- Build Directories -->
 		<BuildOutputDirectory>$(BaseDirectory)\build</BuildOutputDirectory>
-		<BuildBinDirectory>$(BuildOutputDirectory)\bin</BuildBinDirectory>
+		<!--BuildBinDirectory>$(BuildOutputDirectory)\bin</BuildBinDirectory-->
+		<BuildBinDirectory>$(OutputPath)</BuildBinDirectory>
+		
 		<BuildLogDirectory>$(BuildOutputDirectory)\log</BuildLogDirectory>
 		<BuildPackageDirectory>$(BuildOutputDirectory)\package</BuildPackageDirectory>
 		<BuildDependencyDirectory>$(BuildOutputDirectory)\dependencies</BuildDependencyDirectory>
@@ -150,13 +152,22 @@
 	</Target>
 
 	<Target Name="Package">
+	  		<Message Text="Building configuration: $(Configuration)" Importance="High"/>
+	  		<Message Text="BuildBinDirectory: $(BuildBinDirectory) " Importance="High"/>
+
 		<MakeDir Directories="$(MergeDirectory)" />
 		<CallTarget Targets="CopyReferences" />
 		<ItemGroup>
-        	<BinFiles Include="$(BuildBinDirectory)\**\*.dll" />
+        	<DD4TFiles Include="$(BuildBinDirectory)\**\DD4T.*.dll" />
+        	<NewtonSoftFiles Include="$(BuildBinDirectory)\**\Newtonsoft.*.dll" />
+        	<BinFiles Include="@(DD4TFiles);@(NewtonSoftFiles)" />
         	<MainDLL Include="$(BuildBinDirectory)\**\$(MSBuildProjectName)*.dll" />
     	</ItemGroup>
-
+		<Message Text="ILMerge - input for merge: @(BinFiles)"  Importance="High"/>
+		<Message Text="ILMerge - file to create: $(MergeFile)"  Importance="High"/>
+		<Message Text="ILMerge - log file: $(logFile)"  Importance="High"/>
+		<Message Text="ILMerge - build dependency directory: $(BuildDependencyDirectory)"  Importance="High"/>
+		<Message Text="ILMerge - key file: $(keyFile)"  Importance="High"/>
     	<ILMerge InputAssemblies="@(BinFiles)" 
             OutputFile="$(MergeFile)" 
             LogFile="$(logFile)"
@@ -189,7 +200,9 @@
     	<RemoveDir Directories="$(BuildPackageDirectory)" />
     	<RemoveDir Directories="$(BuildDependencyDirectory)" />
 	</Target>
-	<Target Name="PackageNuGet" Condition="'$(Configuration)'!='Legacy'">
+	<Target Name="PackageNuGet" Condition="'$(Configuration)'=='Release'">
+		<Message Text="Creating NuGet package"  Importance="High"/>
+
 		<ItemGroup>
 			<PackageFilesCleanup Include="$(BuildPackageDirectory)\**\*.*"/>
         	<MainDLL Include="$(BuildBinDirectory)\**\$(MSBuildProjectName)*.dll" />
