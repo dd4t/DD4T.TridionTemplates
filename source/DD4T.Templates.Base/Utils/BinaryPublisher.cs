@@ -305,8 +305,9 @@ namespace DD4T.Templates.Base.Utils
 
         private string GetVariantId(params string[] keys)
         {
-            Regex re = new Regex("\\W");
-            return string.Join("_", keys.Select(k => re.Replace(k, "")));
+            Regex re = new Regex("[^A-Za-z0-9-_.:]+");
+            var result = string.Join("_", keys.Select(k => re.Replace(k, "")));
+            return result.Length > 63 ? result.Substring(0, 63) : result;
         }
 
         #endregion
