@@ -281,13 +281,15 @@ namespace DD4T.Templates.Base.Utils
                     Binary b;
                     if (targetSG == null)
                     {
-                        log.Debug(string.Format("publishing mm component {0} with variant id {1} and filename {2}", mmComp.Id, currentTemplate.Id, fileName));
-                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                        var variantId = GetVariantId(fileName);
+                        log.Debug(string.Format("publishing mm component {0} with variant id {1} and filename {2}", mmComp.Id, variantId, fileName));
+                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, variantId, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
                     }
                     else
                     {
-                        log.Debug(string.Format("publishing mm component {0} to structure group {1} with variant id {2} and filename {3}", mmComp.Id, targetSGuri, currentTemplate.Id, fileName));
-                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                        var variantId = GetVariantId(targetSG.Id.ToString(), fileName);
+                        log.Debug(string.Format("publishing mm component {0} to structure group {1} with variant id {2} and filename {3}", mmComp.Id, targetSGuri, variantId, fileName));
+                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, variantId, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
                     }
                     publishedPath = b.Url;
                     log.Debug(string.Format("binary is published to url {0}", publishedPath));
@@ -299,6 +301,13 @@ namespace DD4T.Templates.Base.Utils
             {
                 if (itemStream != null) itemStream.Close();
             }
+        }
+
+        private string GetVariantId(params string[] keys)
+        {
+            Regex re = new Regex("[^A-Za-z0-9-_.:]+");
+            var result = string.Join("_", keys.Select(k => re.Replace(k, "")));
+            return result.Length > 63 ? result.Substring(0, 63) : result;
         }
 
         #endregion
