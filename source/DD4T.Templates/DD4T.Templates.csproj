@@ -10,7 +10,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DD4T.Templates</RootNamespace>
     <AssemblyName>DD4T.Templates</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -21,10 +20,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\build\bin</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,8 +36,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
   </PropertyGroup>
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SDL Web 8.1|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SDL Web 8.5|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -47,6 +48,19 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SDL Web 8.1|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\build\bin</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Tridion2013sp1|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,8 +72,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Legacy|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Legacy|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -69,6 +84,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -87,6 +103,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release'">
+    <Reference Include="Tridion.Common">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.Common.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ContentManager">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Common">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Common.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Publishing">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Publishing.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Queuing">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Queuing.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.TemplateTypes">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.Templating">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Templating.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ContentManager.TypeRegistration">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ExternalContentLibrary">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ExternalContentLibrary.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.ExternalContentLibrary.V2">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ExternalContentLibrary.V2.dll</HintPath>
+	  <Private>False</Private>
+    </Reference>
+    <Reference Include="Tridion.Logging">
+      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.Logging.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='SDL Web 8.5'">
     <Reference Include="Tridion.Common">
       <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.Common.dll</HintPath>
 	  <Private>False</Private>
