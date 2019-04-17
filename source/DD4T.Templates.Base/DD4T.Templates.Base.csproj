@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;REGIONS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
@@ -36,7 +36,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;REGIONS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
@@ -92,6 +92,18 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DD4T.ContentModel, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.ContentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="DD4T.ContentModel.Contracts, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.ContentModel.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="DD4T.ContentModel.XmlSerializers, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.ContentModel.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="DD4T.Serialization, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -372,6 +384,7 @@
     <Compile Include="Builder\ComponentBuilder.cs" />
     <Compile Include="Builder\ComponentPresentationBuilder.cs" />
     <Compile Include="Builder\ComponentTemplateBuilder.cs" />
+    <Compile Include="Builder\RegionBuilder.cs" />
     <Compile Include="Contracts\IBinaryPathProvider.cs" />
     <Compile Include="Providers\BaseBinaryPathProvider.cs" />
     <Compile Include="Providers\DefaultBinaryPathProvider.cs" />
@@ -415,20 +428,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Minimize.xslt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="DD4T.ContentModel, Version=2.2.2.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.2\lib\net45\DD4T.ContentModel.dll</HintPath>
-    </Reference>
-    <Reference Include="DD4T.ContentModel.Contracts, Version=2.2.2.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.2\lib\net45\DD4T.ContentModel.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="DD4T.ContentModel.XmlSerializers, Version=2.2.2.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.2\lib\net45\DD4T.ContentModel.XmlSerializers.dll</HintPath>
-    </Reference>
-    <Reference Include="DD4T.Serialization, Version=2.2.2.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.2\lib\net45\DD4T.Serialization.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
