@@ -14,6 +14,8 @@ using DD4T.Templates.Base.Contracts;
 using System.Reflection;
 using System.Linq;
 using DD4T.Templates.Base.Providers;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace DD4T.Templates.Base.Utils
 {
@@ -307,11 +309,33 @@ namespace DD4T.Templates.Base.Utils
         {
             Regex re = new Regex("[^A-Za-z0-9-_.:]+");
             var result = string.Join("_", keys.Select(k => re.Replace(k, "")));
-            return result.Length > 63 ? result.Substring(0, 63) : result;
+            return result.Length > 63 ? MD5Hash(result) : result;
         }
 
-        #endregion
+        public static string MD5Hash(string source)
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(source));
 
-    }
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sBuilder = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+
+                // Return the hexadecimal string.
+                return sBuilder.ToString().ToUpperInvariant();
+            }
+        }
+    #endregion
+
+}
 
 }
