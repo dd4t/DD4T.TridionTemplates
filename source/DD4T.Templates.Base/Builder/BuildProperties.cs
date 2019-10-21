@@ -8,6 +8,7 @@ using DD4T.Serialization;
 namespace DD4T.Templates.Base.Builder
 {
     public enum MergeAction { Replace, Skip, Merge, MergeMultiValueReplaceSingleValue, MergeMultiValueSkipSingleValue }
+    public enum VariantIdStyle { Default, MD5 }
     public class BuildProperties
     {
 
@@ -24,6 +25,7 @@ namespace DD4T.Templates.Base.Builder
         public static bool DefaultOmitCategories = false;
         public static bool DefaultOmitValueLists = false;        
         public static bool DefaultECLEnabled = false;
+        public static VariantIdStyle DefaultVariantIdStyle = VariantIdStyle.Default;
 
         public SerializationFormat SerializationFormat { get; set; }
         public bool CompressionEnabled { get; set; }
@@ -40,7 +42,7 @@ namespace DD4T.Templates.Base.Builder
         public bool OmitValueLists { get; set; }
         public bool ECLEnabled { get; set; }
         public string BinaryPathProvider { get; set; }
-
+        public VariantIdStyle VariantIdStyle { get; set; }
 
         public BuildProperties(Package package)
         {
@@ -157,6 +159,14 @@ namespace DD4T.Templates.Base.Builder
             if (HasPackageValue(package, "BinaryPathProvider"))
             {
                 BinaryPathProvider = package.GetValue("BinaryPathProvider");
+            }
+            if (HasPackageValue(package, "VariantIdStyle"))
+            {
+                VariantIdStyle = (VariantIdStyle)Enum.Parse(typeof(VariantIdStyle), package.GetValue("VariantIdStyle"));
+            }
+            else
+            {
+                VariantIdStyle = DefaultVariantIdStyle;
             }
         }
 

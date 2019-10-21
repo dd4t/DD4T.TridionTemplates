@@ -26,6 +26,7 @@ namespace DD4T.Templates.Base.Utils
         protected Engine engine;
         Template currentTemplate;
         private IBinaryPathProvider binaryPathProvider;
+        private BuildProperties buildProperties;
 
         private const string EclMimeType = "application/externalcontentlibrary";
 
@@ -52,7 +53,7 @@ namespace DD4T.Templates.Base.Utils
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
             currentTemplate = engine.PublishingContext.ResolvedItem.Template;
-            BuildProperties buildProperties = new BuildProperties(package);
+            buildProperties = new BuildProperties(package);
 
             if (!string.IsNullOrWhiteSpace(buildProperties.BinaryPathProvider))
             {
@@ -309,7 +310,9 @@ namespace DD4T.Templates.Base.Utils
         {
             Regex re = new Regex("[^A-Za-z0-9-_.:]+");
             var result = string.Join("_", keys.Select(k => re.Replace(k, "")));
-            return result.Length > 63 ? MD5Hash(result) : result;
+            return result.Length > 63 
+                ? (buildProperties.VariantIdStyle == VariantIdStyle.MD5 ? MD5Hash(result) : result.Substring(0, 63))
+                : result;
         }
 
         public static string MD5Hash(string source)
