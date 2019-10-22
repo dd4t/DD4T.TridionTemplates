@@ -94,7 +94,15 @@ namespace DD4T.Templates.Base.Builder
             }
             if (HasPackageValue(package, "SerializationFormat"))
             {
+                try
+                {
+
                 SerializationFormat = (SerializationFormat)Enum.Parse(typeof(SerializationFormat), package.GetValue("SerializationFormat").ToUpper());
+                }
+                catch
+                {
+                    SerializationFormat = DefaultSerializationFormat;
+                }
             }
             else
             {
@@ -162,7 +170,14 @@ namespace DD4T.Templates.Base.Builder
             }
             if (HasPackageValue(package, "VariantIdStyle"))
             {
-                VariantIdStyle = (VariantIdStyle)Enum.Parse(typeof(VariantIdStyle), package.GetValue("VariantIdStyle"));
+                try
+                {
+                    VariantIdStyle = (VariantIdStyle)Enum.Parse(typeof(VariantIdStyle), package.GetValue("VariantIdStyle"));
+                }
+                catch
+                {
+                    VariantIdStyle = DefaultVariantIdStyle;
+                }
             }
             else
             {
