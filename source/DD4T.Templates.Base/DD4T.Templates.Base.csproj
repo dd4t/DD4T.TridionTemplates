@@ -93,16 +93,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DD4T.ContentModel, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.ContentModel.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.3\lib\net45\DD4T.ContentModel.dll</HintPath>
     </Reference>
     <Reference Include="DD4T.ContentModel.Contracts, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.ContentModel.Contracts.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.3\lib\net45\DD4T.ContentModel.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="DD4T.ContentModel.XmlSerializers, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.ContentModel.XmlSerializers.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.3\lib\net45\DD4T.ContentModel.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="DD4T.Serialization, Version=2.2.3.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.2.3-build20190417094213\lib\net45\DD4T.Serialization.dll</HintPath>
+      <HintPath>..\packages\DD4T.Model.2.2.3\lib\net45\DD4T.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <SpecificVersion>False</SpecificVersion>
