@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2EAB78
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tridion.ExternalContentLibrary.V2.Mock", "Tridion.ExternalContentLibrary.V2.Mock\Tridion.ExternalContentLibrary.V2.Mock.csproj", "{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DD4T.Templates.Test", "DD4T.Templates.Test\DD4T.Templates.Test.csproj", "{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,42 +146,6 @@ Global
 		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|Mixed Platforms.Build.0 = SDL Tridion 2013 SP1|Any CPU
 		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|x86.ActiveCfg = SDL Tridion 2013 SP1|Any CPU
 		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|x86.Build.0 = SDL Tridion 2013 SP1|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Debug|x86.Build.0 = Debug|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Legacy|Any CPU.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Legacy|Any CPU.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Legacy|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Legacy|Mixed Platforms.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Legacy|x86.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Legacy|x86.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Release|x86.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Release|x86.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.1|Any CPU.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.1|Any CPU.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.1|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.1|Mixed Platforms.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.1|x86.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.1|x86.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.5|Any CPU.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.5|Any CPU.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.5|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.5|Mixed Platforms.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.5|x86.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.SDL Web 8.5|x86.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Tridion2013sp1|Any CPU.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Tridion2013sp1|Any CPU.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Tridion2013sp1|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Tridion2013sp1|Mixed Platforms.Build.0 = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Tridion2013sp1|x86.ActiveCfg = Release|Any CPU
-		{73ED57D2-45CD-4CA4-9D4F-C96E9ACB60EF}.Tridion2013sp1|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
