@@ -5,6 +5,7 @@ branches:
   only:
   - master
   - develop
+  - release/*
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
