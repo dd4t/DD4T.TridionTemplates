@@ -1,10 +1,11 @@
-version: 2.2.3
+version: 2.3
 pull_requests:
   do_not_increment_build_number: true
 branches:
   only:
   - master
   - develop
+  - release/*
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
