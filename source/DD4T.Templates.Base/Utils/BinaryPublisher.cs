@@ -14,6 +14,8 @@ using DD4T.Templates.Base.Contracts;
 using System.Reflection;
 using System.Linq;
 using DD4T.Templates.Base.Providers;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace DD4T.Templates.Base.Utils
 {
@@ -24,6 +26,7 @@ namespace DD4T.Templates.Base.Utils
         protected Engine engine;
         Template currentTemplate;
         private IBinaryPathProvider binaryPathProvider;
+        private BuildProperties buildProperties;
 
         private const string EclMimeType = "application/externalcontentlibrary";
 
@@ -50,7 +53,7 @@ namespace DD4T.Templates.Base.Utils
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
             currentTemplate = engine.PublishingContext.ResolvedItem.Template;
-            BuildProperties buildProperties = new BuildProperties(package);
+            buildProperties = new BuildProperties(package);
 
             if (!string.IsNullOrWhiteSpace(buildProperties.BinaryPathProvider))
             {
@@ -281,13 +284,15 @@ namespace DD4T.Templates.Base.Utils
                     Binary b;
                     if (targetSG == null)
                     {
-                        log.Debug(string.Format("publishing mm component {0} with variant id {1} and filename {2}", mmComp.Id, currentTemplate.Id, fileName));
-                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                        var variantId = GetVariantId(fileName);
+                        log.Debug(string.Format("publishing mm component {0} with variant id {1} and filename {2}", mmComp.Id, variantId, fileName));
+                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, variantId, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
                     }
                     else
                     {
-                        log.Debug(string.Format("publishing mm component {0} to structure group {1} with variant id {2} and filename {3}", mmComp.Id, targetSGuri, currentTemplate.Id, fileName));
-                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, currentTemplate.Id, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
+                        var variantId = GetVariantId(targetSG.Id.ToString(), fileName);
+                        log.Debug(string.Format("publishing mm component {0} to structure group {1} with variant id {2} and filename {3}", mmComp.Id, targetSGuri, variantId, fileName));
+                        b = engine.PublishingContext.RenderedItem.AddBinary(itemStream, fileName, targetSG, variantId, mmComp, mmComp.BinaryContent.MultimediaType.MimeType);
                     }
                     publishedPath = b.Url;
                     log.Debug(string.Format("binary is published to url {0}", publishedPath));
@@ -301,8 +306,39 @@ namespace DD4T.Templates.Base.Utils
             }
         }
 
-        #endregion
+        private string GetVariantId(params string[] keys)
+        {
+            Regex re = new Regex("[^A-Za-z0-9-_.:]+");
+            var result = string.Join("_", keys.Select(k => re.Replace(k, "")));
+            return result.Length > 63 
+                ? (buildProperties.VariantIdStyle == VariantIdStyle.MD5 ? MD5Hash(result) : result.Substring(0, 63))
+                : result;
+        }
 
-    }
+        public static string MD5Hash(string source)
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                // Convert the input string to a byte array and compute the hash.
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(source));
+
+                // Create a new Stringbuilder to collect the bytes
+                // and create a string.
+                StringBuilder sBuilder = new StringBuilder();
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+
+                // Return the hexadecimal string.
+                return sBuilder.ToString().ToUpperInvariant();
+            }
+        }
+    #endregion
+
+}
 
 }

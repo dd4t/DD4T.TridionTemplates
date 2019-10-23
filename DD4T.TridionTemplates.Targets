@@ -160,7 +160,8 @@
 		<ItemGroup>
         	<DD4TFiles Include="$(BuildBinDirectory)\**\DD4T.*.dll" />
         	<NewtonSoftFiles Include="$(BuildBinDirectory)\**\Newtonsoft.*.dll" />
-        	<BinFiles Include="@(DD4TFiles);@(NewtonSoftFiles)" />
+			<BinaryPathProviderFiles Include="$(BuildBinDirectory)\**\BinaryPathProvider.dll" />
+        	<BinFiles Include="@(DD4TFiles);@(NewtonSoftFiles);@(BinaryPathProviderFiles)" />
         	<MainDLL Include="$(BuildBinDirectory)\**\$(MSBuildProjectName)*.dll" />
     	</ItemGroup>
 		<Message Text="ILMerge - input for merge: @(BinFiles)"  Importance="High"/>

@@ -44,6 +44,12 @@ namespace DD4T.Templates.Base.Builder
             return PageBuilder.BuildPage(tcmPage, engine, this);
         }
 
+#if REGIONS
+        public virtual Dynamic.Region BuildRegion(TComm.Regions.IRegion tcmRegion, Engine engine)
+        {
+            return RegionBuilder.BuildRegion(tcmRegion, engine, this, BuildProperties.LinkLevels, BuildProperties.ResolveWidthAndHeight, BuildProperties.PublishEmptyFields);
+        }
+#endif
         public virtual List<Dynamic.Category> BuildCategories(TComm.Page page)
         {
             return CategoriesBuilder.BuildCategories(page,this);
