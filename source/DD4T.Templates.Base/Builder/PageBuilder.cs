@@ -50,6 +50,16 @@ namespace DD4T.Templates.Base.Builder
                 Dynamic.ComponentPresentation dynCp = manager.BuildComponentPresentation(cp, engine, linkLevels - 1, resolveWidthAndHeight);
                 p.ComponentPresentations.Add(dynCp);
             }
+#if REGIONS
+            // add regions
+            p.Regions = new List<Dynamic.Region>();
+            foreach (TCM.Regions.IRegion tcmRegion in tcmPage.Regions)
+            {
+                Dynamic.Region region = manager.BuildRegion(tcmRegion, engine);
+                p.Regions.Add(region);
+            }
+
+#endif
             p.StructureGroup = manager.BuildOrganizationalItem((TCM.StructureGroup)tcmPage.OrganizationalItem);
 
             if (!manager.BuildProperties.OmitContextPublications)
