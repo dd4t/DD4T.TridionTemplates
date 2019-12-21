@@ -11,7 +11,7 @@
     </releaseNotes>
     <tags>SDL Tridion DD4T Templating</tags>
     <dependencies>
-      <dependency id="DD4T.Model" version="2.2.3" />
+      <dependency id="DD4T.Model" version="2.5" />
     </dependencies>
   </metadata>
 </package>
