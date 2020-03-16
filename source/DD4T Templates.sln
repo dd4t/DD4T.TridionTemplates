@@ -19,8 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2EAB78
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tridion.ExternalContentLibrary.V2.Mock", "Tridion.ExternalContentLibrary.V2.Mock\Tridion.ExternalContentLibrary.V2.Mock.csproj", "{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,39 +111,6 @@ Global
 		{83682E54-4314-4922-9D1A-62A69EFED674}.Tridion2013sp1|Mixed Platforms.Build.0 = Tridion2013sp1|Any CPU
 		{83682E54-4314-4922-9D1A-62A69EFED674}.Tridion2013sp1|x86.ActiveCfg = Debug|Any CPU
 		{83682E54-4314-4922-9D1A-62A69EFED674}.Tridion2013sp1|x86.Build.0 = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Debug|x86.Build.0 = Debug|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Any CPU.ActiveCfg = Legacy|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Any CPU.Build.0 = Legacy|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Mixed Platforms.ActiveCfg = Legacy|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|Mixed Platforms.Build.0 = Legacy|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Legacy|x86.ActiveCfg = Legacy|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|Any CPU.Build.0 = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Release|x86.ActiveCfg = Release|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.1|Any CPU.ActiveCfg = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.1|Any CPU.Build.0 = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.1|Mixed Platforms.ActiveCfg = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.1|Mixed Platforms.Build.0 = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.1|x86.ActiveCfg = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.1|x86.Build.0 = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.5|Any CPU.ActiveCfg = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.5|Any CPU.Build.0 = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.5|Mixed Platforms.ActiveCfg = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.5|Mixed Platforms.Build.0 = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.5|x86.ActiveCfg = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.SDL Web 8.5|x86.Build.0 = SDL Web 8.1.1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|Any CPU.ActiveCfg = SDL Tridion 2013 SP1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|Any CPU.Build.0 = SDL Tridion 2013 SP1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|Mixed Platforms.ActiveCfg = SDL Tridion 2013 SP1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|Mixed Platforms.Build.0 = SDL Tridion 2013 SP1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|x86.ActiveCfg = SDL Tridion 2013 SP1|Any CPU
-		{669AAAAF-7A65-4CF8-AAD1-B57BBC108054}.Tridion2013sp1|x86.Build.0 = SDL Tridion 2013 SP1|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
