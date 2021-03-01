@@ -42,7 +42,7 @@ skip_tags: true
 deploy:
 - provider: NuGet
   api_key:
-    secure: QmYvNY2pkxjIhWiI/UwFB/rjAkoNhZpElLZhmXiNVKvasN3qRyvvag0/2ZQD5eFb
+    secure: Q2V4fhDUDtQQhJU13r1AuHbKgooa6ePP5MLK9XRXFEsLbTjn1pimaiiPfG3Vsl1M
   artifact: /.*\.nupkg/
   on:
     branch: develop
