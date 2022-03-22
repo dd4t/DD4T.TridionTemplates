@@ -82,13 +82,13 @@ namespace DD4T.Templates
                                 Log.Warning("error while trying to copy metadata from region to component template\r\n" + e.Message + "\r\n" + e.StackTrace);
                             }
                         }
-
-                        if (region.Regions != null && region.RegionName.Any())
-                        {
-                            ProcessRegions(region.Regions, dd4tPage, i);
-                        }
                     }
                 }
+				
+				if (region.Regions != null && region.RegionName.Any())
+				{
+					ProcessRegions(region.Regions, dd4tPage, i);
+				}
             }
         }
     }
