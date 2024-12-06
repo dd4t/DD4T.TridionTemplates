@@ -6,8 +6,11 @@ DD4T Tridion Templates
 - Dropped support for Tridion 9.1 and older (minimum version is now Tridion 9.5)
 - Upgraded to .NET Framework 4.8
 - Simplified the build process (you can now simply )
-- It is now possible to configure a max deserialization depth. This is necessary because Newtonsoft has a default maximum object depth of 64
+- It is now possible to configure a max deserialization depth
 
+### Overriding the maximum deserialization depth
+Since version 13.0.1, Newtonsoft uses a maximum depth when deserializing an object into Json. This value is 64 by default. In some cases, this may not be enough for the DD4T data structure, especially when you use a high linklevel value.
+You can now override the maximum depth with a template parameter called 'MaxSerializationDepth'. If you're using multiple DD4T TBBs in a single template, use this parameter on the first one. 
 
 ## Release 2.5
 - Support for Regions in Tridion 9 and higher
