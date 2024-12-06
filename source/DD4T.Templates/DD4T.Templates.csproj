@@ -1,361 +1,101 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\ILMerge.3.0.41\build\ILMerge.props" Condition="Exists('..\packages\ILMerge.3.0.41\build\ILMerge.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{83682E54-4314-4922-9D1A-62A69EFED674}</ProjectGuid>
+    <ProjectGuid>{CA49591F-775B-4BD6-9C14-A9772A1A5B69}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DD4T.Templates</RootNamespace>
     <AssemblyName>DD4T.Templates</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>DEBUG;TRACE;REGIONS</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>TRACE;REGIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SDL Web 8.5|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SDL Web 8.1|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Tridion2013sp1|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Legacy|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\build\bin</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\bin\DD4T.Templates.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DD4T.ContentModel, Version=2.5.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.5.0\lib\net45\DD4T.ContentModel.dll</HintPath>
+    <Reference Include="DD4T.ContentModel, Version=2.6.1.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.6.1\lib\net45\DD4T.ContentModel.dll</HintPath>
     </Reference>
-    <Reference Include="DD4T.ContentModel.Contracts, Version=2.5.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.5.0\lib\net45\DD4T.ContentModel.Contracts.dll</HintPath>
+    <Reference Include="DD4T.ContentModel.Contracts, Version=2.6.1.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.6.1\lib\net45\DD4T.ContentModel.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="DD4T.ContentModel.XmlSerializers, Version=2.5.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.5.0\lib\net45\DD4T.ContentModel.XmlSerializers.dll</HintPath>
+    <Reference Include="DD4T.ContentModel.XmlSerializers, Version=2.6.1.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.6.1\lib\net45\DD4T.ContentModel.XmlSerializers.dll</HintPath>
     </Reference>
-    <Reference Include="DD4T.Serialization, Version=2.5.0.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
-      <HintPath>..\packages\DD4T.Model.2.5.0\lib\net45\DD4T.Serialization.dll</HintPath>
+    <Reference Include="DD4T.Serialization, Version=2.6.1.0, Culture=neutral, PublicKeyToken=4450e3c7f68bf872, processorArchitecture=MSIL">
+      <HintPath>..\packages\DD4T.Model.2.6.1\lib\net45\DD4T.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release'">
-    <Reference Include="Tridion.Common">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.Common.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.Common, Version=9.5.0.0, Culture=neutral, PublicKeyToken=349a39f202fa9b53, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ContentManager, Version=9.5.0.0, Culture=neutral, PublicKeyToken=360aac4d3354074b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ContentManager.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager.Common">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Common.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ContentManager.Common, Version=9.5.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ContentManager.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager.Publishing">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Publishing.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ContentManager.Publishing, Version=9.5.0.0, Culture=neutral, PublicKeyToken=360aac4d3354074b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ContentManager.Publishing.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager.Queuing">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Queuing.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ContentManager.Queuing, Version=9.5.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ContentManager.Queuing.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager.TemplateTypes">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ContentManager.TemplateTypes, Version=9.5.0.0, Culture=neutral, PublicKeyToken=360aac4d3354074b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager.Templating">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.Templating.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ContentManager.Templating, Version=9.5.0.0, Culture=neutral, PublicKeyToken=360aac4d3354074b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ContentManager.Templating.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager.TypeRegistration">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ContentManager.TypeRegistration, Version=9.5.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ExternalContentLibrary.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ExternalContentLibrary, Version=9.5.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ExternalContentLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary.V2">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.ExternalContentLibrary.V2.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ExternalContentLibrary.Contract.V3, Version=9.5.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ExternalContentLibrary.Contract.V3.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.Logging">
-      <HintPath>..\packages\SDLTridionSites9-CM.9.0.0\lib\Tridion.Logging.dll</HintPath>
+    <Reference Include="Tridion.ExternalContentLibrary.Provider.V3.Base, Version=9.5.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ExternalContentLibrary.Provider.V3.Base.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='SDL Web 8.5'">
-    <Reference Include="Tridion.Common">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.Common.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.ExternalContentLibrary.V2, Version=1.1.0.90, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.ExternalContentLibrary.V2.dll</HintPath>
     </Reference>
-    <Reference Include="Tridion.ContentManager">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Common">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Publishing">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Publishing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Queuing">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Queuing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TemplateTypes">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Templating">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.Templating.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TypeRegistration">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ExternalContentLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary.V2">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.ExternalContentLibrary.V2.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.Logging">
-      <HintPath>..\packages\SDLWeb85-CM.8.5.0.60\lib\Tridion.Logging.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='SDL Web 8.1'">
-    <Reference Include="Tridion.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ContentManager.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ContentManager.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Publishing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ContentManager.Publishing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Queuing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ContentManager.Queuing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TemplateTypes">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Templating">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ContentManager.Templating.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TypeRegistration">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.Logging">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.Logging.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary">
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ExternalContentLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary.V2">
-      <HintPath>..\packages\SDLWeb8-CM.8.1.0.1312\lib\Tridion.ExternalContentLibrary.V2.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Tridion2013sp1'">
-    <Reference Include="Tridion.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ContentManager.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ContentManager.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Publishing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ContentManager.Publishing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Queuing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ContentManager.Queuing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TemplateTypes">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Templating">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ContentManager.Templating.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TypeRegistration">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.Logging">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.Logging.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary">
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ExternalContentLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ExternalContentLibrary.V2">
-      <HintPath>..\packages\SDLTridion2013SP1-CM.7.1.0.103\lib\Tridion.ExternalContentLibrary.V2.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Legacy'">
-    <Reference Include="Tridion.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Publishing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Publishing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Queuing">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Queuing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TemplateTypes">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.TemplateTypes.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.Templating">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.Templating.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.ContentManager.TypeRegistration">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.ContentManager.TypeRegistration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tridion.Logging">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SDLTridion2011SP1-CM.6.1.0.25\lib\Tridion.Logging.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Tridion.Logging, Version=9.5.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDLTridionSites9.5-CM.9.5.1\lib\Tridion.Logging.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -364,63 +104,36 @@
     </Compile>
     <Compile Include="AddTargetGroups.cs" />
     <Compile Include="CompressOutput.cs" />
-    <Compile Include="DynamicComponentPresentation.cs" />
     <Compile Include="DynamicComponent.cs" />
+    <Compile Include="DynamicComponentPresentation.cs" />
     <Compile Include="DynamicPage.cs" />
     <Compile Include="InheritMetadataComponent.cs" />
     <Compile Include="InheritMetadataPage.cs" />
     <Compile Include="PreviewPage.cs" />
-    <Compile Include="Properties\SpecificAssemblyInfo.cs" />
     <Compile Include="PublishBinariesComponent.cs" />
     <Compile Include="PublishBinariesPage.cs" />
-    <Compile Include="Resources.cs" />
     <Compile Include="RegionsToCTMetadata.cs" />
+    <Compile Include="Resources.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DD4T.Templates.Base\DD4T.Templates.Base.csproj">
-      <Project>{B52EEF88-CDA2-41A8-84F9-7C5CDA4245BF}</Project>
-      <Name>DD4T.Templates.Base</Name>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Schemas\Resources Parameters.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="App.config" />
     <EmbeddedResource Include="Resources\Schemas\Dynamic Delivery Parameters.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config">
+    <EmbeddedResource Include="Resources\Schemas\Resources Parameters.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DD4T.Templates.Base\DD4T.Templates.Base.csproj">
+      <Project>{b52eef88-cda2-41a8-84f9-7c5cda4245bf}</Project>
+      <Name>DD4T.Templates.BaseClean</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="..\..\DD4T.TridionTemplates.Targets" />
-  <Target Name="BeforeBuild">
-    <CallTarget Targets="MimicPackages" />
-  </Target>
-  <Target Name="AfterBuild">
-    <CallTarget Targets="Package" />
-    <!--Message Text="Installing package to local NuGet repo" Importance="high" Condition="'$(NUGET_LOCALREPO)' != ''" />
-    <CallTarget Targets="Install" Condition="'$(NUGET_LOCALREPO)' != ''" /-->
-  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)..\tools\ilmerge\ILMerge.exe" /lib:"C:\Windows\Microsoft.NET\Framework\v4.0.30319" /t:dll /targetplatform:v4,C:\Windows\Microsoft.NET\Framework\v4.0.30319 /out:"$(TargetDir)DD4T.Templates.Merged.dll" $(TargetPath) "$(TargetDir)DD4T.ContentModel.Contracts.dll" "$(TargetDir)DD4T.ContentModel.dll" "$(TargetDir)DD4T.Templates.Base.dll" "$(TargetDir)DD4T.ContentModel.XmlSerializers.dll" "$(TargetDir)DD4T.Serialization.dll" "$(TargetDir)Newtonsoft.Json.dll"
+copy /y "$(TargetDir)DD4T.Templates.Merged.*" "$(SolutionDir)..\tools\template-installer\files"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
