@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>DD4T Community</authors>
+    <owners>DD4T Community</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>http://www.dd4t.org</projectUrl>
+    <description>DD4T Tridion Base Template</description>
+    <tags>RWS Tridion Sites DD4T Templating</tags>
+    <dependencies>
+      <dependency id="DD4T.Model" version="2.6.1" />
+    </dependencies>
+  </metadata>
+</package>
