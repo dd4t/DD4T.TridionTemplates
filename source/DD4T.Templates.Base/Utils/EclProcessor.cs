@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml;
 using Tridion.ContentManager.CommunicationManagement;
 using Tridion.ContentManager.Templating;
+using Tridion.ContentManager.Templating.Expression;
 using Tridion.ExternalContentLibrary.V2;
 
 namespace DD4T.Templates.Base.Utils
@@ -36,7 +37,7 @@ namespace DD4T.Templates.Base.Utils
             using (eclContext)
             {
                 eclStubComponent.EclId = eclItem.Id.ToString();
-                string directLinkToPublished = eclItem.GetDirectLinkToPublished(_emptyTemplateAttributes);
+                string directLinkToPublished = eclItem.GetDirectLinkToPublished(_emptyTemplateAttributes);                
                 eclStubComponent.Multimedia.Url = string.IsNullOrEmpty(directLinkToPublished) ? PublishBinaryContent(eclItem, eclStubComponent.Id) : directLinkToPublished;
 
                 // Set additional ECL Item properties as ExtensionData on the ECL Stub Component.
