@@ -1,6 +1,7 @@
 ﻿using DD4T.ContentModel.Contracts.Serializing;
 using DD4T.Serialization;
 using DD4T.Templates.Base.Builder;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Tridion.ContentManager.Templating;
@@ -56,6 +57,21 @@ namespace DD4T.Templates.Base
                         compressionEnabled = Package.CreateStringItem(ContentType.Text, Manager.BuildProperties.CompressionEnabled ? "yes" : "no");
                         Package.PushItem("compression-enabled", compressionEnabled);
                     }
+
+
+                    // In version 13.0.1 Newtonsoft has introduced a limitation to the depth of objects it will deserialize
+                    // It defaults to 64 now. In some cases (with complicated content structure and high link levels) this may not be enough
+                    // It is possible to override the max depth with a template parameter named 'MaxSerializationDepth'
+                    var maxSerializationDepth = Package.GetValue("MaxSerializationDepth");
+                    if (maxSerializationDepth != null)
+                    {
+                        if (int.TryParse(maxSerializationDepth, out var serializationDepth))
+                        {
+                            JSONSerializerService.OverrideMaxDepth = serializationDepth;
+                            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = serializationDepth };
+                        }
+                    }
+
                 }
                 return _serializerService;
             }

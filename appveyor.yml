@@ -1,4 +1,4 @@
-version: 2.5
+version: 2.6.{build}-alpha
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -42,7 +42,7 @@ skip_tags: true
 deploy:
 - provider: NuGet
   api_key:
-    secure: QmYvNY2pkxjIhWiI/UwFB/rjAkoNhZpElLZhmXiNVKvasN3qRyvvag0/2ZQD5eFb
+    secure: Q2V4fhDUDtQQhJU13r1AuHbKgooa6ePP5MLK9XRXFEsLbTjn1pimaiiPfG3Vsl1M
   artifact: /.*\.nupkg/
   on:
     branch: develop
