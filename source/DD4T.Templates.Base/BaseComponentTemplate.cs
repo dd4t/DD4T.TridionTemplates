@@ -2,7 +2,6 @@
 using DD4T.Serialization;
 using DD4T.Templates.Base.Builder;
 using DD4T.Templates.Base.Utils;
-using Newtonsoft.Json;
 using System;
 using Tridion.ContentManager.CommunicationManagement;
 using Tridion.ContentManager.ContentManagement;
