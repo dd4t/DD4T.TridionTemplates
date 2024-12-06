@@ -5,7 +5,7 @@ DD4T Tridion Templates
 - Upgraded to DD4T.Model 2.6.1
 - Dropped support for Tridion 9.1 and older (minimum version is now Tridion 9.5)
 - Upgraded to .NET Framework 4.8
-- Simplified the build process (you can now simply )
+- Simplified the build process 
 - It is now possible to configure a max deserialization depth
 
 ### Overriding the maximum deserialization depth
